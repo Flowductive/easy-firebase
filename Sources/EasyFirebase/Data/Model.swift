@@ -19,7 +19,7 @@ extension Model {
   // MARK: - Public Properties
   
   /// A string representing the model's type
-  public var typeName: String {
+  public var typeName: CollectionName {
     return String(describing: self)
   }
 }

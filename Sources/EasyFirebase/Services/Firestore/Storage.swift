@@ -19,16 +19,23 @@ extension EasyFirestore {
     
     // MARK: - Public Static Methods
     
-    /**
-     
-     */
     public static func set<T>(_ document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+      set(document, collection: document.typeName, id: document.id, completion: completion)
+    }
+    
+    public static func set<T>(_ singleton: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Singleton {
+      set(singleton, collection: "singleton", id: singleton.name, completion: completion)
+    }
+    
+    // MARK: - Private Static Methods
+    
+    private static func set<T>(_ model: T, collection: CollectionName, id: DocumentID, completion: @escaping (Error?) -> Void = { _ in }) where T: Model {
       do {
-        _ = try db.collection(document.typeName).document(document.id).setData(from: document) { error in
+        _ = try db.collection(collection).document(id).setData(from: document) { error in
           if let error = error {
             EasyFirebase.log(error: error)
           } else {
-            EasyFirebase.log("Document successfully sent to [\(document.typeName)] collection. ID: \(document.id)")
+            EasyFirebase.log("Document successfully sent to [\(collection)] collection. ID: \(id)")
           }
           completion(error)
         }

@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias SingletonName = DocumentID
+
 /**
  A singleton is an object that belongs to a single Firestore collection, `singleton`, where only one object of this type is intended to exist.
  
@@ -17,5 +19,5 @@ import Foundation
 public protocol Singleton: Model {
   
   /// The name of the singleton
-  var name: String { get set }
+  var name: SingletonName { get set }
 }
