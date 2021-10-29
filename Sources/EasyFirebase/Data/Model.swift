@@ -7,13 +7,18 @@
 
 import Foundation
 
-protocol Model: Codable {}
+public protocol Model: Codable {}
 
+/**
+ Models are objects that can be sent to and received from Firestore.
+ 
+ Models can be documents belonging to a Firestore collection, and they can also be objects belonging to a document's field.
+ */
 extension Model {
   
   // MARK: - Public Properties
   
-  /// Gets a string representing the type of model.
+  /// A string representing the model's type
   public var typeName: String {
     return String(describing: self)
   }

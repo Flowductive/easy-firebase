@@ -16,8 +16,7 @@ typealias DocumentID = String
  
  Additionally, a static `push()` method also allows for certain key/values to only be pushed.
  */
-@available(macOS 10.15, *)
-protocol Document: Model, Equatable, Identifiable {
+public protocol Document: Model, Equatable, Identifiable {
   
   // MARK: - Properties
   
