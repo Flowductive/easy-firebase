@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "EasyFirebase",
+  platforms: [.iOS(.v11), .macOS(.v10_12), .tvOS(.v12), .watchOS(.v7)],
   products: [
     .library(
       name: "EasyFirebase",
@@ -16,7 +17,11 @@ let package = Package(
   targets: [
     .target(
       name: "EasyFirebase",
-      dependencies: []),
+      dependencies: [
+        .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
+        //.product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
+      ]
+    ),
     .testTarget(
       name: "EasyFirebaseTests",
       dependencies: ["EasyFirebase"]),
