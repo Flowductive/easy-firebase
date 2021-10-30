@@ -25,6 +25,9 @@ public struct EasyFirebase {
   /// How detailed Firestore console out
   public static let logLevel: LogLevel = .none
   
+  /// Whether the cache should be used
+  public static let useCache: Bool = true
+  
   // MARK: - Internal Static Methods
   
   internal static func log(error: Any?) {
