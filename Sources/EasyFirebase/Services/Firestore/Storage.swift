@@ -29,7 +29,7 @@ extension EasyFirestore {
     
     // MARK: - Private Static Methods
     
-    private static func set<T>(_ model: T, collection: CollectionName, id: DocumentID, completion: @escaping (Error?) -> Void = { _ in }) where T: Model {
+    private static func set<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void = { _ in }) where T: Model {
       do {
         _ = try db.collection(collection).document(id).setData(from: document) { error in
           if let error = error {
