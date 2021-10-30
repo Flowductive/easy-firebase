@@ -10,7 +10,7 @@ import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-typealias CollectionName = String
+public typealias CollectionName = String
 
 /**
  A Swift wrapper for Firebase Firestore's methods.

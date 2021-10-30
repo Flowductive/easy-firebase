@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Cache.swift
 //  
 //
 //  Created by Ben Myers on 10/29/21.
@@ -12,37 +12,42 @@ extension EasyFirestore {
   /**
    A service that helps send objects to Firestore.
    */
-  public struct Cache<T> where T: Document {
+  public struct Cacheing {
     
-    // MARK: - Private Static Properties
+    // MARK: - Fileprivate Static Properties
     
-    private static var caches: [CollectionName: Cache] = [:]
+    fileprivate static var caches: [CollectionName: Any] = [:]
+    
+    // MARK: - Public Static Methods
+    
+    public static func register<T>(_ document: T) where T: Document {
+      guard let cache = Cacheing.caches[document.typeName] as? Cache<T> else { return }
+      cache.register(document)
+    }
+    
+    public static func grab<T>(_ id: DocumentID, fromType type: T.Type) -> T? where T: Document {
+      guard let cache = Cacheing.caches[String(describing: type)] as? Cache<T> else { return nil }
+      return cache.grab(id)
+    }
+  }
+  
+  public class Cache<T> where T: Document {
     
     // MARK: - Private Properties
     
     private var cache: [DocumentID: T] = [:]
     
-    // MARK: - Public Static Methods
+    // MARK: - Fileprivate Methods
     
-    public static func register<T>(_ document: T) where T: Document {
-      caches[document.typeName][document.id] = document
-    }
-    
-    public static func grab<T>(_ id: DocumentID, fromType type: T.Type) -> T? where T: Document {
-      return caches[String(describing: T)][id]
-    }
-    
-    // MARK: - Private Methods
-    
-    private func grab(_ id: DocumentID) -> T? {
+    fileprivate func grab(_ id: DocumentID) -> T? {
       guard let obj = cache[id] else { return nil }
       EasyFirebase.log("Document successfully retrieved from [\(obj.typeName)] cache. ID: \(id)")
-      return store[id]
+      return cache[id]
     }
     
-    private func register(_ document: T) {
+    fileprivate func register(_ document: T) {
       cache[document.id] = document
-      EasyFirebase.log("Document successfully stored in [\(document.typeName)] cache. ID: \(document.id) Size: \(store.count) object(s)")
+      EasyFirebase.log("Document successfully stored in [\(document.typeName)] cache. ID: \(document.id) Size: \(cache.count) object(s)")
     }
   }
 }

@@ -20,7 +20,7 @@ extension EasyFirestore {
     // MARK: - Public Static Methods
     
     public static func get<T>(id: DocumentID, ofType type: T.Type, useCache: Bool = EasyFirebase.useCache, completion: @escaping (T?) -> Void) where T: Document {
-      if useCache, let cachedDocument = Cache.grab(id, fromType: type) {
+      if useCache, let cachedDocument = Cacheing.grab(id, fromType: type) {
         completion(cachedDocument)
         return
       } else {
@@ -34,7 +34,7 @@ extension EasyFirestore {
     
     // MARK: - Private Static Methods
     
-    private static func get<T>(_ id: String, collection: CollectionName, type: T.Type, completion: @escaping (T?) -> Void) where T: Model {
+    private static func get<T>(_ id: String, collection: CollectionName, type: T.Type, completion: @escaping (T?) -> Void) where T: Document {
       db.collection(collection).document(id).getDocument { result, error in
         var document: T?
         if let result = result, result.exists {
@@ -45,7 +45,7 @@ extension EasyFirestore {
           EasyFirebase.log(error: "The document with ID [\(id)] could not be loaded from the [\(String(describing: type))] collection.")
         }
         if let document = document {
-          Cache.register(document)
+          Cacheing.register(document)
         }
         completion(document)
       }

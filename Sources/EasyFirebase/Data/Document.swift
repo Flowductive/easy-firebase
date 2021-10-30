@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias DocumentID = String
+public typealias DocumentID = String
 
 /**
  A protocol for objects that can be sent to and received from Firebase Firestore.

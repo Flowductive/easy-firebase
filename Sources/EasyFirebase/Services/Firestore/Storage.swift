@@ -24,14 +24,14 @@ extension EasyFirestore {
     }
     
     public static func set<T>(_ singleton: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Singleton {
-      set(singleton, collection: "singleton", id: singleton.name, completion: completion)
+      set(singleton, collection: "singleton", id: singleton.id, completion: completion)
     }
     
     // MARK: - Private Static Methods
     
     private static func set<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void = { _ in }) where T: Model {
       do {
-        _ = try db.collection(collection).document(id).setData(from: document) { error in
+        _ = try db.collection(collection).document(id).setData(from: model) { error in
           if let error = error {
             EasyFirebase.log(error: error)
           } else {

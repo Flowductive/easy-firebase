@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  EasyFirebase.swift
 //  
 //
 //  Created by Ben Myers on 10/29/21.
