@@ -9,46 +9,42 @@ import Foundation
 import Firebase
 import FirebaseAuth
 
-open class EasyUser: Document {
+public protocol EasyUser: Document {
   
-  // MARK: - Conforming Properties
-  
-  public var id: String
-  public var dateCreated: Date
-  
-  // MARK: - Public Properties
+  // MARK: - Properties
   
   /// The user's last signon date
-  public var lastSignon: Date
+  var lastSignon: Date { get set }
   
   /// The user's display name
-  public var displayName: String
+  var displayName: String { get set }
   
   /// The user's username
-  public var username: String
+  var username: String { get set }
   
   /// The user's email address
-  public var email: String
+  var email: String { get set }
   
   /// The user's last logged-in app version
-  public var appVersion: String
+  var appVersion: String { get set }
   
-  // MARK: - Public Initalizers
+  // MARK: - Initalizers
+  
+  init()
+}
+
+extension EasyUser {
+  
+  // MARK: - Initalizers
   
   public init?(from user: User) {
     guard let email = user.email else { return nil }
+    self.init()
     id = user.uid
-    dateCreated = Date()
     lastSignon = Date()
     username = email.removeDomainFromEmail()
     displayName = user.displayName ?? username
     self.email = email
     appVersion = Bundle.versionString
-  }
-  
-  // MARK: - Conforming Static Methods
-  
-  public static func == (lhs: EasyUser, rhs: EasyUser) -> Bool {
-    return lhs.id == rhs.id
   }
 }
