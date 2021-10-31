@@ -28,4 +28,8 @@ public struct EasyAuth {
       completion(newUser, nil)
     }
   }
+  
+  public static func signIn(email: String, password: String, completion: @escaping (EasyUser?, Error?) -> Void) {
+    
+  }
 }
