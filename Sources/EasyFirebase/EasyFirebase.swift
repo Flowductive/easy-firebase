@@ -28,6 +28,12 @@ public struct EasyFirebase {
   /// Whether the cache should be used
   public static let useCache: Bool = true
   
+  // MARK: - Public Static Methods
+  
+  public static func configure() {
+    
+  }
+  
   // MARK: - Internal Static Methods
   
   internal static func log(error: Any?) {
