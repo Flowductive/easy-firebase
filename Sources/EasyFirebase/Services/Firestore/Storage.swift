@@ -10,6 +10,8 @@ import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+public typealias FieldName = String
+
 extension EasyFirestore {
   
   /**
@@ -27,13 +29,23 @@ extension EasyFirestore {
       set(singleton, collection: "singleton", id: singleton.id, completion: completion)
     }
     
+    public static func set<T, U>(_ value: U, to field: FieldName, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+      db.collection(String(describing: T.self)).document(document.id).updateData([field: value]) { error in
+        if let error = error {
+          EasyFirebase.log(error: error.localizedDescription)
+        } else {
+          EasyFirebase.log("Document successfully updated field [\(field)] with value [\(value)]. ID: \(document.id)")
+        }
+      }
+    }
+    
     // MARK: - Private Static Methods
     
     private static func set<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void = { _ in }) where T: Model {
       do {
         _ = try db.collection(collection).document(id).setData(from: model) { error in
           if let error = error {
-            EasyFirebase.log(error: error)
+            EasyFirebase.log(error: error.localizedDescription)
           } else {
             EasyFirebase.log("Document successfully sent to [\(collection)] collection. ID: \(id)")
           }

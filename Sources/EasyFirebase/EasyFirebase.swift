@@ -13,10 +13,12 @@ import Foundation
  EasyFirebase supports multiple Firebase services, including:
  
  - ``EasyFirestore``
+ - ``EasyAuth``
  
  Additionally, you can set some module-wide settings here, including:
  
  - ``logLevel-swift.type.property``
+ - ``useCache``
  */
 public struct EasyFirebase {
   
