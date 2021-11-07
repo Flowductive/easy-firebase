@@ -39,9 +39,19 @@ extension EasyFirestore {
       }
     }
     
+    public static func setAssign<T, U>(_ document: T, to field: FieldName, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+      set(document) { error in
+        if let error = error {
+          completion(error)
+          return
+        }
+        Linking.assign(document, to: field, in: parent, completion: completion)
+      }
+    }
+    
     // MARK: - Private Static Methods
     
-    private static func set<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void = { _ in }) where T: Model {
+    private static func set<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void) where T: Model {
       do {
         _ = try db.collection(collection).document(id).setData(from: model) { error in
           if let error = error {
