@@ -7,11 +7,11 @@
 
 import Foundation
 
-internal extension String {
+extension String {
   
   // MARK: - Internal Methods
   
-  func removeDomainFromEmail() -> String {
+  internal func removeDomainFromEmail() -> String {
     var copy = String(self)
     if let range = copy.range(of: "@") {
       copy.removeSubrange(range.lowerBound ..< copy.endIndex)

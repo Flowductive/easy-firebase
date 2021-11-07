@@ -7,17 +7,17 @@
 
 import Foundation
 
-internal extension Bundle {
+extension Bundle {
   
   // MARK: - Internal Static Properties
   
   /// The current build number
-  static var versionString: String {
+  internal static var versionString: String {
     Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-"
   }
   
   /// The current version
-  static var buildString: String {
+  internal static var buildString: String {
     Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "-"
   }
 }
