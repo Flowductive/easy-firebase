@@ -32,6 +32,31 @@ extension EasyFirestore {
       get(singleton, collection: "singleton", type: type, completion: completion)
     }
     
+    public static func get<T>(ids: [DocumentID], ofType type: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([T]) -> Void) where T: Document {
+      guard ids.count > 0 else {
+        onFetch([])
+        return
+      }
+      let chunks = ids.chunk(size: 10)
+      var results: [T] = []
+      for chunk in chunks {
+        get(chunk: chunk, ofType: type, useCache: useCache) { arr in
+          results <= arr
+          onFetch(results)
+        }
+      }
+    }
+    
+    public static func getChildren<T, U>(from field: FieldName, in parent: U, ofType: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([U]) -> Void) where T: Document, U: Document {
+      EasyFirestore.getArray(from: parent.id, ofType: U.self, field: field) { ids in
+        guard let ids = ids else {
+          onFetch([])
+          return
+        }
+        get(ids: ids, ofType: U.self, onFetch: onFetch)
+      }
+    }
+    
     // MARK: - Private Static Methods
     
     private static func get<T>(_ id: String, collection: CollectionName, type: T.Type, completion: @escaping (T?) -> Void) where T: Document {
@@ -48,6 +73,46 @@ extension EasyFirestore {
           Cacheing.register(document)
         }
         completion(document)
+      }
+    }
+    
+    private static func get<T>(chunk: [DocumentID], ofType type: T.Type, useCache: Bool, completion: @escaping ([T]) -> Void) where T: Document {
+      guard chunk.count > 0, chunk.count <= 10 else {
+        completion([])
+        return
+      }
+      var cachedDocuments: [T] = []
+      var newIDs: [DocumentID] = chunk
+      if useCache {
+        for id in chunk {
+          if let cachedDocument = Cacheing.grab(id, fromType: T.self) {
+            cachedDocuments <= cachedDocument
+            newIDs -= id
+          }
+        }
+      }
+      guard newIDs.count > 0 else {
+        completion(cachedDocuments)
+        return
+      }
+      db.collection(String(describing: type)).whereField("id", in: newIDs).getDocuments { snapshot, error in
+        var toReturn: [T] = []
+        toReturn <= cachedDocuments
+        if let error = error {
+          EasyFirebase.log(error: error.localizedDescription)
+          completion(cachedDocuments)
+          return
+        }
+        let documents = snapshot?.documents ?? []
+        let objects: [T] = documents.compactMap { doc in
+          let item = try? doc.data(as: T.self)
+          if let item = item {
+            Cacheing.register(item)
+          }
+          return item
+        }
+        toReturn <= objects
+        completion(toReturn)
       }
     }
   }

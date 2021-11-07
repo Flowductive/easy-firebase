@@ -45,19 +45,6 @@ extension EasyFirestore {
       }
     }
     
-    private static func getArray<T>(from id: DocumentID, ofType type: T.Type, field: FieldName, completion: @escaping ([DocumentID]?) -> Void) where T: Document {
-      db.collection(String(describing: type)).document(id).getDocument { result, _ in
-        if let result = result, result.exists {
-          let item = result.get(field)
-          var array = item as? [DocumentID]
-          if array == nil { array = [] }
-          completion(array)
-        } else {
-          EasyFirebase.log(error: "Failed to load array of IDs from document [\(id)].")
-        }
-      }
-    }
-    
     // MARK: - Enumerations
     
     enum LinkingError: Error {
