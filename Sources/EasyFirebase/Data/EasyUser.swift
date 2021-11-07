@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseAuth
+import FirebaseMessaging
 
 public protocol EasyUser: Document {
   
@@ -28,6 +29,9 @@ public protocol EasyUser: Document {
   /// The user's last logged-in app version
   var appVersion: String { get set }
   
+  /// The user's FCM device token
+  var deviceToken: String? { get set }
+  
   // MARK: - Initalizers
   
   init()
@@ -46,5 +50,6 @@ extension EasyUser {
     displayName = user.displayName ?? username
     self.email = email
     appVersion = Bundle.versionString
+    deviceToken = Messaging.messaging().fcmToken
   }
 }
