@@ -11,7 +11,7 @@ extension KeyPath {
   
   // MARK: - Internal Properties
   
-  var stringValue: String {
+  var string: String {
     NSExpression(forKeyPath: self).keyPath
   }
 }

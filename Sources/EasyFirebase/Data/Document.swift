@@ -36,7 +36,7 @@ extension Document {
   }
   
   public func set<T>(_ path: KeyPath<Self, T>, completion: @escaping (Error?) -> Void = { _ in }) where T: Codable {
-    EasyFirestore.Storage.set(self[keyPath: path], to: path.stringValue, in: self)
+    EasyFirestore.Storage.set(self[keyPath: path], to: path.string, in: self)
   }
   
   public mutating func set<T>(_ value: T, to path: WritableKeyPath<Self, T>, completion: @escaping (Error?) -> Void = { _ in }) where T: Codable {
