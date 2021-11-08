@@ -14,9 +14,6 @@ public typealias FieldName = String
 
 extension EasyFirestore {
   
-  /**
-   A service that helps send objects to Firestore.
-   */
   public struct Storage {
     
     // MARK: - Public Static Methods

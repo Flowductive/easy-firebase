@@ -25,10 +25,10 @@ public struct EasyFirebase {
   
   // MARK: - Public Static Properties
   
-  /// How detailed Firestore console out
+  /// How detailed Firestore console out.
   public static var logLevel: LogLevel = .none
   
-  /// Whether the cache should be used
+  /// Whether the cache should be used.
   public static var useCache: Bool = true
   
   // MARK: - Public Static Methods
@@ -66,13 +66,13 @@ public struct EasyFirebase {
    */
   public enum LogLevel: Int {
     
-    /// Don't log any output
+    /// Don't log any output.
     case none = 0
     
-    /// Only log errors
+    /// Only log errors.
     case errors = 1
     
-    /// Log errors and transfer messages
+    /// Log errors and transfer messages.
     case all = 2
   }
 }

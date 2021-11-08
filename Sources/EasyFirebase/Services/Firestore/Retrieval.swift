@@ -12,9 +12,6 @@ import FirebaseFirestoreSwift
 
 extension EasyFirestore {
   
-  /**
-   A service that helps send objects to Firestore.
-   */
   public struct Retrieval {
     
     // MARK: - Public Static Methods

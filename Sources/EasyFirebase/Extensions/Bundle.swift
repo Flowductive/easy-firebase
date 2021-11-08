@@ -11,12 +11,10 @@ extension Bundle {
   
   // MARK: - Internal Static Properties
   
-  /// The current build number
   internal static var versionString: String {
     Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-"
   }
   
-  /// The current version
   internal static var buildString: String {
     Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "-"
   }

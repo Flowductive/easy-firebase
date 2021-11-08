@@ -14,22 +14,22 @@ public protocol EasyUser: Document {
   
   // MARK: - Properties
   
-  /// The user's last signon date
+  /// The user's last signon date.
   var lastSignon: Date { get set }
   
-  /// The user's display name
+  /// The user's display name.
   var displayName: String { get set }
   
-  /// The user's username
+  /// The user's username.
   var username: String { get set }
   
-  /// The user's email address
+  /// The user's email address.
   var email: String { get set }
   
-  /// The user's last logged-in app version
+  /// The user's last logged-in app version.
   var appVersion: String { get set }
   
-  /// The user's FCM device token
+  /// The user's FCM device token.
   var deviceToken: String? { get set }
   
   // MARK: - Initalizers

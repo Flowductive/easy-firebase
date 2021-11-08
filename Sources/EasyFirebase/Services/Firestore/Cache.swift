@@ -9,9 +9,6 @@ import Foundation
 
 extension EasyFirestore {
   
-  /**
-   A service that helps send objects to Firestore.
-   */
   public struct Cacheing {
     
     // MARK: - Fileprivate Static Properties
