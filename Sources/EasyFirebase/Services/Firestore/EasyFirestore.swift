@@ -10,8 +10,14 @@ import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+/// The name of a collection.
 public typealias CollectionName = String
 
+/**
+ `EasyFirestore` is a service manager for various functions related to Firestore.
+ 
+ To get started, check out the related structs.
+ */
 @available(macOS 10.15, *)
 public struct EasyFirestore {
   

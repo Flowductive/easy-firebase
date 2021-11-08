@@ -9,14 +9,33 @@ import Foundation
 
 extension EasyFirestore {
   
+  /**
+   A service that manages linking a document's ID to a list of `DocumentID`s in a parent document.
+   */
   public struct Linking {
     
     // MARK: - Public Static Methods
     
+    /**
+     Assigns a document's ID to a list of `DocumentID`s in the parent document.
+     
+     - parameter child: The child document (only used to get an ID).
+     - parameter path: The path of the parent document's field containing the list of `DocumentID`s.
+     - parameter parent: The parent document containing the list of `DocumentID`s.
+     - parameter completion: The completion handler.
+     */
     public static func assign<T, U>(_ child: T, to path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
       append(child.id, to: path, in: parent, completion: completion)
     }
     
+    /**
+     Unassigns a document's ID from a list of `DocumentID`s in the parent document.
+     
+     - parameter child: The child document (only used to get an ID).
+     - parameter path: The path of the parent document's field containing the list of `DocumentID`s.
+     - parameter parent: The parent document containing the list of `DocumentID`s.
+     - parameter completion: The completion handler.
+     */
     public static func unassign<T, U>(_ child: T, from path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
       unappend(child.id, from: path, in: parent, completion: completion)
     }

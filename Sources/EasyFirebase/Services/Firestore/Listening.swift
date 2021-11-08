@@ -12,8 +12,12 @@ import FirebaseFirestoreSwift
 
 extension EasyFirestore {
   
+  /// A key categorizing Firebase `ListenerRegistration`s.
   public typealias ListenerKey = String
   
+  /**
+   A service for listening to data updates within documents.
+   */
   public struct Listening {
     
     // MARK: - Private Static Properties

@@ -7,6 +7,11 @@
 
 import Foundation
 
+/**
+ A protocol requiring `Codable` capabilities.
+ 
+ Models can be sent as field values to documents in Firestore.
+ */
 public protocol Model: Codable {}
 
 extension Model {

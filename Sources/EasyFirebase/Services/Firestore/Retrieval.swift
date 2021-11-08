@@ -12,10 +12,23 @@ import FirebaseFirestoreSwift
 
 extension EasyFirestore {
   
+  /**
+   A service used to retrieve documents from Firestore.
+   */
   public struct Retrieval {
     
     // MARK: - Public Static Methods
     
+    /**
+     Gets a document from Firestore.
+     
+     - parameter id: The ID of the document to retrieve.
+     - parameter type: The document's type.
+     - parameter useCache: Whether the cache should be prioritized to grab documents (if they exist).
+     - parameter completion: The completion handler.
+     
+     Objects retrieved from Firestore are retrieved from collections based on their type.
+     */
     public static func get<T>(id: DocumentID, ofType type: T.Type, useCache: Bool = EasyFirebase.useCache, completion: @escaping (T?) -> Void) where T: Document {
       if useCache, let cachedDocument = Cacheing.grab(id, fromType: type) {
         completion(cachedDocument)
@@ -25,10 +38,27 @@ extension EasyFirestore {
       }
     }
     
+    /**
+     Gets a singleton from Firestore.
+     
+     - parameter singleton: The name of the singleton to retrieve.
+     - parameter type: The singleton's type.
+     - parameter completion: The completion handler.
+     
+     Singletons retrieved from Firestore are retrieved from the `Singleton` collection.
+     */
     public static func get<T>(singleton: SingletonName, ofType type: T.Type, completion: @escaping (T?) -> Void) where T: Singleton {
-      get(singleton, collection: "singleton", type: type, completion: completion)
+      get(singleton, collection: "Singleton", type: type, completion: completion)
     }
     
+    /**
+     Gets an array of documents from Firestore.
+     
+     - parameter ids: An array of `DocumentID`s to retrieve.
+     - parameter type: The documents' type.
+     - parameter useCache: Whether the cache should be prioritized to grab documents (if they exist).
+     - parameter onFetch: The fetch handler. When documents are fetched, they'll populate here.
+     */
     public static func get<T>(ids: [DocumentID], ofType type: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([T]) -> Void) where T: Document {
       guard ids.count > 0 else {
         onFetch([])
@@ -44,6 +74,15 @@ extension EasyFirestore {
       }
     }
     
+    /**
+     Gets an array of documents from Firestore based on a list of `DocumentID`s from some parent document.
+     
+     - parameter path: The path of the parent document's field containing the list of `DocumentID`s.
+     - parameter parent: The parent document containing the list of `DocumentID`s.
+     - parameter type: The type of documents that are being retrieved.
+     - parameter useCache: Whether the cache should be prioritized to grab documents (if they exist).
+     - parameter onFetch: The fetch handler. When documents are fetched, they'll populate here.
+     */
     public static func getChildren<T, U>(from path: KeyPath<U, [DocumentID]>, in parent: U, ofType: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([U]) -> Void) where T: Document, U: Document {
       EasyFirestore.getArray(from: parent.id, ofType: U.self, path: path) { ids in
         guard let ids = ids else {
