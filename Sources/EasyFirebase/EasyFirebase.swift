@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 /**
  Thanks for using EasyFirebase! 🎉
@@ -25,15 +26,19 @@ public struct EasyFirebase {
   // MARK: - Public Static Properties
   
   /// How detailed Firestore console out
-  public static let logLevel: LogLevel = .none
+  public static var logLevel: LogLevel = .none
   
   /// Whether the cache should be used
-  public static let useCache: Bool = true
+  public static var useCache: Bool = true
   
   // MARK: - Public Static Methods
   
   public static func configure() {
-    
+    FirebaseApp.configure()
+  }
+  
+  public static func configure(options: FirebaseOptions) {
+    FirebaseApp.configure(options: options)
   }
   
   // MARK: - Internal Static Methods
@@ -41,16 +46,16 @@ public struct EasyFirebase {
   internal static func log(error: Any?) {
     guard logLevel.rawValue >= 1 else { return }
     if let error = error as? Error {
-      print("[EasyFirestore] \(error.localizedDescription)")
+      print("[EasyFirebase] \(error.localizedDescription)")
     } else if let error = error {
-      print("[EasyFirestore] ", error)
+      print("[EasyFirebase]", error)
     }
   }
   
   internal static func log(_ item: Any?) {
     guard logLevel.rawValue >= 2 else { return }
     if let item = item {
-      print("[EasyFirestore] ", item)
+      print("[EasyFirebase]", item)
     }
   }
   

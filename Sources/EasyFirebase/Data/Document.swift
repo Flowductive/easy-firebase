@@ -36,12 +36,12 @@ extension Document {
   }
   
   public func set<T>(_ path: KeyPath<Self, T>, completion: @escaping (Error?) -> Void = { _ in }) where T: Codable {
-    EasyFirestore.Storage.set(self[keyPath: path], to: path.string, in: self)
+    EasyFirestore.Storage.set(path, in: self, completion: completion)
   }
   
   public mutating func set<T>(_ value: T, to path: WritableKeyPath<Self, T>, completion: @escaping (Error?) -> Void = { _ in }) where T: Codable {
     self[keyPath: path] = value
-    set(path, completion: completion)
+    EasyFirestore.Storage.set(value, to: path, in: self, completion: completion)
   }
   
   public func get<T>(_ path: KeyPath<Self, T>, completion: @escaping (T?) -> Void) where T: Codable {
@@ -52,5 +52,17 @@ extension Document {
       }
       completion(document[keyPath: path])
     }
+  }
+  
+  public func assign<T>(to path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+    EasyFirestore.Linking.assign(self, to: path, in: parent, completion: completion)
+  }
+  
+  public func setAssign<T>(to path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+    EasyFirestore.Storage.setAssign(self, to: path, in: parent, completion: completion)
+  }
+  
+  public func unassign<T>(from path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+    EasyFirestore.Linking.unassign(self, from: path, in: parent, completion: completion)
   }
 }

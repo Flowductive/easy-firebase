@@ -51,11 +51,11 @@ public struct EasyFirestore {
   
   // MARK: - Internal Static Methods
   
-  internal static func getArray<T>(from id: DocumentID, ofType type: T.Type, field: FieldName, completion: @escaping ([DocumentID]?) -> Void) where T: Document {
+  internal static func getArray<T>(from id: DocumentID, ofType type: T.Type, path: KeyPath<T, [DocumentID]>, completion: @escaping ([DocumentID]?) -> Void) where T: Document {
     db.collection(String(describing: type)).document(id).getDocument { result, _ in
       if let result = result, result.exists {
-        let item = result.get(field)
-        var array = item as? [DocumentID]
+        let document = try? result.data(as: T.self)
+        var array = document?[keyPath: path]
         if array == nil { array = [] }
         completion(array)
       } else {

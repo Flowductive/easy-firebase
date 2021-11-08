@@ -26,8 +26,8 @@ extension EasyFirestore {
       remove(id: document.id, ofType: T.self, completion: completion)
     }
     
-    public static func removeUnassign<T, U>(_ document: T, from field: FieldName, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
-      Linking.unassign(document, from: field, in: parent, completion: { error in
+    public static func removeUnassign<T, U>(_ document: T, from path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+      Linking.unassign(document, from: path, in: parent, completion: { error in
         if let error = error {
           completion(error)
           return

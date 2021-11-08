@@ -29,23 +29,22 @@ extension EasyFirestore {
       set(singleton, collection: "singleton", id: singleton.id, completion: completion)
     }
     
-    public static func set<T, U>(_ value: U, to field: FieldName, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
-      db.collection(String(describing: T.self)).document(document.id).updateData([field: value]) { error in
-        if let error = error {
-          EasyFirebase.log(error: error.localizedDescription)
-        } else {
-          EasyFirebase.log("Document successfully updated field [\(field)] with value [\(value)]. ID: \(document.id)")
-        }
-      }
+    public static func set<T, U>(_ path: KeyPath<T, U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+      let value = document[keyPath: path]
+      db.collection(String(describing: T.self)).document(document.id).updateData([path.string: value], completion: completion)
     }
     
-    public static func setAssign<T, U>(_ document: T, to field: FieldName, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+    public static func set<T, U>(_ value: U, to path: KeyPath<T, U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+      set(path, in: document, completion: completion)
+    }
+    
+    public static func setAssign<T, U>(_ document: T, to path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
       set(document) { error in
         if let error = error {
           completion(error)
           return
         }
-        Linking.assign(document, to: field, in: parent, completion: completion)
+        Linking.assign(document, to: path, in: parent, completion: completion)
       }
     }
     
