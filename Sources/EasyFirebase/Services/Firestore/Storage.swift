@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 
 public typealias FieldName = String
 
+@available(iOS 13.0, *)
 extension EasyFirestore {
   
   /**

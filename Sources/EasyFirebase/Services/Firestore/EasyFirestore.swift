@@ -18,7 +18,7 @@ public typealias CollectionName = String
  
  To get started, check out the related structs.
  */
-@available(macOS 10.15, *)
+@available(macOS 10.15, iOS 13.0, *)
 public struct EasyFirestore {
   
   // MARK: - Internal Static Properties

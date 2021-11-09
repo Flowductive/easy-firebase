@@ -9,6 +9,7 @@ import Foundation
 import Firebase
 import FirebaseAuth
 
+@available(iOS 13.0, *)
 public struct EasyAuth {
   
   // MARK: - Public Static Properties

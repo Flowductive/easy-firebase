@@ -19,6 +19,7 @@ public typealias SingletonName = DocumentID
  
  Singletons can be stored in Firestore using `EasyFirestore.Storage`.
  */
+@available(iOS 13.0, *)
 public protocol Singleton: Document {
   
   /// The name of the singleton.

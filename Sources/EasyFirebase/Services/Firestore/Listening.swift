@@ -10,6 +10,7 @@ import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+@available(iOS 13.0, *)
 extension EasyFirestore {
   
   /// A key categorizing Firebase `ListenerRegistration`s.

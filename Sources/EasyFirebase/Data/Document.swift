@@ -82,6 +82,7 @@ public typealias DocumentID = String
  bagel.set("Bread Ring", to: \.name)
  ```
  */
+@available(iOS 13.0, *)
 public protocol Document: Model, Equatable, Identifiable {
   
   // MARK: - Properties
@@ -99,6 +100,7 @@ public protocol Document: Model, Equatable, Identifiable {
   var dateCreated: Date { get }
 }
 
+@available(iOS 13.0, *)
 extension Document {
   
   // MARK: - Public Methods

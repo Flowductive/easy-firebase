@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseMessaging
 
+@available(iOS 13.0, *)
 public protocol EasyUser: Document {
   
   // MARK: - Properties
@@ -37,6 +38,7 @@ public protocol EasyUser: Document {
   init()
 }
 
+@available(iOS 13.0, *)
 extension EasyUser {
   
   // MARK: - Initalizers
