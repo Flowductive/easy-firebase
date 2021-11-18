@@ -23,19 +23,19 @@ public struct EasyAuth {
   
   // MARK: - Public Static Methods
   
-  public static func createAccount<T>(email: String, password: String, completion: @escaping (T?, Error?) -> Void) where T: EasyUser {
+  public static func createAccount(email: String, password: String, completion: @escaping (Error?) -> Void) {
     auth.createUser(withEmail: email, password: password) { authResult, error in
       handleSignedIn(result: authResult, error: error, completion: completion)
     }
   }
   
-  public static func signIn<T>(email: String, password: String, completion: @escaping (T?, Error?) -> Void) where T: EasyUser {
+  public static func signIn(email: String, password: String, completion: @escaping (Error?) -> Void) {
     auth.signIn(withEmail: email, password: password) { authResult, error in
       handleSignedIn(result: authResult, error: error, completion: completion)
     }
   }
   
-  public static func signIn<T>(with credential: AuthCredential, completion: @escaping (T?, Error?) -> Void) where T: EasyUser {
+  public static func signIn(with credential: AuthCredential, completion: @escaping (Error?) -> Void) {
     auth.signIn(with: credential) { authResult, error in
       handleSignedIn(result: authResult, error: error, completion: completion)
     }
@@ -51,17 +51,16 @@ public struct EasyAuth {
   
   // MARK: - Private Static Methods
   
-  private static func handleSignedIn<T>(result authResult: AuthDataResult?, error: Error?, completion: @escaping (T?, Error?) -> Void) where T: EasyUser {
+  private static func handleSignedIn(result authResult: AuthDataResult?, error: Error?, completion: @escaping (Error?) -> Void) {
     guard let authResult = authResult else {
       EasyFirebase.log(error: error)
-      completion(nil, error)
+      completion(error)
       return
     }
     let authUser = authResult.user
     emailVerified = authUser.isEmailVerified
-    let newUser = T(from: authUser)
     accountProvider = Provider(rawValue: authResult.credential?.provider ?? "Unknown") ?? .unknown
-    completion(newUser, nil)
+    completion(nil)
   }
   
   // MARK: - Enumerations
