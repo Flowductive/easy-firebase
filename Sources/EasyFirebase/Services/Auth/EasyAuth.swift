@@ -16,6 +16,7 @@ public struct EasyAuth {
   
   public private(set) static var emailVerified: Bool = false
   public private(set) static var accountProvider: Provider = .unknown
+  public private(set) static var authHandle: AuthStateDidChangeListenerHandle?
   
   // MARK: - Internal Static Properties
   
@@ -38,6 +39,13 @@ public struct EasyAuth {
   public static func signIn(with credential: AuthCredential, completion: @escaping (Error?) -> Void) {
     auth.signIn(with: credential) { authResult, error in
       handleSignedIn(result: authResult, error: error, completion: completion)
+    }
+  }
+  
+  public static func onAuthChange<T>(perform action: @escaping (T?) -> Void) where T: EasyUser {
+    authHandle = auth.addStateDidChangeListener { _, user in
+      guard let user = user, let easyUser = T(from: user) else { return }
+      action(easyUser)
     }
   }
   
