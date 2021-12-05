@@ -14,6 +14,7 @@ import Foundation
  */
 public protocol Model: Codable {}
 
+@available(iOS 13.0, *)
 extension Model {
   
   // MARK: - Public Properties
