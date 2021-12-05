@@ -28,7 +28,7 @@ public struct EasyFirestore {
   // MARK: - Internal Static Methods
   
   internal static func getArray<T>(from id: DocumentID, ofType type: T.Type, path: KeyPath<T, [DocumentID]>, completion: @escaping ([DocumentID]?) -> Void) where T: Document {
-    db.collection(String(describing: type)).document(id).getDocument { result, _ in
+    db.collection(colName(of: T.self)).document(id).getDocument { result, _ in
       if let result = result, result.exists {
         let document = try? result.data(as: T.self)
         var array = document?[keyPath: path]
@@ -38,5 +38,13 @@ public struct EasyFirestore {
         EasyFirebase.log(error: "Failed to load array of IDs from document [\(id)].")
       }
     }
+  }
+  
+  internal static func colName<T>(of type: T.Type) -> CollectionName {
+    var str = String(describing: T.self)
+    if let dotRange = str.range(of: ".") {
+      str.removeSubrange(str.startIndex ..< dotRange.lowerBound)
+    }
+    return str
   }
 }

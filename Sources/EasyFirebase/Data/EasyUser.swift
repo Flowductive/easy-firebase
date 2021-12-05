@@ -33,6 +33,17 @@ public protocol EasyUser: Document {
   /// The user's FCM device token.
   var deviceToken: String? { get set }
   
+  /// The user's app progression.
+  ///
+  /// This is a utility variable that you can use to keep track of tutorial progress, user progression, etc.
+  ///
+  /// There are a few preset values:
+  ///
+  /// - `-1` means the user has just been initalized.
+  /// - `0` means the user data has been pushed to Firestore.
+  /// - `1` and above are values you can customize.
+  var progress: Int { get set }
+  
   // MARK: - Initalizers
   
   init()
@@ -53,5 +64,6 @@ extension EasyUser {
     self.email = email
     appVersion = Bundle.versionString
     deviceToken = Messaging.messaging().fcmToken
+    progress = -1
   }
 }

@@ -20,6 +20,6 @@ extension Model {
   
   /// A string representing the model's type.
   public var typeName: CollectionName {
-    return String(describing: self)
+    return EasyFirestore.colName(of: Self.self)
   }
 }

@@ -56,7 +56,7 @@ extension EasyFirestore {
      To store a local document, use ``register(_:)``.
      */
     public static func grab<T>(_ id: DocumentID, fromType type: T.Type) -> T? where T: Document {
-      guard let cache = Cacheing.caches[String(describing: type)] as? Cache<T> else { return nil }
+      guard let cache = Cacheing.caches[colName(of: T.self)] as? Cache<T> else { return nil }
       return cache.grab(id)
     }
   }

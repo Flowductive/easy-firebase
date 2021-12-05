@@ -35,7 +35,7 @@ extension EasyFirestore {
         completion(cachedDocument)
         return
       } else {
-        get(id, collection: String(describing: type), type: type, completion: completion)
+        get(id, collection: colName(of: T.self), type: type, completion: completion)
       }
     }
     
@@ -104,7 +104,7 @@ extension EasyFirestore {
         } else if let error = error {
           EasyFirebase.log(error.localizedDescription)
         } else {
-          EasyFirebase.log(error: "The document with ID [\(id)] could not be loaded from the [\(String(describing: type))] collection.")
+          EasyFirebase.log(error: "The document with ID [\(id)] could not be loaded from the [\(colName(of: T.self))] collection.")
         }
         if let document = document {
           Cacheing.register(document)
@@ -132,7 +132,7 @@ extension EasyFirestore {
         completion(cachedDocuments)
         return
       }
-      db.collection(String(describing: type)).whereField("id", in: newIDs).getDocuments { snapshot, error in
+      db.collection(colName(of: T.self)).whereField("id", in: newIDs).getDocuments { snapshot, error in
         var toReturn: [T] = []
         toReturn <= cachedDocuments
         if let error = error {

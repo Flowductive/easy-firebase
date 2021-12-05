@@ -27,21 +27,29 @@ extension EasyFirestore {
     
     // MARK: - Public Static Methods
     
-    public static func listen<T>(to id: DocumentID, ofType type: T.Type, key: ListenerKey, onUpdate: @escaping (T) -> Void) where T: Document {
-      let listener = db.collection(String(describing: type)).document(id).addSnapshotListener { snapshot, _ in
+    public static func listen<T>(to id: DocumentID, ofType type: T.Type, key: ListenerKey, onUpdate: @escaping (T?) -> Void) where T: Document {
+      let listener = db.collection(colName(of: T.self)).document(id).addSnapshotListener { snapshot, _ in
         guard let snapshot = snapshot, snapshot.exists else {
-          EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(String(describing: type))] collection, but no data could be found.")
+          EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(colName(of: T.self))] collection, but no data could be found.")
+          onUpdate(nil)
           return
         }
         var document: T?
         try? document = snapshot.data(as: T.self)
         guard let document = document else {
-          EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(String(describing: type))] collection, but couldn't be decoded.")
+          EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(colName(of: T.self))] collection, but couldn't be decoded.")
           return
         }
         onUpdate(document)
       }
       registerListener(listener, key: key)
+    }
+    
+    public static func stop(_ key: ListenerKey) {
+      guard let keyListeners: [ListenerRegistration?] = listeners[key] else { return }
+      for listener in keyListeners {
+        listener?.remove()
+      }
     }
     
     // MARK: - Private Static Methods
