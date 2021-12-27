@@ -141,7 +141,7 @@ extension EasyAuth {
   
   // MARK: - Public Static Methods
   
-  public static func signInWithGoogle(clientID: String, completion: @escaping (Error?) -> Void) {
+  public static func signInWithGoogle(clientID: String, completion: @escaping (Error?) -> Void = { _ in }) {
     let _clientID = "\(clientID).apps.googleusercontent.com"
     let redirectURI = "com.googleusercontent.apps.\(clientID):/oauthredirect"
     getCredential(clientID: _clientID, redirectUri: redirectURI, completion: googleSignInCredentialHandler)
@@ -177,7 +177,7 @@ extension EasyAuth {
   
   // MARK: - Public Static Methods
   
-  public static func signInWithGoogle(clientID: String, secret: String, completion: @escaping (Error?) -> Void) {
+  public static func signInWithGoogle(clientID: String, secret: String, completion: @escaping (Error?) -> Void = { _ in }) {
     let _clientID = "\(clientID).apps.googleusercontent.com"
     let redirectURI = "com.googleusercontent.apps.\(clientID):/oauthredirect"
     getCredential(clientID: _clientID, redirectUri: redirectURI, secret: secret, completion: googleSignInCredentialHandler)
