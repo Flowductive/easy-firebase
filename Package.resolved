@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "AppAuth",
+        "repositoryURL": "https://github.com/openid/AppAuth-iOS.git",
+        "state": {
+          "branch": null,
+          "revision": "01131d68346c8ae552961c768d583c715fbe1410",
+          "version": "1.4.0"
+        }
+      },
+      {
         "package": "BoringSSL-GRPC",
         "repositoryURL": "https://github.com/firebase/boringssl-SwiftPM.git",
         "state": {
@@ -26,6 +35,15 @@
           "branch": null,
           "revision": "2064534407804195d62f48531155ef41ddf1ce22",
           "version": "8.9.0"
+        }
+      },
+      {
+        "package": "GAppAuth",
+        "repositoryURL": "https://github.com/benlmyers/GAppAuth",
+        "state": {
+          "branch": null,
+          "revision": "a57e0d31dc30e75f6b43be62f6f3b679050487f1",
+          "version": "1.6.4"
         }
       },
       {
@@ -71,6 +89,15 @@
           "branch": null,
           "revision": "bc6a19702ac76ac4e488b68148710eb815f9bc56",
           "version": "1.7.0"
+        }
+      },
+      {
+        "package": "GTMAppAuth",
+        "repositoryURL": "https://github.com/google/GTMAppAuth.git",
+        "state": {
+          "branch": null,
+          "revision": "40f4103fb52109032c05599a0c39ad43edbdf80a",
+          "version": "1.2.2"
         }
       },
       {

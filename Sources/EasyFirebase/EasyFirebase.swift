@@ -33,12 +33,15 @@ public struct EasyFirebase {
   
   // MARK: - Public Static Methods
   
-  public static func configure() {
-    FirebaseApp.configure()
-  }
-  
-  public static func configure(options: FirebaseOptions) {
-    FirebaseApp.configure(options: options)
+  public static func configure(options: FirebaseOptions? = nil) {
+    if let options = options {
+      FirebaseApp.configure(options: options)
+    } else {
+      FirebaseApp.configure()
+    }
+    if #available(iOS 13.0, *) {
+      EasyAuth.prepare()
+    }
   }
   
   // MARK: - Internal Static Methods

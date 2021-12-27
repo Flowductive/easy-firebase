@@ -30,6 +30,15 @@ public struct EasyAuth {
   
   private static let listenerKey: EasyFirestore.ListenerKey = "EASY_USER_UPDATE"
   
+  private static let googleSignInCredentialHandler: (AuthCredential?) -> Void = { credential in
+    guard let credential = credential else { return }
+    EasyAuth.signIn(with: credential) { error in
+      if let error = error {
+        print(error.localizedDescription)
+      }
+    }
+  }
+  
   // MARK: - Public Static Methods
   
   public static func createAccount(email: String, password: String, completion: @escaping (Error?) -> Void) {
@@ -93,6 +102,13 @@ public struct EasyAuth {
     }
   }
   
+  // MARK: - Internal Static Methods
+  
+  internal static func prepare() {
+    GAppAuth.shared.appendAuthorizationRealm(OIDScopeEmail)
+    GAppAuth.shared.retrieveExistingAuthorizationState()
+  }
+  
   // MARK: - Private Static Methods
   
   private static func handleSignedIn(result authResult: AuthDataResult?, error: Error?, completion: @escaping (Error?) -> Void) {
@@ -116,3 +132,82 @@ public struct EasyAuth {
     case email = "Email"
   }
 }
+
+#if os(iOS)
+import GAppAuth_iOS
+
+@available(iOS 13.0, *)
+extension EasyAuth {
+  
+  // MARK: - Public Static Methods
+  
+  public static func signInWithGoogle(clientID: String, completion: @escaping (Error?) -> Void) {
+    let _clientID = "\(clientID).apps.googleusercontent.com"
+    let redirectURI = "com.googleusercontent.apps.\(clientID):/oauthredirect"
+    getCredential(clientID: _clientID, redirectUri: redirectURI, completion: googleSignInCredentialHandler)
+  }
+  
+  // MARK: - Private Static Methods
+  
+  private static func getCredential(clientID: String, redirectUri: String, completion: @escaping (AuthCredential?) -> Void) {
+    do {
+      try GAppAuth.shared.authorize(in: UIApplication.shared.windows.first!.rootViewController!, clientID: clientID, redirectUri: redirectUri) { _ in
+        guard
+          GAppAuth.shared.isAuthorized(),
+          let authorization = GAppAuth.shared.getCurrentAuthorization(),
+          let accessToken = authorization.authState.lastTokenResponse?.accessToken,
+          let idToken = authorization.authState.lastTokenResponse?.idToken
+        else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+        completion(credential)
+      }
+    } catch let error {
+      print(error.localizedDescription)
+      completion(nil)
+    }
+  }
+}
+
+#elseif os(macOS)
+import Cocoa
+import AppKit
+import GAppAuth_macOS
+
+extension EasyAuth {
+  
+  // MARK: - Public Static Methods
+  
+  public static func signInWithGoogle(clientID: String, secret: String, completion: @escaping (Error?) -> Void) {
+    let _clientID = "\(clientID).apps.googleusercontent.com"
+    let redirectURI = "com.googleusercontent.apps.\(clientID):/oauthredirect"
+    getCredential(clientID: _clientID, redirectUri: redirectURI, secret: secret, completion: googleSignInCredentialHandler)
+  }
+  
+  public static func handle(event: NSAppleEventDescriptor) {
+    let urlString = event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue ?? ""
+    let url = URL(string: urlString)!
+    _ = GAppAuth.shared.continueAuthorization(with: url, callback: nil)
+  }
+  
+  // MARK: - Private Static Methods
+  
+  private static func getCredential(clientID: String, redirectUri: String, secret: String, completion: @escaping (AuthCredential?) -> Void) {
+    do {
+      try GAppAuth.shared.authorize(clientID: clientID, clientSecret: secret, redirectUri: redirectUri) { _ in
+        guard
+          GAppAuth.shared.isAuthorized(),
+          let authorization = GAppAuth.shared.getCurrentAuthorization(),
+          let accessToken = authorization.authState.lastTokenResponse?.accessToken,
+          let idToken = authorization.authState.lastTokenResponse?.idToken
+        else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+        completion(credential)
+      }
+    } catch let error {
+      print(error.localizedDescription)
+      completion(nil)
+    }
+  }
+}
+
+#endif
