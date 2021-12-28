@@ -20,8 +20,9 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
   - Document retrieval
   - Update listeners
   - Built-in cacheing
-  - Automatic linking
+  - Easy linking
 - Authentication Support
+  - EasyUser protocol
   - Email auth
   - Sign In with Google
   - Sign In with Apple
@@ -30,9 +31,32 @@ All the above features are **cross-platform** and are supported on both iOS and 
 
 ⭐️ This means EasyFirebase is the quickest way to implement Sign In with Google on macOS! ⭐️
 
+## Get Started
+
+Add **EasyFirebase** to your project using Swift Package Manager:
+
+```
+https://github.com/Flowductive/easy-firebase
+```
+
+Import **EasyFirebase**:
+
+```swift
+import EasyFirebase
+```
+
+Configure at app launch:
+
+```swift
+// You don't need to call FirebaseApp.configure() when this is called!
+EasyFirebase.configure()
+```
+
+## Firestore Feature Showcase
+
 ### Built-in Document protocol
 
-Save time writing model classes with the Document protocol:
+Save time writing model classes with the built-in `Document` protocol:
 
 ```swift
 class Car: Document {
@@ -52,7 +76,7 @@ class Car: Document {
 }
 ```
 
-### Document storage
+### Document Storage
 
 Store documents anywhere in your code:
 
@@ -99,4 +123,93 @@ EasyFirestore.Cacheing.register(myCar)
 
 // Get locally cached objects instantly. Retrieving objects using EasyFirestore.Retrieval will grab cached objects if they exist
 var cachedCar = EasyFirestore.Cacheing.grab(myCarID, fromType: Car.self)
+```
+
+### Easy Linking
+
+Link child documents to an array of IDs in a parent document:
+
+```swift
+var car1 = Car(make: "Toyota", model: "Corolla", year: 2017)
+var car2 = Car(make: "Honda", model: "Civic", year: 2019)
+
+var dealership = Dealership(name: "Los Angeles Dealership")
+
+// Set and assign the Toyota Corolla to the Los Angeles Dealership
+car1.setAssign(to: \.cars, in: dealership)
+
+// Set and assign the Honda Civid to the Los Angeles Dealership
+car2.set()
+car2.assign(to: \.cars, in: dealership)
+```
+
+## Authentication Feature Showcase
+
+### Easy User Protocol
+
+Save time writing user classes with the built-in `EasyUser` procotol:
+
+```swift
+class MyUser: EasyUser {
+  
+  // EasyUser comes pre-built with these automatically updated properties
+  var lastSignon: Date
+  var displayName: String
+  var username: String
+  var email: String
+  var appVersion: String
+  var deviceToken: String?
+  var progress: Int
+  var id: String
+  var dateCreated: Date
+  
+  // Define your own custom properties
+  var cars: [DocumentID]
+
+  // ...
+}
+```
+
+### Email Auth
+
+Authenticate with an email and password easily:
+
+```swift
+EasyAuth.createAccount(email: "easy.firebase@example.com", password: "76dp2[&y4;JLyu:F") { error in
+  if let error = error {
+    print(error.localizedDescription)
+  } else {
+    // Account created!
+  }
+}
+
+EasyAuth.signIn(email: "easy.firebase@example.com", password: "76dp2[&y4;JLyu:F") { error in
+  // ...
+}
+```
+
+### Sign In with Google
+
+Authenticate with Google:
+
+```swift
+// iOS
+EasyAuth.signInWithGoogle(clientID: "xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { error in
+  // ...
+}
+
+// macOS
+EasyAuth.signInWithGoogle(clientID: "xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          secret: "GOCSPX-xxxxxxxxxxxxxxxxxxx-xxxxxxxx") { error in
+  // ...
+}
+```
+
+### Sign In with Apple
+
+Authenticate with Apple:
+
+```swift
+// iOS + macOS
+EasyAuth.signInWithApple()
 ```
