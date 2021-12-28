@@ -126,6 +126,29 @@ public class EasyAuth: NSObject {
     }
   }
   
+  /**
+   Allows you to set a handler for when the user is updated.
+   
+   - parameter action: The action to perform when the user is updated.
+   */
+  public static func onUserUpdate<T>(perform action: @escaping (T?) -> Void) where T: EasyUser {
+    if let authHandle = authHandle {
+      auth.removeStateDidChangeListener(authHandle)
+    }
+    authHandle = auth.addStateDidChangeListener { _, user in
+      guard let user = user, let newUser = T(from: user) else { return }
+      EasyFirestore.Listening.stop(listenerKey)
+      EasyFirestore.Listening.listen(to: newUser.id, ofType: T.self, key: listenerKey) { document in
+        guard let document = document else {
+          action(newUser)
+          newUser.set()
+          return
+        }
+        action(document)
+      }
+    }
+  }
+  
   // MARK: - Internal Static Methods
   
   internal static func prepare() {
@@ -142,24 +165,6 @@ public class EasyAuth: NSObject {
     authHandle = auth.addStateDidChangeListener { _, user in
       guard let user = user, let newUser = T(from: user) else { return }
       EasyFirestore.Retrieval.get(id: newUser.id, ofType: T.self) { document in
-        guard let document = document else {
-          action(newUser)
-          newUser.set()
-          return
-        }
-        action(document)
-      }
-    }
-  }
-  
-  private static func onUserUpdate<T>(perform action: @escaping (T?) -> Void) where T: EasyUser {
-    if let authHandle = authHandle {
-      auth.removeStateDidChangeListener(authHandle)
-    }
-    authHandle = auth.addStateDidChangeListener { _, user in
-      guard let user = user, let newUser = T(from: user) else { return }
-      EasyFirestore.Listening.stop(listenerKey)
-      EasyFirestore.Listening.listen(to: newUser.id, ofType: T.self, key: listenerKey) { document in
         guard let document = document else {
           action(newUser)
           newUser.set()
