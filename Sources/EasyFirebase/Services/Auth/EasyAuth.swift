@@ -10,7 +10,7 @@ import Firebase
 import FirebaseAuth
 
 @available(iOS 13.0, *)
-public struct EasyAuth {
+public class EasyAuth: NSObject {
   
   // MARK: - Public Static Properties
   
@@ -38,6 +38,10 @@ public struct EasyAuth {
       }
     }
   }
+  
+  // MARK: - Private Properties
+  
+  private var currentNonce: String?
   
   // MARK: - Public Static Methods
   
@@ -211,3 +215,74 @@ extension EasyAuth {
 }
 
 #endif
+
+import AuthenticationServices
+
+@available(iOS 13, *)
+extension EasyAuth: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+  
+  // MARK: - Private Static Properties
+  
+  private static var shared = EasyAuth()
+  
+  // MARK: - Public Static Methods
+  
+  public static func signInWithApple() {
+    let nonce = String.nonce()
+    shared.currentNonce = nonce
+    let appleIDProvider = ASAuthorizationAppleIDProvider()
+    let request = appleIDProvider.createRequest()
+    request.requestedScopes = [.fullName, .email]
+    request.nonce = nonce.sha256()
+    let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+    authorizationController.delegate = shared
+    authorizationController.presentationContextProvider = shared
+    authorizationController.performRequests()
+  }
+  
+  // MARK: - Implementation
+  
+  public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    #if os(iOS)
+    return ASPresentationAnchor()
+    #elseif os(macOS)
+    return NSApplication.shared.windows.first!
+    #endif
+  }
+  
+  /**
+   Handles a finished Sign In with Apple state.
+   
+   - parameter controller: The authorization controller that just completed
+   - parameter authorization: The Sign In with Apple authorization
+   */
+  public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+      guard let nonce = currentNonce else {
+        fatalError("Invalid state: A login callback was received, but no login request was sent.")
+      }
+      guard let appleIDToken = appleIDCredential.identityToken else {
+        print("[!] Unable to fetch identity token")
+        return
+      }
+      guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+        print("[!] Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+        return
+      }
+      let credential = OAuthProvider.credential(withProviderID: "apple.com",
+                                                idToken: idTokenString,
+                                                rawNonce: nonce)
+      EasyAuth.signIn(with: credential, completion: { _ in })
+    }
+  }
+  
+  /**
+   Handles a failed Sign In with Apple state.
+   
+   - parameter controller: The authorization controller that just completed
+   - parameter error: The error that occured during the process
+   */
+  public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    print("[!] Sign in with Apple errored: \(error)")
+  }
+}
