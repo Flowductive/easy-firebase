@@ -33,6 +33,11 @@ public struct EasyFirebase {
   
   // MARK: - Public Static Methods
   
+  /**
+   Prepares `EasyFirebase` and `Firebase`.
+   
+   ⚠️ **Important!** You should *always* call this method at the launch of your program when using any part of `EasyFirebase`.
+   */
   public static func configure(options: FirebaseOptions? = nil) {
     if let options = options {
       FirebaseApp.configure(options: options)

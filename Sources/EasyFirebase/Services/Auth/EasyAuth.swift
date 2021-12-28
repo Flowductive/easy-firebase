@@ -60,7 +60,7 @@ public class EasyAuth: NSObject {
     guard let credential = credential else { return }
     EasyAuth.signIn(with: credential) { error in
       if let error = error {
-        print(error.localizedDescription)
+        EasyFirebase.log(error: error)
       }
     }
   }
@@ -122,7 +122,7 @@ public class EasyAuth: NSObject {
     do {
       try auth.signOut()
     } catch let error {
-      print(error)
+      EasyFirebase.log(error: error)
     }
   }
   
@@ -234,7 +234,7 @@ extension EasyAuth {
         completion(credential)
       }
     } catch let error {
-      print(error.localizedDescription)
+      EasyFirebase.log(error: error)
       completion(nil)
     }
   }
@@ -312,7 +312,7 @@ extension EasyAuth {
         completion(credential)
       }
     } catch let error {
-      print(error.localizedDescription)
+      EasyFirebase.log(error: error)
       completion(nil)
     }
   }
@@ -395,11 +395,11 @@ extension EasyAuth: ASAuthorizationControllerDelegate, ASAuthorizationController
         fatalError("Invalid state: A login callback was received, but no login request was sent.")
       }
       guard let appleIDToken = appleIDCredential.identityToken else {
-        print("[!] Unable to fetch identity token")
+        EasyFirebase.log(error: "Unable to fetch identity token")
         return
       }
       guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-        print("[!] Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+        EasyFirebase.log(error: "Unable to serialize token string from data: \(appleIDToken.debugDescription)")
         return
       }
       let credential = OAuthProvider.credential(withProviderID: "apple.com",
@@ -418,6 +418,6 @@ extension EasyAuth: ASAuthorizationControllerDelegate, ASAuthorizationController
    - parameter error: The error that occured during the process
    */
   public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-    print("[!] Sign in with Apple errored: \(error)")
+    EasyFirebase.log(error: "Sign in with Apple errored: \(error)")
   }
 }
