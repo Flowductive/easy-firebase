@@ -16,7 +16,14 @@ public typealias CollectionName = String
 /**
  `EasyFirestore` is a service manager for various functions related to Firestore.
  
- To get started, check out the related structs.
+ To get started, check out the related structs:
+ 
+ - ``Cache``
+ - ``Linking``
+ - ``Listening``
+ - ``Removal``
+ - ``Retrieval``
+ - ``Storage``
  */
 @available(macOS 10.15, iOS 13.0, *)
 public struct EasyFirestore {

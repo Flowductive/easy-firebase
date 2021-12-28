@@ -10,15 +10,9 @@ import CryptoKit
 
 extension String {
   
-  // MARK: - Public Static Methods
+  // MARK: - Internal Static Methods
   
-  /**
-   Returns a random secure nonce string.
-   
-   - parameter length: The length of the nonce (optional)
-   - returns: A random nonce string
-   */
-  public static func nonce(length: Int = 32) -> String {
+  internal static func nonce(length: Int = 32) -> String {
     precondition(length > 0)
     let charset: [Character] =
         Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
@@ -46,15 +40,10 @@ extension String {
     return result
   }
   
-  // MARK: - Public Methods
+  // MARK: - Internal Methods
   
-  /**
-   Returns a sha256 hash of a nonce string.
-   
-   - returns: A sha256 hash of a nonce string
-   */
   @available(iOS 13, *)
-  public func sha256() -> String {
+  internal func sha256() -> String {
     let str = self
     let inputData = Data(str.utf8)
     let hashedData = SHA256.hash(data: inputData)
@@ -64,8 +53,6 @@ extension String {
 
     return hashString
   }
-  
-  // MARK: - Internal Methods
   
   internal func removeDomainFromEmail() -> String {
     var copy = String(self)

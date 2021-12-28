@@ -7,9 +7,9 @@
 		<key>EasyFirebase.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<true/>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>0</integer>
 		</dict>
 		<key>Promises (Playground) 1.xcscheme</key>
 		<dict>
