@@ -10,27 +10,65 @@ import Firebase
 import FirebaseAuth
 import FirebaseMessaging
 
+/**
+ A fundamental user object.
+ 
+ Extend your own user class from the `EasyUser` protocol to quickly create user objects that are compatabile with `EasyAuth`.
+ 
+ All user objects come with `lastSignon`, `displayName`, `username`, `email`, `appVersion`, `deviceToken`, and `progress` support.
+ 
+ ```swift
+ class MyUser: EasyUser {
+   
+   var lastSignon: Date
+   var displayName: String
+   var username: String
+   var email: String
+   var appVersion: String
+   var deviceToken: String?
+   var id: String
+   var dateCreated: Date
+   var progress: Int
+ 
+   var balance: Int = 0
+      
+   func addBalance() {
+     balance += 1
+   }
+ }
+ ```
+ */
 @available(iOS 13.0, *)
 public protocol EasyUser: Document {
   
   // MARK: - Properties
   
   /// The user's last signon date.
+  ///
+  /// This value is automatically updated each time the user logs into your application.
   var lastSignon: Date { get set }
   
   /// The user's display name.
+  ///
+  /// This value is automatically updated to a suggested display name when an account is created.
   var displayName: String { get set }
   
   /// The user's username.
+  ///
+  /// This value is automatically generated based on the user's email upon account creation.
   var username: String { get set }
   
   /// The user's email address.
   var email: String { get set }
   
   /// The user's last logged-in app version.
+  ///
+  /// This value is automatically updated when the user logs in.
   var appVersion: String { get set }
   
   /// The user's FCM device token.
+  ///
+  /// This value is automatically updated.
   var deviceToken: String? { get set }
   
   /// The user's app progression.

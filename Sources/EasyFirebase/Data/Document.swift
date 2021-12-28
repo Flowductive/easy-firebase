@@ -13,9 +13,9 @@ public typealias DocumentID = String
 /**
  An object that can be sent to and recieved from Firestore.
  
- Extend your own classes from the Document protocol to send your own custom data objects.
+ Extend your own classes from the `Document` protocol to send your own custom data objects.
  
- All documents must have an `id`, `dateCreated`, as well as a way to check for equality:
+ All documents must have `id`, `dateCreated` properties, as well as a way to check for equality:
  
  ```swift
  class MealItem: Document {
@@ -52,34 +52,6 @@ public typealias DocumentID = String
  applesauce.get(\.calories) { cal in
    print("Applesauce is \(cal ?? 0) calories!")
  }
- ```
- 
- ### Setting Objects
- 
- Documents are automatically stored in collections named based on their type.
- 
- They contain useful pre-built methods for storage within Firestore.
- 
- For instance, calling ``set(completion:)`` like so:
- 
- ```swift
- applesauce.set()
- ```
- 
- will store a new document with an `id` value of `0` to a collection called `mealitem`.
- 
- ### Updating Values
- 
- Fields can be updated using ``set(_:to:completion:)`` and ``set(_:completion:)``:
- 
- ```swift
- // Update applesauce's name...
- applesauce.name = "Sauce of Apple"
- // ...then update just the value of the name field in Firestore
- applesauce.set(\.name)
- 
- // Update bagel's name locally and in Firestore simultaneously
- bagel.set("Bread Ring", to: \.name)
  ```
  */
 @available(iOS 13.0, *)
@@ -183,11 +155,6 @@ extension Document {
   
   /**
    Sets the document in Firestore, then assigns it to a field list of `DocumentID`s to a parent document.
-   
-   ## See Also
-   
-   - ``set(completion:)``
-   - ``assign(to:in:completion:)``
    */
   public func setAssign<T>(to path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
     EasyFirestore.Storage.setAssign(self, to: path, in: parent, completion: completion)
