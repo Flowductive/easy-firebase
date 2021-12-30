@@ -15,6 +15,8 @@ import Firebase
  
  - ``EasyFirestore``
  - ``EasyAuth``
+ - ``EasyStorage``
+ - ``EasyMessaging``
  
  Additionally, you can set some module-wide settings here, including:
  
