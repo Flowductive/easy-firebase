@@ -20,6 +20,8 @@ import FirebaseAuth
  - Use ``signInWithGoogle(clientID:completion:)`` to quickly Sign In with Google on an iOS device.
  - Use ``signInWithGoogle(clientID:secret:completion:)`` to quickly Sign In with Google on a macOS device.
  - Use ``signInWithApple()`` to quickly Sign In with Apple on an iOS or macOS device.
+ 
+ You can also use `EasyAuth`'s ``Manage`` sub-struct to manage your user's account, including email, password, profile image and more.
  */
 @available(iOS 13.0, *)
 public class EasyAuth: NSObject {

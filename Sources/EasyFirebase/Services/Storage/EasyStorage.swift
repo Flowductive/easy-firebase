@@ -12,7 +12,7 @@ import FirebaseStorageSwift
 /**
  `EasyStorage` is a service manager for various functions related to Firebase Storage.
  */
-struct EasyStorage {
+public struct EasyStorage {
   
   // MARK: - Private Static Properties
   
