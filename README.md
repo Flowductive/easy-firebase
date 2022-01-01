@@ -26,6 +26,7 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
   - Email auth
   - Sign In with Google
   - Sign In with Apple
+  - Robust Management
 
 All the above features are **cross-platform** and are supported on both iOS and macOS.
 
@@ -214,4 +215,23 @@ Authenticate with Apple:
 ```swift
 // iOS + macOS
 EasyAuth.signInWithApple()
+```
+
+### Robust User Management
+
+Quickly update and manage `EasyAuth` users:
+
+```swift
+// Send a verfication email to the currently signed-in user
+EasyAuth.Manage.sendEmailVerification(completion: { error in })
+// Upload and update the current user's profile photo
+EasyAuth.Manage.updatePhoto(with: myPhotoData, completion: { error in })
+// Send the current user's password reset form to a specified email
+EasyAuth.Manage.sendPasswordReset(toEmail: "myResetEmail@example.com", completion: { error in })
+// Update the current user's display name
+EasyAuth.Manage.updateDisplayName(to: "New_DisplayName", completion: { error in })
+// Update the current user's password
+EasyAuth.Manage.updatePassword(to: "newPassword", completion: { error in })
+// Delete the current user
+EasyAuth.Manage.deleteUser(completion: { error in })
 ```
