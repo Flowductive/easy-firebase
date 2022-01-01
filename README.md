@@ -26,6 +26,17 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
   - Email auth
   - Sign In with Google
   - Sign In with Apple
+  - Robust Management
+- Storage Support
+  - Data storage
+  - Safe data overriding
+  - Data removal
+  - Data upload task visibility
+- Cloud Messaging Support
+  - Built-in User Notifications
+  - Built-in MessagingNotification protocol
+  - Built-in 3P Notification
+  - User notification settings
 
 All the above features are **cross-platform** and are supported on both iOS and macOS.
 
@@ -159,6 +170,8 @@ class MyUser: EasyUser {
   var email: String
   var appVersion: String
   var deviceToken: String?
+  var notifications: [MessagingNotification]
+  var disabledMessageCategories: [MessageCategory]
   var progress: Int
   var id: String
   var dateCreated: Date
@@ -212,4 +225,59 @@ Authenticate with Apple:
 ```swift
 // iOS + macOS
 EasyAuth.signInWithApple()
+```
+
+### Robust User Management
+
+Quickly update and manage `EasyAuth` users:
+
+```swift
+// Send a verfication email to the currently signed-in user
+EasyAuth.Manage.sendEmailVerification(completion: { error in })
+// Upload and update the current user's profile photo
+EasyAuth.Manage.updatePhoto(with: myPhotoData, completion: { error in })
+// Send the current user's password reset form to a specified email
+EasyAuth.Manage.sendPasswordReset(toEmail: "myResetEmail@example.com", completion: { error in })
+// Update the current user's display name
+EasyAuth.Manage.updateDisplayName(to: "New_DisplayName", completion: { error in })
+// Update the current user's password
+EasyAuth.Manage.updatePassword(to: "newPassword", completion: { error in })
+// Delete the current user
+EasyAuth.Manage.deleteUser(completion: { error in })
+```
+
+## Storage Feature Showcase
+
+### Data Storage
+
+Quickly assign data to Firebase Storage using a single line of code.
+
+```swift
+// Upload image data and get an associated URL
+EasyStorage.put(imageData, to: StorageResource(id: user.id)) { url in }
+
+// EasyStorage will automatically delete existing images matching the same ID (if in the same folder)
+EasyStorage.put(imageData,to: StorageResource(id: user.id, folder: "myFolder"), progress: { updatedProgress in
+  // Update progress text label using updatedProgress
+}, completion: { url in
+  // Handle the image's URL
+})
+```
+
+## Cloud Messaging Feature Showcase
+
+### Built-in User Notifications
+
+Easily send and notify other users without all the tedious setup. Just add a `serverKey` from [Firebase Console](https://console.firebase.google.com).
+
+```swift
+// Set your Server Key
+EasyMessaging.serverKey = "xxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxx-xxxxx-xxxxxxxxxxxxxxxxxxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxx"
+
+// Create the notification
+let notification = MessagingNotification("Message body", from: me, in: "Test Category")
+
+// Send the notification to the user
+// Appends to the notifications property, unless the specified category is in the user's disabledMessageCategories
+EasyMessaging.send(notification, to: you)
 ```
