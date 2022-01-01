@@ -12,6 +12,11 @@ import FirebaseStorageSwift
 
 /**
  `EasyStorage` is a service manager for various functions related to Firebase Storage.
+ 
+ To use ``EasyStorage``, check out the following methods:
+ 
+ - Use ``put(_:to:progress:completion:)`` to store data in Firebase Storage.
+ - Use ``delete(_:completion:)`` to remove data in Firebase Storage.
  */
 public struct EasyStorage {
   

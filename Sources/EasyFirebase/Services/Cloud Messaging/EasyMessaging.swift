@@ -69,14 +69,9 @@ public struct EasyMessaging {
     sendNotification(to: user, title: "", body: notification.pushBody, data: ["count": user.notifications.filter({ !$0.read }).count])
   }
   
-  /**
-   Sends a push notification to a certain user.
-   
-   - parameter user: The user to send to.
-   - parameter title: The title of the notification.
-   - parameter body: The body of the notification.
-   */
-  public static func sendNotification<T>(to user: T, title: String, body: String, data: [AnyHashable: Any] = [:]) where T: EasyUser {
+  // MARK: - Private Static Methods
+  
+  private static func sendNotification<T>(to user: T, title: String, body: String, data: [AnyHashable: Any] = [:]) where T: EasyUser {
     guard let serverKey = serverKey else {
       fatalError("❌ Your Messaging Server Key hasn't been set yet! Ensure that EasyMessaging.serverKey is set before using EasyMessaging.")
     }
