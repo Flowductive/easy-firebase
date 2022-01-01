@@ -26,16 +26,16 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
   - Email auth [→](https://github.com/Flowductive/easy-firebase#email-auth)
   - Sign In with Google [→](https://github.com/Flowductive/easy-firebase#sign-in-with-google)
   - Sign In with Apple [→](https://github.com/Flowductive/easy-firebase#sign-in-with-apple)
-  - Robust Management [→](https://github.com/Flowductive/easy-firebase#robust-user-management)
+  - Robust user management [→](https://github.com/Flowductive/easy-firebase#robust-user-management)
 - Storage Support
   - Data storage [→](https://github.com/Flowductive/easy-firebase#data-storage)
   - Safe data overriding
   - Data removal
   - Data upload task visibility
 - Cloud Messaging Support
-  - Built-in User Notifications [→](https://github.com/Flowductive/easy-firebase#built-in-user-notifications)
+  - Built-in user notifications [→](https://github.com/Flowductive/easy-firebase#built-in-user-notifications)
   - Built-in MessagingNotification protocol
-  - Built-in 3P Notification
+  - Built-in 3P notifications
   - User notification settings
 
 All the above features are **cross-platform** and are supported on both iOS and macOS.
