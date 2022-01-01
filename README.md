@@ -14,28 +14,28 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
 ## Completed Features
 
 - Firestore Support
-  - Built-in Document protocol
-  - Document storage
+  - Built-in Document protocol [→](https://github.com/Flowductive/easy-firebase#built-in-document-protocol)
+  - Document storage [→](https://github.com/Flowductive/easy-firebase#document-storage)
   - Document removal
-  - Document retrieval
-  - Update listeners
-  - Built-in cacheing
-  - Easy linking
+  - Document retrieval [→](https://github.com/Flowductive/easy-firebase#document-retrieval)
+  - Update listeners [→](https://github.com/Flowductive/easy-firebase#update-listeners)
+  - Built-in cacheing [→](https://github.com/Flowductive/easy-firebase#built-in-cacheing)
+  - Easy linking [→](https://github.com/Flowductive/easy-firebase#easy-linking)
 - Authentication Support
-  - EasyUser protocol
-  - Email auth
-  - Sign In with Google
-  - Sign In with Apple
-  - Robust Management
+  - EasyUser protocol [→](https://github.com/Flowductive/easy-firebase#easy-user-protocol)
+  - Email auth [→](https://github.com/Flowductive/easy-firebase#email-auth)
+  - Sign In with Google [→](https://github.com/Flowductive/easy-firebase#sign-in-with-google)
+  - Sign In with Apple [→](https://github.com/Flowductive/easy-firebase#sign-in-with-apple)
+  - Robust user management [→](https://github.com/Flowductive/easy-firebase#robust-user-management)
 - Storage Support
-  - Data storage
+  - Data storage [→](https://github.com/Flowductive/easy-firebase#data-storage)
   - Safe data overriding
   - Data removal
   - Data upload task visibility
 - Cloud Messaging Support
-  - Built-in User Notifications
+  - Built-in user notifications [→](https://github.com/Flowductive/easy-firebase#built-in-user-notifications)
   - Built-in MessagingNotification protocol
-  - Built-in 3P Notification
+  - Built-in 3P notifications
   - User notification settings
 
 All the above features are **cross-platform** and are supported on both iOS and macOS.
