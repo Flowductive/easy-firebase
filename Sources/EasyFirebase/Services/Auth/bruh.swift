@@ -9,10 +9,6 @@ import Foundation
 
 class FUser: EasyUser {
   
-  required init() {
-    
-  }
-  
   var lastSignon: Date
   var displayName: String
   var username: String

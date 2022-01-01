@@ -102,17 +102,28 @@ public extension EasyUser {
   
   // MARK: - Public Initalizers
   
+  init() {
+    self.init()
+    lastSignon = Date()
+    displayName = "Guest"
+    username = "guest-user"
+    email = "test@example.com"
+    appVersion = Bundle.versionString
+    deviceToken = "-"
+    notifications = []
+    disabledMessageCategories = []
+    progress = -1
+  }
+  
   init?(from user: User) {
     guard let email = user.email else { return nil }
     self.init()
     id = user.uid
-    lastSignon = Date()
     username = email.removeDomainFromEmail()
     notifications = []
     disabledMessageCategories = []
     displayName = user.displayName ?? username
     self.email = email
-    appVersion = Bundle.versionString
     deviceToken = Messaging.messaging().fcmToken
     progress = -1
   }
