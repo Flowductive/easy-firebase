@@ -11,6 +11,18 @@ public extension EasyAuth {
   
   /**
    Manage user settings, profile images, etc.
+   
+   ⚠️ **Note: ** These methods do not update the current user's data. For instance, if you use ``updateDisplayName(to:completion:)`` to update the user's display name, you will *also* need to set the `displayName` property of your user instance.
+   
+   Use ``Manage`` to quickly update a user's auth properties:
+   
+   - Use ``updateEmail(to:completion:)`` to update a user's email address.
+   - Use ``updateDisplayName(to:completion:)`` to update a user's display name.
+   - Use ``updatePhotoURL(to:completion:)`` to update a user's profile photo using a URL.
+   - Use ``updatePhoto(with:completion:)`` to update a user's profile photo using `Data`.
+   - Use ``sendEmailVerification(completion:)`` to send an email verification.
+   - Use ``sendPasswordReset(toEmail:completion:)`` to send a password reset request.
+   - Use ``deleteUser(completion:)`` to delete a user.
    */
   struct Manage {
     
@@ -62,7 +74,7 @@ public extension EasyAuth {
      - parameter new: The data of the new photo to update with.
      - parameter completion: The completion handler.
      */
-    public static func updatePhoto(to new: Data, completion: @escaping (Error?) -> Void) {
+    public static func updatePhoto(with new: Data, completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         EasyStorage.put(new, to: StorageResource(id: currentUser.uid)) { url in
           guard let url = url else { return }
@@ -110,7 +122,7 @@ public extension EasyAuth {
      
      - parameter completion: The completion handler
      */
-    static func deleteUser(completion: @escaping (Error?) -> Void) {
+    public static func deleteUser(completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         currentUser.delete(completion: completion)
       }
