@@ -71,6 +71,16 @@ public protocol EasyUser: Document {
   /// This value is automatically updated.
   var deviceToken: String? { get set }
   
+  /// The user's notifications.
+  ///
+  /// Send notifications to a user using ``EasyMessaging``.
+  var notifications: [MessagingNotification] { get set }
+  
+  /// The user's disabled notification categories.
+  ///
+  /// Any messages with a ``MessageCategory`` that is in this array will not be send to the recipient.
+  var disabledMessageCategories: [MessageCategory] { get set }
+  
   /// The user's app progression.
   ///
   /// This is a utility variable that you can use to keep track of tutorial progress, user progression, etc.
@@ -98,6 +108,8 @@ extension EasyUser {
     id = user.uid
     lastSignon = Date()
     username = email.removeDomainFromEmail()
+    notifications = []
+    disabledMessageCategories = []
     displayName = user.displayName ?? username
     self.email = email
     appVersion = Bundle.versionString

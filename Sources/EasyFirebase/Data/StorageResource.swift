@@ -7,8 +7,8 @@
 
 import Foundation
 
-typealias ResourceID = String
-typealias ResourcePath = String
+public typealias ResourceID = DocumentID
+public typealias ResourcePath = String
 
 /**
  Provides information about an uploadable resource.
@@ -17,7 +17,7 @@ typealias ResourcePath = String
  
  Resources can be uploaded to Firebase Storage. Resources are not themselves uploadable; they simply provide information about where a particular resource should go in Firebase Storage.
  */
-public class Resource: SafeModel {
+public class StorageResource: Model {
   
   // MARK: - Public Properties
   

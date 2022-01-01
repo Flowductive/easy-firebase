@@ -7,6 +7,8 @@
 
 import Foundation
 
+public typealias MessageCategory = String
+
 /**
  A notification, often triggered by an Apple Push Notification.
  
@@ -22,12 +24,18 @@ import Foundation
  
  If you want to send a message with just a title and a body to a user, check out ``EasyMessaging.sendNotification(to:title:body:data:)`` instead.
  */
-public class FNotification: Model, Equatable {
+public class MessagingNotification: Model, Equatable {
   
   // MARK: - Public Properties
   
   /// The date of the notification.
   public var date: Date = Date()
+  
+  /// The notification's category.
+  ///
+  /// This value can be used to limit user notifications through ``EasyUser.disabledNotificationCategories``.
+  public var category: MessageCategory
+  
   /// The user that this notification came from.
   public var user: DocumentID?
   
@@ -39,19 +47,19 @@ public class FNotification: Model, Equatable {
   public var text: String
   /// The body of the push notification.
   public var pushBody: String
-  /// The attached item to the notification, if any.
-  public var attachment: Attachment?
+  /// The attached image URL to the notification, if any.
+  public var image: URL?
   /// Whether the notification has been read
   public var read: Bool = false
   
   // MARK: - Public Initalizers
   
-  public init(_ message: String, from user: EasyUser, attach attachment: Attachment? = nil, and additionalInfo: String? = nil) {
+  public init<T>(_ message: String, from user: T, in category: MessageCategory, attach image: URL? = nil, and additionalInfo: String? = nil) where T: EasyUser {
     let username = user.username
-    self.kind = kind
     self.user = user.id
     self.text = message
-    self.attachment = attachment
+    self.category = category
+    self.image = image
     self.pushBody = "\(username) \(self.text)"
     if let add = additionalInfo {
       self.pushBody += ": \(add)"
@@ -59,9 +67,9 @@ public class FNotification: Model, Equatable {
     }
   }
   
-  // MARK: - Static Methods
+  // MARK: - Public Static Methods
   
-  static func == (lhs: FNotification, rhs: FNotification) -> Bool {
-    return lhs.kind == rhs.kind && lhs.text == rhs.text && (lhs.date - rhs.date) < 5.minutes
+  public static func == (lhs: MessagingNotification, rhs: MessagingNotification) -> Bool {
+    return lhs.text == rhs.text && (lhs.date.distance(to: rhs.date)) < TimeInterval(5 * 60)
   }
 }

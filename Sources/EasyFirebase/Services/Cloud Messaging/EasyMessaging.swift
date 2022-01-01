@@ -20,12 +20,12 @@ import FirebaseMessaging
  */
 public struct EasyMessaging {
   
-  // MARK: - Mixed Static Properties
+  // MARK: - Public Static Properties
   
   /// The application's Server Key.
   ///
   /// ⚠️ **Note:** Obtain this key in your [https://console.firebase.google.com](Firebase Console), and be sure to set it before using `EasyMessaging`!
-  private public(set) var serverKey: String?
+  public static var serverKey: String?
   
   // MARK: - Public Static Methods
   
@@ -37,7 +37,7 @@ public struct EasyMessaging {
   public static func subscribe(to topic: String) {
     Messaging.messaging().subscribe(toTopic: topic)
   }
-
+  
   /**
    Unsubscribes the user from a particular topic.
    
@@ -61,14 +61,12 @@ public struct EasyMessaging {
    - parameter notification: The notification to send to the user.
    - parameter user: The user to send the notification to.
    */
-  public static func send(_ notification: MessagingNotification, to user: FUser, perm: KeyPath<Preferences, Bool>? = nil) {
-    guard let token = user.deviceToken else { return }
-    if let preferences = user.preferences, let perm = perm {
-      if !preferences[keyPath: perm] {
-        return
-      }
+  public static func send<T>(_ notification: MessagingNotification, to user: T) where T: EasyUser {
+    guard !user.disabledMessageCategories.contains(notification.category) else {
+      EasyFirebase.log("Message not sent because the user has the message category '`\(notification.category)' disabled.")
+      return
     }
-    sendNotification(to: token, title: "", body: notification.pushBody, data: ["count": user.notifications?.filter({ !$0.read }).count ?? 0])
+    sendNotification(to: user, title: "", body: notification.pushBody, data: ["count": user.notifications.filter({ !$0.read }).count])
   }
   
   /**
@@ -78,30 +76,38 @@ public struct EasyMessaging {
    - parameter title: The title of the notification.
    - parameter body: The body of the notification.
    */
-  public static func sendNotification(to user: EasyUser, title: String, body: String, data: [AnyHashable: Any] = [:]) {
-    let token = user.deviceToken
+  public static func sendNotification<T>(to user: T, title: String, body: String, data: [AnyHashable: Any] = [:]) where T: EasyUser {
+    guard let serverKey = serverKey else {
+      fatalError("❌ Your Messaging Server Key hasn't been set yet! Ensure that EasyMessaging.serverKey is set before using EasyMessaging.")
+    }
+    guard let token = user.deviceToken else {
+      EasyFirebase.log(error: "Your user does not have a device token.")
+      return
+    }
     let urlString = "https://fcm.googleapis.com/fcm/send"
     let url = NSURL(string: urlString)!
     let paramString: [String: Any] = ["to": token,
-                                       "notification": ["title": title, "body": body],
-                                       "data": data
+                                      "notification": ["title": title, "body": body],
+                                      "data": data
     ]
     let request = NSMutableURLRequest(url: url as URL)
     request.httpMethod = "POST"
     request.httpBody = try? JSONSerialization.data(withJSONObject: paramString, options: [.prettyPrinted])
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("key=\(serverKey)", forHTTPHeaderField: "Authorization")
-    let task =  URLSession.shared.dataTask(with: request as URLRequest) { data, _, _ in
+    let task = URLSession.shared.dataTask(with: request as URLRequest) { data, _, _ in
       do {
         if let jsonData = data {
           if let jsonDataDict  = try JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: AnyObject] {
-            NSLog("Received data:\n\(jsonDataDict))")
+            EasyFirebase.log("Received data:\n\(jsonDataDict))")
           }
         }
       } catch let err as NSError {
-        print(err.debugDescription)
+        EasyFirebase.log(error: err.localizedDescription)
+        return
       }
     }
     task.resume()
+    EasyFirebase.log("Message sending! Title: '\(title)'")
   }
 }

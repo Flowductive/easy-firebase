@@ -7,12 +7,12 @@
 
 import Foundation
 
-public extension AuthService {
+public extension EasyAuth {
   
   /**
    Manage user settings, profile images, etc.
    */
-  public struct Manage {
+  struct Manage {
     
     // MARK: - Public Static Methods
     
@@ -64,8 +64,9 @@ public extension AuthService {
      */
     public static func updatePhoto(to new: Data, completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
-        EasyStorage.put(new, to: StorageResource(id: currentUser.uid) { url in
-          updatePhotoURL(to: URL, completion: completion)
+        EasyStorage.put(new, to: StorageResource(id: currentUser.uid)) { url in
+          guard let url = url else { return }
+          updatePhotoURL(to: url, completion: completion)
         }
       }
     }

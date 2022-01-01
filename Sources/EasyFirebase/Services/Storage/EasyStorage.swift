@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseStorage
 import FirebaseStorageSwift
 
 /**
@@ -22,7 +23,7 @@ public struct EasyStorage {
   // MARK: - Mixed Static Properties
   
   /// The active storage upload task.
-  private public(get) static var task: StorageUploadTask?
+  public private(set) static var task: StorageUploadTask?
   
   // MARK: - Public Static Methods
   
