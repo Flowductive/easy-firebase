@@ -98,11 +98,11 @@ public protocol EasyUser: Document {
 }
 
 @available(iOS 13.0, *)
-extension EasyUser {
+public extension EasyUser {
   
-  // MARK: - Initalizers
+  // MARK: - Public Initalizers
   
-  public init?(from user: User) {
+  init?(from user: User) {
     guard let email = user.email else { return nil }
     self.init()
     id = user.uid
@@ -115,5 +115,11 @@ extension EasyUser {
     appVersion = Bundle.versionString
     deviceToken = Messaging.messaging().fcmToken
     progress = -1
+  }
+  
+  // MARK: - Public Static Methods
+  
+  static func ==(lhs: Self, rhs: Self) -> Bool {
+    return lhs.id == rhs.id
   }
 }
