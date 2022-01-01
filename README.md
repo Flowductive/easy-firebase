@@ -159,6 +159,8 @@ class MyUser: EasyUser {
   var email: String
   var appVersion: String
   var deviceToken: String?
+  var notifications: [MessagingNotification]
+  var disabledMessageCategories: [MessageCategory]
   var progress: Int
   var id: String
   var dateCreated: Date
