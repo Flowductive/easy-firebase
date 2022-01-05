@@ -63,7 +63,7 @@ Configure at app launch:
 EasyFirebase.configure()
 ```
 
-## Firestore Feature Showcase
+## 🔥 Firestore Feature Showcase
 
 ### Built-in Document protocol
 
@@ -154,7 +154,7 @@ car2.set()
 car2.assign(to: \.cars, in: dealership)
 ```
 
-## Authentication Feature Showcase
+## 🔑 Authentication Feature Showcase
 
 ### Easy User Protocol
 
@@ -246,7 +246,7 @@ EasyAuth.Manage.updatePassword(to: "newPassword", completion: { error in })
 EasyAuth.Manage.deleteUser(completion: { error in })
 ```
 
-## Storage Feature Showcase
+## 📦 Storage Feature Showcase
 
 ### Data Storage
 
@@ -264,7 +264,7 @@ EasyStorage.put(imageData,to: StorageResource(id: user.id, folder: "myFolder"), 
 })
 ```
 
-## Cloud Messaging Feature Showcase
+## ☁️ Cloud Messaging Feature Showcase
 
 ### Built-in User Notifications
 
