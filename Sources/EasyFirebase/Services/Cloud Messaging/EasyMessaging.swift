@@ -18,6 +18,7 @@ import FirebaseMessaging
  - Use ``send(_:to:perm:)`` to send a notification from a user to a different user.
  - Use ``sendNotification(to:title:body:data:)`` to send a customized message to a user.
  */
+@available(iOS 13.0, *)
 public struct EasyMessaging {
   
   // MARK: - Public Static Properties

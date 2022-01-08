@@ -24,6 +24,7 @@ public typealias MessageCategory = String
  
  If you want to send a message with just a title and a body to a user, check out ``EasyMessaging.sendNotification(to:title:body:data:)`` instead.
  */
+@available(iOS 13.0, *)
 public class MessagingNotification: Model, Equatable {
   
   // MARK: - Public Properties
