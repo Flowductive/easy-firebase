@@ -28,6 +28,11 @@ public struct EasyMessaging {
   /// ⚠️ **Note:** Obtain this key in your [https://console.firebase.google.com](Firebase Console), and be sure to set it before using `EasyMessaging`!
   public static var serverKey: String?
   
+  /// The user's device token.
+  public static var deviceToken: String? {
+    return Messaging.messaging().fcmToken
+  }
+  
   // MARK: - Public Static Methods
   
   /**

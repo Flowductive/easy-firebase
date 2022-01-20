@@ -75,6 +75,16 @@ public protocol Document: Model, Equatable, Identifiable {
 @available(iOS 13.0, *)
 extension Document {
   
+  // MARK: - Public Static Methods
+  
+  public static func ==(lhs: Self, rhs: Self) -> Bool {
+    return lhs.id == rhs.id
+  }
+}
+
+@available(iOS 13.0, *)
+extension Document {
+  
   // MARK: - Public Methods
   
   /**

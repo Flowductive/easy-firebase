@@ -8,7 +8,7 @@
 import Foundation
 
 @available(iOS 13.0, *)
-public extension EasyAuth {
+internal extension EasyAuth {
   
   /**
    Manage user settings, profile images, etc.
@@ -25,9 +25,9 @@ public extension EasyAuth {
    - Use ``sendPasswordReset(toEmail:completion:)`` to send a password reset request.
    - Use ``deleteUser(completion:)`` to delete a user.
    */
-  struct Manage {
+  internal struct Manage {
     
-    // MARK: - Public Static Methods
+    // MARK: - Internal Static Methods
     
     /**
      Updates the current user's email address.
@@ -35,7 +35,7 @@ public extension EasyAuth {
      - parameter newEmail: The new email to update with.
      - parameter completion: The completion handler.
      */
-    public static func updateEmail(to newEmail: String, completion: @escaping (Error?) -> Void) {
+    static func updateEmail(to newEmail: String, completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         currentUser.updateEmail(to: newEmail, completion: completion)
       }
@@ -47,7 +47,7 @@ public extension EasyAuth {
      - parameter newName: The new display name to update with.
      - parameter completion: The completion handler.
      */
-    public static func updateDisplayName(to newName: String, completion: @escaping (Error?) -> Void) {
+    static func updateDisplayName(to newName: String, completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         let changeRequest = currentUser.createProfileChangeRequest()
         changeRequest.displayName = newName
@@ -61,7 +61,7 @@ public extension EasyAuth {
      - parameter newURL: The new photo URL to update with.
      - parameter completion: The completion handler.
      */
-    public static func updatePhotoURL(to newURL: URL, completion: @escaping (Error?) -> Void) {
+    static func updatePhotoURL(to newURL: URL, completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         let changeRequest = currentUser.createProfileChangeRequest()
         changeRequest.photoURL = newURL
@@ -75,7 +75,7 @@ public extension EasyAuth {
      - parameter new: The data of the new photo to update with.
      - parameter completion: The completion handler.
      */
-    public static func updatePhoto(with new: Data, completion: @escaping (Error?) -> Void) {
+    static func updatePhoto(with new: Data, completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         EasyStorage.put(new, to: StorageResource(id: currentUser.uid)) { url in
           guard let url = url else { return }
@@ -90,7 +90,7 @@ public extension EasyAuth {
      - parameter newPassword: The new password to update with.
      - parameter completion: The completion handler.
      */
-    public static func updatePassword(to newPassword: String, completion: @escaping (Error?) -> Void) {
+    static func updatePassword(to newPassword: String, completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         currentUser.updatePassword(to: newPassword, completion: completion)
       }
@@ -101,7 +101,7 @@ public extension EasyAuth {
      
      - parameter completion: The completion handler.
      */
-    public static func sendEmailVerification(completion: @escaping (Error?) -> Void) {
+    static func sendEmailVerification(completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         currentUser.sendEmailVerification(completion: completion)
       }
@@ -112,7 +112,7 @@ public extension EasyAuth {
      
      - parameter completion: The completion handler.
      */
-    public static func sendPasswordReset(toEmail email: String, completion: @escaping (Error?) -> Void) {
+    static func sendPasswordReset(toEmail email: String, completion: @escaping (Error?) -> Void) {
       auth.sendPasswordReset(withEmail: email, completion: completion)
     }
     
@@ -123,7 +123,7 @@ public extension EasyAuth {
      
      - parameter completion: The completion handler
      */
-    public static func deleteUser(completion: @escaping (Error?) -> Void) {
+    static func deleteUser(completion: @escaping (Error?) -> Void) {
       if let currentUser = auth.currentUser {
         currentUser.delete(completion: completion)
       }

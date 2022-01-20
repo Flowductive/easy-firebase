@@ -28,6 +28,15 @@ public class EasyAuth: NSObject {
   
   // MARK: - Public Static Properties
   
+  /// The user's default profile image URLs.
+  ///
+  /// If more than one entry is provided, a default profile image for a new user will be chosen at random.
+  public static var defaultProfileImageURLs: [URL] = [
+    URL(string: "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png")!
+  ]
+  
+  // MARK: - Mixed Static Properties
+  
   /// Whether the user's email has been verified.
   ///
   /// This value will always be `true` when a user signs in with Apple or Google.
@@ -138,7 +147,7 @@ public class EasyAuth: NSObject {
       auth.removeStateDidChangeListener(authHandle)
     }
     authHandle = auth.addStateDidChangeListener { _, user in
-      guard let user = user, let newUser = T(from: user) else { return }
+      guard let user = user, let newUser = T.init(from: user) else { return }
       EasyFirestore.Listening.stop(listenerKey)
       EasyFirestore.Listening.listen(to: newUser.id, ofType: T.self, key: listenerKey) { document in
         guard let document = document else {
