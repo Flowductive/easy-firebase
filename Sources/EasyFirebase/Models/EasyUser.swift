@@ -39,7 +39,7 @@ import FirebaseMessaging
  ```
  */
 @available(iOS 13.0, *)
-open class EasyUser: Document {
+open class EasyUser: IndexedDocument {
   
   // MARK: - Public Properties
   
@@ -102,6 +102,7 @@ open class EasyUser: Document {
   
   // MARK: - Inherited Properties
   
+  public var index: Int?
   public var id: String
   public var dateCreated: Date
   
@@ -121,7 +122,7 @@ open class EasyUser: Document {
   }
   
   public init() {
-    id = UUID().uuidString
+    id = "Guest"
     dateCreated = Date()
     deviceToken = "-"
     appVersion = Bundle.versionString
@@ -132,6 +133,7 @@ open class EasyUser: Document {
     profileImageURL = EasyAuth.defaultProfileImageURLs.randomElement()!
   }
 }
+
 @available(iOS 13.0, *)
 public extension EasyUser {
   
