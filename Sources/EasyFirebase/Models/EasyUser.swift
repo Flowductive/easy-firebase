@@ -232,6 +232,16 @@ public extension EasyUser {
   }
   
   /**
+   Refreshes the `emailVerified` static property of `EasyAuth`.
+   */
+  func refreshEmailVerifcationStatus() {
+    guard assertAuthMatches() else { return }
+    if let authUser = authUser {
+      EasyAuth.emailVerified = authUser.isEmailVerified
+    }
+  }
+  
+  /**
    Send a password reset request to the associated email.
    
    - parameter email: The email to send the password reset request to.

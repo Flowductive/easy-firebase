@@ -40,14 +40,14 @@ public class EasyAuth: NSObject {
   /// Whether the user's email has been verified.
   ///
   /// This value will always be `true` when a user signs in with Apple or Google.
-  public private(set) static var emailVerified: Bool = false
+  public internal(set) static var emailVerified: Bool = false
   
   /// The user's account provider.
   ///
   /// This value automatically updates to `.email`, `.apple`, or `.google` when signing in.
   ///
   /// ⚠️ **Note:** If the provider is unknown, the value will be set to `.unknown`.
-  public private(set) static var accountProvider: Provider = .unknown
+  public internal(set) static var accountProvider: Provider = .unknown
   
   /// The user's auth handle.
   ///
