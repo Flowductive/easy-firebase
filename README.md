@@ -6,6 +6,7 @@
 <p align="center">✉️ Send and receive Firestore documents in a snap</p>
 <p align="center">😀 Predefined user protocols with built-in features</p>
 <p align="center">🔥 Firebase solutions in one native Swift package</p>
+<p align="center">📘 Fully documented code with examples</p>
 
 ## What is EasyFirebase?
 
@@ -21,6 +22,7 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
   - Update listeners [→](https://github.com/Flowductive/easy-firebase#update-listeners)
   - Built-in cacheing [→](https://github.com/Flowductive/easy-firebase#built-in-cacheing)
   - Easy linking [→](https://github.com/Flowductive/easy-firebase#easy-linking)
+  - Swifty querying [→](https://github.com/Flowductive/easy-firebase#swifty-querying)
 - Authentication Support
   - EasyUser protocol [→](https://github.com/Flowductive/easy-firebase#easy-user-protocol)
   - Email auth [→](https://github.com/Flowductive/easy-firebase#email-auth)
@@ -152,6 +154,28 @@ car1.setAssign(to: \.cars, in: dealership)
 // Set and assign the Honda Civid to the Los Angeles Dealership
 car2.set()
 car2.assign(to: \.cars, in: dealership)
+```
+
+### Swifty Querying
+
+Easily query for documents:
+
+```swift
+EasyFirestore.Querying.where(\Car.make, .equals, "Toyota") { cars in
+  // Handle your queried documents here...
+}
+```
+
+Use multiple conditions for queries; order and limit results:
+
+```swift
+EasyFirestore.Querying.where((\Car.year, .greaterEqualTo, 2010),
+                             (\Car.model, .in, ["Corolla", "Camry"]),
+                             order: .ascending,
+                             limit: 5
+) { cars in
+  // ...
+}
 ```
 
 ## 🔑 Authentication Feature Showcase
