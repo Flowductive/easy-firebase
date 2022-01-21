@@ -29,7 +29,7 @@ extension EasyFirestore {
      - parameter completion: The completion handler.
      */
     public static func set<T>(_ document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
-      setWrapper(document, collection: document.typeName, id: document.id, completion: completion)
+      set(document, collection: document.typeName, id: document.id, completion: completion)
     }
     
     /**
@@ -39,7 +39,7 @@ extension EasyFirestore {
      - parameter completion: The completion handler.
      */
     public static func set<T>(_ singleton: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Singleton {
-      setWrapper(singleton, collection: "Singleton", id: singleton.id, completion: completion)
+      set(singleton, collection: "Singleton", id: singleton.id, completion: completion)
     }
     
     /**
@@ -85,25 +85,9 @@ extension EasyFirestore {
       }
     }
     
-    // MARK: - Fileprivate Static Properties
-    
-    fileprivate static var indexesDocument: DocumentReference {
-      Firestore.firestore().collection("Singleton").document("_indexes")
-    }
-    
     // MARK: - Private Static Methods
     
-    private static func setWrapper<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void) where T: Model {
-      setWrapped(model, collection: collection, id: id, completion: completion)
-    }
-    
-    private static func setWrapper<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void) where T: IndexedDocument {
-      prepare(model) { newModel, error in
-        setWrapped(newModel, collection: collection, id: id, completion: completion)
-      }
-    }
-    
-    private static func setWrapped<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void) where T: Model {
+    private static func set<T>(_ model: T, collection: CollectionName, id: String, completion: @escaping (Error?) -> Void) where T: Model {
       do {
         _ = try db.collection(collection).document(id).setData(from: model) { error in
           if let error = error {
@@ -115,27 +99,6 @@ extension EasyFirestore {
         }
       } catch {
         EasyFirebase.log(error: error)
-      }
-    }
-    
-    private static func prepare<T>(_ document: T, completion: @escaping (T, Error?) -> Void) where T: IndexedDocument {
-      var newDocument: T = document
-      let fieldName = String(describing: Self.self)
-      indexesDocument.getDocument { snapshot, error in
-        if let snapshot = snapshot, snapshot.exists {
-          let count: Int? = snapshot.data()?[fieldName] as? Int
-          if let count = count {
-            newDocument.index = count + 1
-          } else {
-            newDocument.index = 0
-          }
-          indexesDocument.updateData([fieldName: newDocument.index!]) { error in
-            completion(newDocument, error)
-          }
-        } else if let error = error {
-          EasyFirebase.log(error: error)
-          completion(newDocument, error)
-        }
       }
     }
   }
