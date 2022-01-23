@@ -183,7 +183,7 @@ EasyFirestore.Querying.where((\Car.year, .greaterEqualTo, 2010),
 
 ### Easy User Protocol
 
-Save time writing user classes with the built-in `EasyUser` procotol:
+Save time writing user classes with the built-in `EasyUser` open class:
 
 ```swift
 class MyUser: EasyUser {
