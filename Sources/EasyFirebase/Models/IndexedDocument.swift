@@ -15,6 +15,7 @@ import FirebaseFirestoreSwift
  
  Each new document that is created and pushed to Firestore has a unique index determined by an associated `Singleton` that is automatically created when the indexed document is created.
  */
+@available(iOS 13.0, *)
 public protocol IndexedDocument: Document {
   
   // MARK: - Public Properties
@@ -25,6 +26,7 @@ public protocol IndexedDocument: Document {
   var index: Int? { get set }
 }
 
+@available(iOS 13.0, *)
 public extension IndexedDocument {
   
   // MARK: - Public Methods
@@ -45,6 +47,7 @@ public extension IndexedDocument {
   }
 }
 
+@available(iOS 13.0, *)
 private extension IndexedDocument {
   
   // MARK: - Private Static Properties
