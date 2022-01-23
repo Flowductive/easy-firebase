@@ -137,6 +137,13 @@ open class EasyUser: IndexedDocument {
 @available(iOS 13.0, *)
 public extension EasyUser {
   
+  // MARK: - Public Static Properties
+  
+  static var defaultSuggestionGenerator: (String) -> String {{ username in
+    let randomInt = Int.random(in: 0...99)
+    return "\(username)\(randomInt)"
+  }}
+  
   // MARK: - Public Methods
   
   /**
@@ -153,6 +160,82 @@ public extension EasyUser {
       }
       completion(error)
     }
+  }
+  
+  /**
+   Checks to see if a username is available.
+   */
+  func checkUsernameAvailable(_ username: String, completion: @escaping (Bool) -> Void) {
+    EasyFirestore.Querying.where(\Self.username, .equals, username) { users in
+      completion(users.count <= 0)
+    }
+  }
+  
+  /**
+   Updates the user's username.
+   
+   This method is *safe*, meaning that it won't update the username if another user has an existing, matching username.
+   
+   If you wish to update the user's username regardless of whether it is unique, use ``unsafelyUpdateUsername(to:completion:)``.
+   
+   📌 **Important!** The completion block has two arguments. If the second `String?` value is `nil`, that means the username was successfully updated. Otherwise, if a non-`nil` value is passed, that means the username was *not* updated (and instead a suggested username is provided as the value).
+   
+   The `suggestionGenerator` parameter allows you to customize a random username to *suggest* based on the new username provided. For instance, if the username `myUsername` is unavailable, the generator can be customized to procure a new username `myUsername123`. If a random username is generated and is *still* taken, the generator will re-apply to the username previously generated (recursively).
+   
+   If no generator is provided, the default generator will append a random integer `0-99` to the end of the attempted username.
+   
+   ⚠️ **Note:** The suggested username returned in the completion block is not updated to be the user's new username when this method is called. Rather, it allows you to provide the user with the suggestion such that they can change it if they like.
+   
+   The completion handler has two arguments, an `Error?` and a `String?`. The first is the error that occurs while updating the username, if any. The second is the suggested username, created by the provided generator.
+   
+   # Example
+   
+   ```
+   global.user.safelyUpdateUsername(to: "myNewUsername",
+                                    suggesting: { "\($0)\(Int.random(in: 0...999))" }
+   ) { error, suggestion in
+     if let error = error {
+       // ...
+     } else if let suggestion = suggestion {
+       // Username taken, provide the user with this suggestion.
+     } else {
+       // Success! Username changed.
+     }
+   }
+   ```
+   
+   - parameter newUsername: The username to update to.
+   - parameter suggestionGenerator: A function that takes in a username and provides a new username (hopefully unique). See **Discussion** for more information.
+   - parameter completion: The completion handler. See **Discussion** for more information.
+   */
+  func safelyUpdateUsername(to newUsername: String,
+                            suggesting suggestionGenerator: @escaping (String) -> String = defaultSuggestionGenerator,
+                            completion: @escaping (Error?, String?) -> Void) {
+    checkUsernameAvailable(newUsername) { available in
+      if available {
+        self.unsafelyUpdateUsername(to: newUsername) { error in
+          completion(error, nil)
+          return
+        }
+      } else {
+        self.getUniqueUsername(newUsername, using: suggestionGenerator) { suggestion in
+          completion(nil, suggestion)
+          return
+        }
+      }
+    }
+  }
+  
+  /**
+   Updates the user's username.
+   
+   This method is *unsafe*, meaning that it will update the username regardless if there is another user with a matching username.
+   
+   If you wish to update the user's username if it is available and provide a suggested username upon failure, see ``safelyUpdateUsername(to:suggesting:completion:)``.
+   */
+  func unsafelyUpdateUsername(to newUsername: String, completion: @escaping (Error?) -> Void) {
+    self.username = newUsername
+    set(\.username)
   }
   
   /**
@@ -277,6 +360,17 @@ public extension EasyUser {
   }
   
   // MARK: - Private Methods
+  
+  private func getUniqueUsername(_ base: String, using generator: @escaping (String) -> String, completion: @escaping (String) -> Void) {
+    let new = generator(base)
+    checkUsernameAvailable(new) { available in
+      if available {
+        completion(base)
+      } else {
+        self.getUniqueUsername(new, using: generator, completion: completion)
+      }
+    }
+  }
   
   private func assertAuthMatches() -> Bool {
     guard let uid = Auth.auth().currentUser?.uid else {
