@@ -119,6 +119,9 @@ open class EasyUser: IndexedDocument {
     username = email.removeDomainFromEmail()
     displayName = user.displayName ?? username
     profileImageURL = user.photoURL ?? EasyAuth.defaultProfileImageURLs.randomElement()!
+    safelyUpdateUsername(to: username) { _, suggested in
+      unsafelyUpdateUsername(to: suggested)
+    }
   }
   
   public init() {
@@ -152,7 +155,7 @@ public extension EasyUser {
    - parameter newEmail: The new email to update with.
    - parameter completion: The completion handler.
    */
-  func updateEmail(to newEmail: String, completion: @escaping (Error?) -> Void) {
+  func updateEmail(to newEmail: String, completion: @escaping (Error?) -> Void = { _ in }) {
     guard assertAuthMatches() else { return }
     authUser?.updateEmail(to: newEmail) { [self] error in
       if error == nil {
@@ -233,7 +236,7 @@ public extension EasyUser {
    
    If you wish to update the user's username if it is available and provide a suggested username upon failure, see ``safelyUpdateUsername(to:suggesting:completion:)``.
    */
-  func unsafelyUpdateUsername(to newUsername: String, completion: @escaping (Error?) -> Void) {
+  func unsafelyUpdateUsername(to newUsername: String, completion: @escaping (Error?) -> Void = { _ in }) {
     self.username = newUsername
     set(\.username)
   }
@@ -244,7 +247,7 @@ public extension EasyUser {
    - parameter newName: The new display name to update with.
    - parameter completion: The completion handler.
    */
-  func updateDisplayName(to newName: String, completion: @escaping (Error?) -> Void) {
+  func updateDisplayName(to newName: String, completion: @escaping (Error?) -> Void = { _ in }) {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       let changeRequest = authUser.createProfileChangeRequest()
@@ -264,7 +267,7 @@ public extension EasyUser {
    - parameter url: The new photo URL to update with.
    - parameter completion: The completion handler.
    */
-  func updatePhoto(with url: URL, completion: @escaping (Error?) -> Void) {
+  func updatePhoto(with url: URL, completion: @escaping (Error?) -> Void = { _ in }) {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       let changeRequest = authUser.createProfileChangeRequest()
@@ -284,7 +287,7 @@ public extension EasyUser {
    - parameter data: The data of the new photo to update with.
    - parameter completion: The completion handler.
    */
-  func updatePhoto(with data: Data, completion: @escaping (Error?) -> Void) {
+  func updatePhoto(with data: Data, completion: @escaping (Error?) -> Void = { _ in }) {
     guard assertAuthMatches() else { return }
     EasyStorage.put(data, to: StorageResource(id: id)) { [self] url in
       guard let url = url else { return }
@@ -298,7 +301,7 @@ public extension EasyUser {
    - parameter newPassword: The new password to update with.
    - parameter completion: The completion handler.
    */
-  func updatePassword(to newPassword: String, completion: @escaping (Error?) -> Void) {
+  func updatePassword(to newPassword: String, completion: @escaping (Error?) -> Void = { _ in }) {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       authUser.updatePassword(to: newPassword, completion: completion)
@@ -310,7 +313,7 @@ public extension EasyUser {
    
    - parameter completion: The completion handler.
    */
-  func sendEmailVerification(completion: @escaping (Error?) -> Void) {
+  func sendEmailVerification(completion: @escaping (Error?) -> Void = { _ in }) {
     if let authUser = authUser {
       authUser.sendEmailVerification(completion: completion)
     }
@@ -332,7 +335,7 @@ public extension EasyUser {
    - parameter email: The email to send the password reset request to.
    - parameter completion: The completion handler.
    */
-  func sendPasswordReset(toEmail email: String, completion: @escaping (Error?) -> Void) {
+  func sendPasswordReset(toEmail email: String, completion: @escaping (Error?) -> Void = { _ in }) {
     Auth.auth().sendPasswordReset(withEmail: email, completion: completion)
   }
   
@@ -343,7 +346,7 @@ public extension EasyUser {
    
    - parameter completion: The completion handler
    */
-  func delete(completion: @escaping (Error?) -> Void) {
+  func delete(completion: @escaping (Error?) -> Void = { _ in }) {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       authUser.delete { error in
