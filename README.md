@@ -28,6 +28,7 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
   - Email auth [→](https://github.com/Flowductive/easy-firebase#email-auth)
   - Sign In with Google [→](https://github.com/Flowductive/easy-firebase#sign-in-with-google)
   - Sign In with Apple [→](https://github.com/Flowductive/easy-firebase#sign-in-with-apple)
+  - Built-in usernames [→](https://github.com/Flowductive/easy-firebase#built-in-usernames)
   - Robust user management [→](https://github.com/Flowductive/easy-firebase#robust-user-management)
 - Storage Support
   - Data storage [→](https://github.com/Flowductive/easy-firebase#data-storage)
@@ -249,6 +250,22 @@ Authenticate with Apple:
 ```swift
 // iOS + macOS
 EasyAuth.signInWithApple()
+```
+
+### Built-In Usernames
+
+Generate unique usernames and update easily:
+
+```swift
+user.safelyUpdateUsername(to: "myNewUsername") { error, suggestion in
+ if let error = error {
+   // ...
+ } else if let suggestion = suggestion {
+   // Username taken, provide the user with this suggestion.
+ } else {
+   // Success! Username changed.
+ }
+}
 ```
 
 ### Robust User Management
