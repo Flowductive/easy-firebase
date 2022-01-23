@@ -194,7 +194,7 @@ public extension EasyUser {
    # Example
    
    ```
-   global.user.safelyUpdateUsername(to: "myNewUsername",
+   user.safelyUpdateUsername(to: "myNewUsername",
                                     suggesting: { "\($0)\(Int.random(in: 0...999))" }
    ) { error, suggestion in
      if let error = error {
