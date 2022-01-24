@@ -261,7 +261,7 @@ user.safelyUpdateUsername(to: "myNewUsername") { error, suggestion in
  if let error = error {
    // ...
  } else if let suggestion = suggestion {
-   // Username taken, provide the user with this suggestion.
+   // Username taken, provide the user with an available username suggestion.
  } else {
    // Success! Username changed.
  }
