@@ -119,11 +119,6 @@ open class EasyUser: IndexedDocument {
     username = email.removeDomainFromEmail()
     displayName = user.displayName ?? username
     profileImageURL = user.photoURL ?? EasyAuth.defaultProfileImageURLs.randomElement()!
-    safelyUpdateUsername(to: username) { [self] _, suggested in
-      if let suggested = suggested {
-        unsafelyUpdateUsername(to: suggested)
-      }
-    }
   }
   
   public init() {
@@ -168,15 +163,6 @@ public extension EasyUser {
   }
   
   /**
-   Checks to see if a username is available.
-   */
-  func checkUsernameAvailable(_ username: String, completion: @escaping (Bool) -> Void) {
-    EasyFirestore.Querying.where(\Self.username, .equals, username) { users in
-      completion(users.count <= 0)
-    }
-  }
-  
-  /**
    Updates the user's username.
    
    This method is *safe*, meaning that it won't update the username if another user has an existing, matching username.
@@ -216,7 +202,7 @@ public extension EasyUser {
   func safelyUpdateUsername(to newUsername: String,
                             suggesting suggestionGenerator: @escaping (String) -> String = defaultSuggestionGenerator,
                             completion: @escaping (Error?, String?) -> Void) {
-    checkUsernameAvailable(newUsername) { available in
+    EasyAuth.checkUsernameAvailable(newUsername, forUserType: Self.self) { available in
       if available {
         self.unsafelyUpdateUsername(to: newUsername) { error in
           completion(error, nil)
@@ -368,7 +354,7 @@ public extension EasyUser {
   
   private func getUniqueUsername(_ base: String, using generator: @escaping (String) -> String, completion: @escaping (String) -> Void) {
     let new = generator(base)
-    checkUsernameAvailable(new) { available in
+    EasyAuth.checkUsernameAvailable(new, forUserType: Self.self) { available in
       if available {
         completion(base)
       } else {

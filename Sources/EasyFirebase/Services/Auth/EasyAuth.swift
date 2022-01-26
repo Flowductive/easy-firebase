@@ -160,6 +160,16 @@ public class EasyAuth: NSObject {
     }
   }
   
+  /**
+   Checks to see if a username is available.
+   */
+  public static func checkUsernameAvailable<T>(_ username: String, forUserType: T.Type, completion: @escaping (Bool) -> Void) where T: EasyUser {
+    let path: KeyPath<T, String> = \.username
+    EasyFirestore.Querying.where(path, .equals, username) { users in
+      completion(users.count <= 0)
+    }
+  }
+  
   // MARK: - Internal Static Methods
   
   internal static func prepare() {
