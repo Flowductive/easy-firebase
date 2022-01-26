@@ -119,8 +119,10 @@ open class EasyUser: IndexedDocument {
     username = email.removeDomainFromEmail()
     displayName = user.displayName ?? username
     profileImageURL = user.photoURL ?? EasyAuth.defaultProfileImageURLs.randomElement()!
-    safelyUpdateUsername(to: username) { _, suggested in
-      unsafelyUpdateUsername(to: suggested)
+    safelyUpdateUsername(to: username) { [self] _, suggested in
+      if let suggested = suggested {
+        unsafelyUpdateUsername(to: suggested)
+      }
     }
   }
   
