@@ -23,7 +23,7 @@ import Foundation
  }
  ```
  
- Then calling `.log(key:)` on an instance of `Food` will log an Analytics Event to firestore with the data as provided above.
+ Then calling ``log(key:)`` on an instance of `Food` will log an Analytics Event to firestore with the data as provided above.
  */
 public protocol AnalyticsLoggable {
   

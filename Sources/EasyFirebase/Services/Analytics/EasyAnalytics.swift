@@ -14,6 +14,30 @@ public typealias AnalyticsUserPropertyKey = String
 
 /**
  `EasyAnalytics` is a service manager for various functions related to Firebase Analytics.
+ 
+ Analytics is divided into primary categories: **Events** and **User Properties**.
+ 
+ To log an event, you can use `EasyAnalytics`' static methods:
+ 
+ ```
+ EasyAnalytics.log("food_eaten", data: [
+   "name": "Hot Dog",
+   "isHot": true
+ ])
+ ```
+ 
+ If you have a model that conforms to `AnalyticsLoggable`, you can log events using the model itself:
+ 
+ ```
+ let hotdog = Food(name: "Hot Dog", temperature: 81)
+ EasyAnalytics.log("food_eaten", model: hotdog)
+ ```
+ 
+ Alternatively, you can call the logging method from the model itself:
+ 
+ ```
+ hotdog.log(key: "food_eaten")
+ ```
  */
 @available(iOS 13.0, *)
 public struct EasyAnalytics {
