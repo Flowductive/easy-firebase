@@ -40,6 +40,9 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
   - Built-in MessagingNotification protocol
   - Built-in 3P notifications
   - User notification settings
+- Analytics Support
+  - Easily log events [→](https://github.com/Flowductive/easy-firebase#easily-log-events)
+  - Integrated user properties [→](https://github.com/Flowductive/easy-firebase#integrated-user-properties)
 
 All the above features are **cross-platform** and are supported on both iOS and macOS.
 
@@ -321,4 +324,50 @@ let notification = MessagingNotification("Message body", from: me, in: "Test Cat
 // Send the notification to the user
 // Appends to the notifications property, unless the specified category is in the user's disabledMessageCategories
 EasyMessaging.send(notification, to: you)
+```
+
+## 📊 Analytics Feature Showcase
+
+### Easily Log Events
+
+To log an event, you can use `EasyAnalytics`' static methods:
+ 
+```swift
+EasyAnalytics.log("food_eaten", data: [
+ "name": "Hot Dog",
+ "isHot": true
+])
+```
+
+If you have a model that conforms to `AnalyticsLoggable`, you can log events using the model itself:
+
+```swift
+let hotdog = Food(name: "Hot Dog", temperature: 81)
+EasyAnalytics.log("food_eaten", model: hotdog)
+```
+
+Alternatively, you can call the logging method from the model itself:
+
+```swift
+hotdog.log(key: "food_eaten")
+```
+
+### Integrated User Properties
+
+Override the `analyticsProperties()` method to automatically update user properties on app launch:
+
+```swift
+struct MyUser: EasyUser {
+  // ...
+  var favoriteCar: String
+  func analyticsProperties() -> [String: String] {
+    return ["app_version": appVersion, "favorite_car": favoriteCar]
+  }
+}
+```
+
+Manually update the user properties to Firebase Analytics:
+
+```swift
+myUser.updateAnalyticsUserProperties()
 ```
