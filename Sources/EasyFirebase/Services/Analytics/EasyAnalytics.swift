@@ -40,6 +40,8 @@ public typealias AnalyticsUserPropertyKey = String
  hotdog.log(key: "food_eaten")
  ```
  
+ User Properties are automatically updated when a local `EasyUser` instance is initialized. For more information, see the documentation for ``EasyUser``'s `analyticsProperties()` method.
+ 
  ⚠️ **Note:** All User Properties data collected by `EasyAnalytics` is *not* linked to a specific user. User IDs are not collected intentionally. If you wish to link analytics data to a specific user, call `Analytics.setUserId(_:)`.
  */
 @available(iOS 13.0, *)
