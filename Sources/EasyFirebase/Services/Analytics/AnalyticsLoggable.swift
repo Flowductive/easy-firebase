@@ -31,6 +31,7 @@ public protocol AnalyticsLoggable {
   var analyticsData: [String: Any] { get }
 }
 
+@available(iOS 13.0, *)
 public extension AnalyticsLoggable {
   
   // MARK: - Public Methods
