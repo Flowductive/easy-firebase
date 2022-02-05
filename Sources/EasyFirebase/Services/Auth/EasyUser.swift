@@ -119,6 +119,7 @@ open class EasyUser: IndexedDocument {
     username = email.removeDomainFromEmail()
     displayName = user.displayName ?? username
     profileImageURL = user.photoURL ?? EasyAuth.defaultProfileImageURLs.randomElement()!
+    updateAnalyticsUserProperties()
   }
   
   public init() {

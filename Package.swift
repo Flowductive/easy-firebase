@@ -28,6 +28,7 @@ let package = Package(
         .product(name: "FirebaseStorage", package: "firebase-ios-sdk"),
         .product(name: "FirebaseStorageSwift-Beta", package: "firebase-ios-sdk"),
         .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
+        .product(name: "FirebaseAnalyticsSwift-Beta", package: "firebase-ios-sdk"),
         .product(name: "GTMAppAuth", package: "GTMAppAuth"),
         .product(name: "AppAuth", package: "AppAuth-iOS"),
         .product(name: "GAppAuth-macOS", package: "GAppAuth"),
