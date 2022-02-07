@@ -15,6 +15,7 @@
 		EEAE2A2F27B092F900155DC7 /* EasyFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = EEAE2A2E27B092F900155DC7 /* EasyFirebase */; };
 		EEAE2A3127B09A3E00155DC7 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAE2A3027B09A3E00155DC7 /* Global.swift */; };
 		EEAE2A3327B09CF100155DC7 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAE2A3227B09CF100155DC7 /* AuthView.swift */; };
+		EEAE2A3527B0A1D500155DC7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EEAE2A3427B0A1D500155DC7 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		EEAE2A2B27B092DD00155DC7 /* ExampleUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUser.swift; sourceTree = "<group>"; };
 		EEAE2A3027B09A3E00155DC7 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		EEAE2A3227B09CF100155DC7 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		EEAE2A3427B0A1D500155DC7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 		EE8C519127AE384F00F9A7C8 /* EasyFirebaseExample_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				EEAE2A3427B0A1D500155DC7 /* GoogleService-Info.plist */,
 				EE8C519227AE384F00F9A7C8 /* EasyFirebaseExample_iOSApp.swift */,
 				EEAE2A3027B09A3E00155DC7 /* Global.swift */,
 				EEAE2A2B27B092DD00155DC7 /* ExampleUser.swift */,
@@ -159,6 +162,7 @@
 			files = (
 				EE8C519A27AE385000F9A7C8 /* Preview Assets.xcassets in Resources */,
 				EE8C519727AE385000F9A7C8 /* Assets.xcassets in Resources */,
+				EEAE2A3527B0A1D500155DC7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
