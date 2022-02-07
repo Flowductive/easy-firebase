@@ -11,6 +11,10 @@
 		EE8C519527AE384F00F9A7C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8C519427AE384F00F9A7C8 /* ContentView.swift */; };
 		EE8C519727AE385000F9A7C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE8C519627AE385000F9A7C8 /* Assets.xcassets */; };
 		EE8C519A27AE385000F9A7C8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE8C519927AE385000F9A7C8 /* Preview Assets.xcassets */; };
+		EEAE2A2C27B092DD00155DC7 /* ExampleUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAE2A2B27B092DD00155DC7 /* ExampleUser.swift */; };
+		EEAE2A2F27B092F900155DC7 /* EasyFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = EEAE2A2E27B092F900155DC7 /* EasyFirebase */; };
+		EEAE2A3127B09A3E00155DC7 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAE2A3027B09A3E00155DC7 /* Global.swift */; };
+		EEAE2A3327B09CF100155DC7 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAE2A3227B09CF100155DC7 /* AuthView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +24,9 @@
 		EE8C519427AE384F00F9A7C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EE8C519627AE385000F9A7C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EE8C519927AE385000F9A7C8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EEAE2A2B27B092DD00155DC7 /* ExampleUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUser.swift; sourceTree = "<group>"; };
+		EEAE2A3027B09A3E00155DC7 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		EEAE2A3227B09CF100155DC7 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEAE2A2F27B092F900155DC7 /* EasyFirebase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +55,7 @@
 				EE79CAF127AF4DDA002B1187 /* Packages */,
 				EE8C519127AE384F00F9A7C8 /* EasyFirebaseExample_iOS */,
 				EE8C519027AE384F00F9A7C8 /* Products */,
+				EEAE2A2D27B092F900155DC7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,7 +71,10 @@
 			isa = PBXGroup;
 			children = (
 				EE8C519227AE384F00F9A7C8 /* EasyFirebaseExample_iOSApp.swift */,
+				EEAE2A3027B09A3E00155DC7 /* Global.swift */,
+				EEAE2A2B27B092DD00155DC7 /* ExampleUser.swift */,
 				EE8C519427AE384F00F9A7C8 /* ContentView.swift */,
+				EEAE2A3227B09CF100155DC7 /* AuthView.swift */,
 				EE8C519627AE385000F9A7C8 /* Assets.xcassets */,
 				EE8C519827AE385000F9A7C8 /* Preview Content */,
 			);
@@ -75,6 +87,13 @@
 				EE8C519927AE385000F9A7C8 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EEAE2A2D27B092F900155DC7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -93,6 +112,9 @@
 			dependencies = (
 			);
 			name = EasyFirebaseExample_iOS;
+			packageProductDependencies = (
+				EEAE2A2E27B092F900155DC7 /* EasyFirebase */,
+			);
 			productName = EasyFirebaseExample_iOS;
 			productReference = EE8C518F27AE384F00F9A7C8 /* EasyFirebaseExample_iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -147,8 +169,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEAE2A3127B09A3E00155DC7 /* Global.swift in Sources */,
+				EEAE2A3327B09CF100155DC7 /* AuthView.swift in Sources */,
 				EE8C519527AE384F00F9A7C8 /* ContentView.swift in Sources */,
 				EE8C519327AE384F00F9A7C8 /* EasyFirebaseExample_iOSApp.swift in Sources */,
+				EEAE2A2C27B092DD00155DC7 /* ExampleUser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +376,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EEAE2A2E27B092F900155DC7 /* EasyFirebase */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EasyFirebase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EE8C518727AE384F00F9A7C8 /* Project object */;
 }

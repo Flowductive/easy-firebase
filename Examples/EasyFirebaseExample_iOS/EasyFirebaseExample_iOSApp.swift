@@ -6,12 +6,29 @@
 //
 
 import SwiftUI
+import EasyFirebase
 
 @main
 struct EasyFirebaseExample_iOSApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+  
+  /// The Global `EnvironmentObject`.
+  var global = Global()
+  
+  // MARK: - Body Scene
+  
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environmentObject(global)
+        .onAppear {
+          EasyFirebase.configure()
+          EasyAuth.onUserUpdate { user in
+            // Check to make sure the `user` object passed in the closure is the right type, and is not `nil`
+            guard let user = user as? ExampleUser else { return }
+            // Set your global `user` instance used across the app
+            global.user = user
+          }
         }
     }
+  }
 }

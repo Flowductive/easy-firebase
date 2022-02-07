@@ -12,8 +12,12 @@ struct ContentView: View {
   // MARK: - Body View
   
   var body: some View {
-    Text("Hello, world!")
-      .padding()
+    TabView {
+      AuthView().tabItem {
+        Image(systemName: "person.fill")
+        Text("Auth")
+      }
+    }
   }
 }
 
