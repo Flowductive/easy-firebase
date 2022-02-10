@@ -107,5 +107,3 @@ struct AuthView_Previews: PreviewProvider {
     AuthView()
   }
 }
-
-EasyAuth.signOut()
