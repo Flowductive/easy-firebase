@@ -84,11 +84,6 @@ open class EasyUser: IndexedDocument {
   /// The user's email address.
   public internal(set) var email: String
   
-  /// The user's username.
-  ///
-  /// This value is automatically generated based on the user's email upon account creation.
-  public internal(set) var username: String
-  
   /// The user's display name.
   ///
   /// This value is automatically updated to a suggested display name when an account is created.
@@ -99,6 +94,13 @@ open class EasyUser: IndexedDocument {
   /// If the user uses a third-party authentication service like Google, this image will automatically update.
   /// You can specify a default profile image by setting `EasyAuth.defaultProfileImageURLs`.
   public var profileImageURL: URL?
+  
+  // MARK: - Objective C Exposed Mixed Properties
+  
+  /// The user's username.
+  ///
+  /// This value is automatically generated based on the user's email upon account creation.
+  @objc public internal(set) var username: String
   
   // MARK: - Inherited Properties
   
@@ -200,10 +202,11 @@ public extension EasyUser {
    - parameter suggestionGenerator: A function that takes in a username and provides a new username (hopefully unique). See **Discussion** for more information.
    - parameter completion: The completion handler. See **Discussion** for more information.
    */
-  func safelyUpdateUsername(to newUsername: String,
-                            suggesting suggestionGenerator: @escaping (String) -> String = defaultSuggestionGenerator,
-                            completion: @escaping (Error?, String?) -> Void) {
-    EasyAuth.checkUsernameAvailable(newUsername, forUserType: Self.self) { available in
+  func safelyUpdateUsername<T>(to newUsername: String,
+                               ofType type: T.Type,
+                               suggesting suggestionGenerator: @escaping (String) -> String = defaultSuggestionGenerator,
+                               completion: @escaping (Error?, String?) -> Void) where T: EasyUser {
+    EasyAuth.checkUsernameAvailable(newUsername, forUserType: T.self) { available in
       if available {
         self.unsafelyUpdateUsername(to: newUsername) { error in
           completion(error, nil)
@@ -227,7 +230,7 @@ public extension EasyUser {
    */
   func unsafelyUpdateUsername(to newUsername: String, completion: @escaping (Error?) -> Void = { _ in }) {
     self.username = newUsername
-    set(\.username)
+    set(\.username, completion: completion)
   }
   
   /**

@@ -99,7 +99,8 @@ extension EasyFirestore {
     }
     
     private static func `where`<T, V>(_ conditions: [Condition<T, V>], order: Order?, limit: Int?, completion: @escaping ([T]) -> Void) where T: Document {
-      let collection = db.collection(String(describing: T.self))
+      let collectionName = String(describing: T.self)
+      let collection = db.collection(collectionName)
       guard conditions.count > 0 else { return }
       var query: Query = conditions.first!.apply(to: collection)
       for condition in conditions.dropFirst() {
@@ -126,8 +127,8 @@ extension EasyFirestore {
             if let object = object {
               arr.append(object)
             }
-            completion(arr)
           }
+          completion(arr)
         }
       })
     }

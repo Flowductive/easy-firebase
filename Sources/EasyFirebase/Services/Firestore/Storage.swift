@@ -51,7 +51,8 @@ extension EasyFirestore {
      */
     public static func set<T, U>(_ path: KeyPath<T, U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
       let value = document[keyPath: path]
-      db.collection(String(describing: T.self)).document(document.id).updateData([path.string: value], completion: completion)
+      let collectionName = String(describing: T.self)
+      db.collection(collectionName).document(document.id).updateData([path.string: value], completion: completion)
     }
     
     /**
