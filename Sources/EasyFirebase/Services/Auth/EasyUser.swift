@@ -154,13 +154,15 @@ public extension EasyUser {
    Updates the current user's email address.
    
    - parameter newEmail: The new email to update with.
+   - parameter type: The type of the user.
    - parameter completion: The completion handler.
    */
-  func updateEmail(to newEmail: String, completion: @escaping (Error?) -> Void = { _ in }) {
+  func updateEmail<T>(to newEmail: String, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard assertAuthMatches() else { return }
     authUser?.updateEmail(to: newEmail) { [self] error in
       if error == nil {
         email = newEmail
+        set(\.email, ofUserType: T.self, completion: completion)
       }
       completion(error)
     }
