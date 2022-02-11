@@ -122,6 +122,7 @@ open class EasyUser: IndexedDocument {
     displayName = user.displayName ?? username
     profileImageURL = user.photoURL ?? EasyAuth.defaultProfileImageURLs.randomElement()!
     updateAnalyticsUserProperties()
+    refreshEmailVerifcationStatus()
   }
   
   public init() {
