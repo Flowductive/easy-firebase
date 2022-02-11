@@ -106,8 +106,8 @@ extension Document {
    - parameter path: The path to the field to update remotely.
    - parameter completion: The completion handler.
    */
-  public func set<T>(_ path: KeyPath<Self, T>, completion: @escaping (Error?) -> Void = { _ in }) where T: Codable {
-    EasyFirestore.Storage.set(path, in: self, completion: completion)
+  public func set<T, U>(_ path: KeyPath<T, U>, ofUserType: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+    EasyFirestore.Storage.set(path, in: self as! T, completion: completion)
   }
   
   /**

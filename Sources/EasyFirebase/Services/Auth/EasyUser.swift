@@ -208,7 +208,7 @@ public extension EasyUser {
                                completion: @escaping (Error?, String?) -> Void) where T: EasyUser {
     EasyAuth.checkUsernameAvailable(newUsername, forUserType: T.self) { available in
       if available {
-        self.unsafelyUpdateUsername(to: newUsername) { error in
+        self.unsafelyUpdateUsername(to: newUsername, ofUserType: T.self) { error in
           completion(error, nil)
           return
         }
@@ -228,9 +228,17 @@ public extension EasyUser {
    
    If you wish to update the user's username if it is available and provide a suggested username upon failure, see ``safelyUpdateUsername(to:suggesting:completion:)``.
    */
-  func unsafelyUpdateUsername(to newUsername: String, completion: @escaping (Error?) -> Void = { _ in }) {
+  func unsafelyUpdateUsername<T>(to newUsername: String, ofUserType: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
+    let oldUsername = username
     self.username = newUsername
-    set(\.username, completion: completion)
+    set(\.username, ofUserType: T.self, completion: { error in
+      if let error = error {
+        completion(error)
+        self.username = oldUsername
+      } else {
+        completion(nil)
+      }
+    })
   }
   
   /**
@@ -360,7 +368,7 @@ public extension EasyUser {
     let new = generator(base)
     EasyAuth.checkUsernameAvailable(new, forUserType: Self.self) { available in
       if available {
-        completion(base)
+        completion(new)
       } else {
         self.getUniqueUsername(new, using: generator, completion: completion)
       }
