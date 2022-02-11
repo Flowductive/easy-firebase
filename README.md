@@ -283,7 +283,7 @@ user.updatePhoto(with: myPhotoData, completion: { error in })
 // Send the current user's password reset form to a specified email
 user.sendPasswordReset(toEmail: "myResetEmail@example.com", completion: { error in })
 // Update the current user's display name
-user.updateDisplayName(to: "New_DisplayName", completion: { error in })
+user.updateDisplayName(to: "New_DisplayName", ofUserType: MyUser.self, completion: { error in })
 // Update the current user's password
 user.updatePassword(to: "newPassword", completion: { error in })
 // Delete the current user

@@ -84,23 +84,23 @@ open class EasyUser: IndexedDocument {
   /// The user's email address.
   public internal(set) var email: String
   
-  /// The user's display name.
-  ///
-  /// This value is automatically updated to a suggested display name when an account is created.
-  public internal(set) var displayName: String
-  
   /// The user's profile image.
   ///
   /// If the user uses a third-party authentication service like Google, this image will automatically update.
   /// You can specify a default profile image by setting `EasyAuth.defaultProfileImageURLs`.
   public var profileImageURL: URL?
   
-  // MARK: - Objective C Exposed Mixed Properties
+  // MARK: - Objective-C Exposed Mixed Properties
   
   /// The user's username.
   ///
   /// This value is automatically generated based on the user's email upon account creation.
   @objc public internal(set) var username: String
+  
+  /// The user's display name.
+  ///
+  /// This value is automatically updated to a suggested display name when an account is created.
+  @objc public internal(set) var displayName: String
   
   // MARK: - Inherited Properties
   
@@ -250,9 +250,10 @@ public extension EasyUser {
    Updates the current user's display name.
    
    - parameter newName: The new display name to update with.
+   - parameter type: The type of the user.
    - parameter completion: The completion handler.
    */
-  func updateDisplayName(to newName: String, completion: @escaping (Error?) -> Void = { _ in }) {
+  func updateDisplayName<T>(to newName: String, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       let changeRequest = authUser.createProfileChangeRequest()
@@ -260,8 +261,10 @@ public extension EasyUser {
       changeRequest.commitChanges { [self] error in
         if error == nil {
           self.displayName = newName
+          set(\.displayName, ofUserType: T.self, completion: completion)
+        } else {
+          completion(error)
         }
-        completion(error)
       }
     }
   }
