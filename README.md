@@ -287,7 +287,7 @@ user.updateDisplayName(to: "New_DisplayName", ofUserType: MyUser.self, completio
 // Update the current user's password
 user.updatePassword(to: "newPassword", completion: { error in })
 // Delete the current user
-user.delete(completion: { error in })
+user.delete(ofUserType: MyUser.self, completion: { error in })
 ```
 
 ## 📦 Storage Feature Showcase

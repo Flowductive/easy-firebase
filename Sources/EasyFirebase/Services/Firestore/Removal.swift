@@ -30,7 +30,8 @@ extension EasyFirestore {
      - parameter completion: The completion handler.
      */
     public static func remove<T>(id: DocumentID, ofType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
-      db.collection(colName(of: T.self)).document(id).delete { error in
+      let collectionName = String(describing: T.self)
+      db.collection(collectionName).document(id).delete { error in
         completion(error)
       }
     }

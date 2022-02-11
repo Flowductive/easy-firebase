@@ -355,14 +355,15 @@ public extension EasyUser {
    
    ⚠️ **Warning!** This method will *not* ask for confirmation. Implement that within your app!
    
+   - parameter type: The type of the user
    - parameter completion: The completion handler
    */
-  func delete(completion: @escaping (Error?) -> Void = { _ in }) {
+  func delete<T>(ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       authUser.delete { error in
         completion(error)
-        // TODO: Delete the user object in Firestore.
+        EasyFirestore.Removal.remove(id: self.id, ofType: T.self, completion: completion)
       }
     }
   }
