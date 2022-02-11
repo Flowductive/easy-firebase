@@ -260,7 +260,7 @@ EasyAuth.signInWithApple()
 Generate unique usernames and update easily:
 
 ```swift
-user.safelyUpdateUsername(to: "myNewUsername") { error, suggestion in
+user.safelyUpdateUsername(to: "myNewUsername", ofUserType: MyUser.self) { error, suggestion in
  if let error = error {
    // ...
  } else if let suggestion = suggestion {

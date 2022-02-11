@@ -170,7 +170,7 @@ public extension EasyUser {
    
    This method is *safe*, meaning that it won't update the username if another user has an existing, matching username.
    
-   If you wish to update the user's username regardless of whether it is unique, use ``unsafelyUpdateUsername(to:completion:)``.
+   If you wish to update the user's username regardless of whether it is unique, use ``unsafelyUpdateUsername(to:ofUserType:completion:)``.
    
    📌 **Important!** The completion block has two arguments. If the second `String?` value is `nil`, that means the username was successfully updated. Otherwise, if a non-`nil` value is passed, that means the username was *not* updated (and instead a suggested username is provided as the value).
    
@@ -185,7 +185,7 @@ public extension EasyUser {
    # Example
    
    ```
-   user.safelyUpdateUsername(to: "myNewUsername",
+   user.safelyUpdateUsername(to: "myNewUsername", ofUserType: MyUser.self,
                                     suggesting: { "\($0)\(Int.random(in: 0...999))" }
    ) { error, suggestion in
      if let error = error {
@@ -199,6 +199,7 @@ public extension EasyUser {
    ```
    
    - parameter newUsername: The username to update to.
+   - parameter type: The type of the user.
    - parameter suggestionGenerator: A function that takes in a username and provides a new username (hopefully unique). See **Discussion** for more information.
    - parameter completion: The completion handler. See **Discussion** for more information.
    */
@@ -226,9 +227,13 @@ public extension EasyUser {
    
    This method is *unsafe*, meaning that it will update the username regardless if there is another user with a matching username.
    
-   If you wish to update the user's username if it is available and provide a suggested username upon failure, see ``safelyUpdateUsername(to:suggesting:completion:)``.
+   If you wish to update the user's username if it is available and provide a suggested username upon failure, see ``safelyUpdateUsername(to:ofType:suggesting:completion:)``.
+   
+   - parameter newUsername: The username to update to.
+   - parameter type: The type of the user.
+   - parameter completion: The completion hander.
    */
-  func unsafelyUpdateUsername<T>(to newUsername: String, ofUserType: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
+  func unsafelyUpdateUsername<T>(to newUsername: String, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     let oldUsername = username
     self.username = newUsername
     set(\.username, ofUserType: T.self, completion: { error in
