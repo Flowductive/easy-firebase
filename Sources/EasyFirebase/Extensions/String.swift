@@ -10,6 +10,13 @@ import CryptoKit
 
 extension String {
   
+  // MARK: - Public Methods
+  
+  /// The string, reformatted for username format.
+  public var inUsernameFormat: String {
+    return self.replacingOccurrences(of: "[^a-zA-Z0-9_.]", with: "_", options: .regularExpression, range: nil).lowercased()
+  }
+  
   // MARK: - Internal Static Methods
   
   internal static func nonce(length: Int = 32) -> String {
