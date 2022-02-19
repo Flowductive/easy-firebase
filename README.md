@@ -155,7 +155,7 @@ var dealership = Dealership(name: "Los Angeles Dealership")
 // Set and assign the Toyota Corolla to the Los Angeles Dealership
 car1.setAssign(to: \.cars, in: dealership)
 
-// Set and assign the Honda Civid to the Los Angeles Dealership
+// Set and assign the Honda Civic to the Los Angeles Dealership
 car2.set()
 car2.assign(to: \.cars, in: dealership)
 ```
