@@ -217,6 +217,14 @@ public class EasyAuth: NSObject {
     case apple = "Apple"
     case google = "Google"
     case email = "Email"
+    
+    init(provider: String) {
+      switch provider {
+      case "apple.com": self = .apple
+      case "google.com": self = .google
+      default: self = .email
+      }
+    }
   }
 }
 

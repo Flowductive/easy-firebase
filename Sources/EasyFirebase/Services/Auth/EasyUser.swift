@@ -337,6 +337,8 @@ public extension EasyUser {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       EasyAuth.emailVerified = authUser.isEmailVerified
+      let id = authUser.providerData.first?.providerID ?? ""
+      EasyAuth.accountProvider = EasyAuth.Provider(provider: id)
     }
   }
   
