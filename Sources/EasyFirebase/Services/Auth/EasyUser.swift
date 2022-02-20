@@ -9,6 +9,8 @@ import Foundation
 import Firebase
 import FirebaseAuth
 import FirebaseMessaging
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 /**
  A fundamental user object.
@@ -88,7 +90,7 @@ open class EasyUser: IndexedDocument {
   ///
   /// If the user uses a third-party authentication service like Google, this image will automatically update.
   /// You can specify a default profile image by setting `EasyAuth.defaultProfileImageURLs`.
-  public var profileImageURL: URL?
+  public var profileImageURL: String?
   
   // MARK: - Objective-C Exposed Mixed Properties
   
@@ -120,7 +122,7 @@ open class EasyUser: IndexedDocument {
     self.email = email
     username = email.removeDomainFromEmail()
     displayName = user.displayName ?? username
-    profileImageURL = user.photoURL ?? EasyAuth.defaultProfileImageURLs.randomElement()!
+    profileImageURL = user.photoURL?.absoluteString ?? EasyAuth.defaultProfileImageURLs.randomElement()!.absoluteString
     updateAnalyticsUserProperties()
     refreshEmailVerifcationStatus()
   }
@@ -134,7 +136,7 @@ open class EasyUser: IndexedDocument {
     email = "guest@easy-firebase.com"
     username = "guest-user"
     displayName = "Guest"
-    profileImageURL = EasyAuth.defaultProfileImageURLs.randomElement()!
+    profileImageURL = EasyAuth.defaultProfileImageURLs.randomElement()!.absoluteString
   }
 }
 
@@ -286,8 +288,8 @@ public extension EasyUser {
       changeRequest.photoURL = url
       changeRequest.commitChanges { error in
         if error == nil {
-          self.profileImageURL = url
-          self.set(\.profileImageURL, ofUserType: T.self, completion: completion)
+          self.profileImageURL = url.absoluteString
+          Firestore.firestore().collection(String(describing: type)).document(self.id).updateData(["profileImageURL": url.absoluteString])
         }
         completion(error)
       }
