@@ -276,9 +276,10 @@ public extension EasyUser {
    Updates the current user's photo URL.
    
    - parameter url: The new photo URL to update with.
+   - parameter type: The type of the user.
    - parameter completion: The completion handler.
    */
-  func updatePhoto(with url: URL, completion: @escaping (Error?) -> Void = { _ in }) {
+  func updatePhoto<T>(with url: URL, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       let changeRequest = authUser.createProfileChangeRequest()
@@ -286,6 +287,7 @@ public extension EasyUser {
       changeRequest.commitChanges { error in
         if error == nil {
           self.profileImageURL = url
+          self.set(\.profileImageURL, ofUserType: T.self, completion: completion)
         }
         completion(error)
       }
@@ -296,13 +298,14 @@ public extension EasyUser {
    Updates the current user's photo, using data.
    
    - parameter data: The data of the new photo to update with.
+   - parameter type: The type of the user.
    - parameter completion: The completion handler.
    */
-  func updatePhoto(with data: Data, completion: @escaping (Error?) -> Void = { _ in }) {
+  func updatePhoto<T>(with data: Data, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard assertAuthMatches() else { return }
     EasyStorage.put(data, to: StorageResource(id: id)) { [self] url in
       guard let url = url else { return }
-      updatePhoto(with: url, completion: completion)
+      updatePhoto(with: url, ofUserType: type, completion: completion)
     }
   }
   

@@ -279,7 +279,7 @@ Quickly update and manage `EasyAuth` users:
 // Send a verfication email to the currently signed-in user
 user.sendEmailVerification(completion: { error in })
 // Upload and update the current user's profile photo
-user.updatePhoto(with: myPhotoData, completion: { error in })
+user.updatePhoto(with: myPhotoData, ofUserType: FUser.self, completion: { error in })
 // Send the current user's password reset form to a specified email
 user.sendPasswordReset(toEmail: "myResetEmail@example.com", completion: { error in })
 // Update the current user's display name
