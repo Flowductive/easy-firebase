@@ -121,7 +121,10 @@ open class EasyUser: IndexedDocument {
     lastSignon = Date()
     self.email = email
     username = email.removeDomainFromEmail()
-    displayName = user.displayName ?? username
+    if username.count < 6 {
+      username += String.random(length: 6 - username.count)
+    }
+    displayName = user.displayName ?? email.removeDomainFromEmail()
     profileImageURL = user.photoURL?.absoluteString ?? EasyAuth.defaultProfileImageURLs.randomElement()!.absoluteString
     updateAnalyticsUserProperties()
     refreshEmailVerifcationStatus()
@@ -399,5 +402,12 @@ public extension EasyUser {
       return false
     }
     return uid == id
+  }
+}
+
+fileprivate extension String {
+  static func random(length: Int) -> String {
+    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    return String((0..<length).map{ _ in letters.randomElement()! })
   }
 }
