@@ -308,7 +308,7 @@ public extension EasyUser {
    */
   func updatePhoto<T>(with data: Data, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard assertAuthMatches() else { return }
-    EasyStorage.put(data, to: StorageResource(id: id)) { [self] url in
+    EasyStorage.put(data, to: StorageResource(id: id, folder: "Profile Images")) { [self] url in
       guard let url = url else { return }
       updatePhoto(with: url, ofUserType: type, completion: completion)
     }
