@@ -306,9 +306,9 @@ public extension EasyUser {
    - parameter type: The type of the user.
    - parameter completion: The completion handler.
    */
-  func updatePhoto<T>(with data: Data, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
+  func updatePhoto<T>(with data: Data, ofUserType type: T.Type, progress: @escaping (Double) -> Void = { _ in }, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard assertAuthMatches() else { return }
-    EasyStorage.put(data, to: StorageResource(id: id, folder: "Profile Images")) { [self] url in
+    EasyStorage.put(data, to: StorageResource(id: id, folder: "Profile Images"), progress: progress) { [self] url in
       guard let url = url else { return }
       updatePhoto(with: url, ofUserType: type, completion: completion)
     }
