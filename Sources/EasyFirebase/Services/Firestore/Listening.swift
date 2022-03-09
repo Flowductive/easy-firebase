@@ -35,7 +35,9 @@ extension EasyFirestore {
           return
         }
         var document: T?
-        try? document = snapshot.data(as: T.self)
+        if let data = snapshot.data() {
+          document = try? Firestore.Decoder().decode(T.self, from: data)
+        }
         guard let document = document else {
           EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(colName(of: T.self))] collection, but couldn't be decoded.")
           return

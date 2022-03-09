@@ -112,25 +112,7 @@ open class EasyUser: IndexedDocument {
   
   // MARK: - Public Initalizers
   
-  public required init?(from user: User) {
-    id = user.uid
-    dateCreated = Date()
-    guard let email = user.email else { return nil }
-    deviceToken = EasyMessaging.deviceToken
-    appVersion = Bundle.versionString
-    lastSignon = Date()
-    self.email = email
-    username = email.removeDomainFromEmail()
-    if username.count < 6 {
-      username += String.random(length: 6 - username.count)
-    }
-    displayName = user.displayName ?? email.removeDomainFromEmail()
-    profileImageURL = user.photoURL?.absoluteString ?? EasyAuth.defaultProfileImageURLs.randomElement()!.absoluteString
-    updateAnalyticsUserProperties()
-    refreshEmailVerifcationStatus()
-  }
-  
-  public init() {
+  public required init() {
     id = "Guest"
     dateCreated = Date()
     deviceToken = "-"
@@ -148,10 +130,46 @@ public extension EasyUser {
   
   // MARK: - Public Static Properties
   
+  /// The default random username suggestion generator.
   static var defaultSuggestionGenerator: (String) -> String {{ username in
     let randomInt = Int.random(in: 0...99)
     return "\(username)\(randomInt)"
   }}
+  
+  // MARK: - Public Static Methods
+  
+  /**
+   Gets an `EasyUser` from a `FirebaseAuth` user.
+   
+   - parameter user: The `FirebaseAuth` user to transform.
+   - returns: An `EasyUser` instance.
+   */
+  static func get(from user: User) -> Self? {
+    let newUser = Self()
+    newUser.id = user.uid
+    newUser.dateCreated = Date()
+    guard let email = user.email else { return nil }
+    newUser.deviceToken = EasyMessaging.deviceToken
+    newUser.appVersion = Bundle.versionString
+    newUser.lastSignon = Date()
+    newUser.email = email
+    newUser.username = email.removeDomainFromEmail()
+    if newUser.username.count < 6 {
+      newUser.username += String.random(length: 6 - newUser.username.count)
+    }
+    newUser.displayName = user.displayName ?? newUser.email.removeDomainFromEmail()
+    newUser.profileImageURL = user.photoURL?.absoluteString ?? EasyAuth.defaultProfileImageURLs.randomElement()!.absoluteString
+    newUser.updateAnalyticsUserProperties()
+    newUser.refreshEmailVerifcationStatus()
+    return newUser
+  }
+  
+  // MARK: - Public Properties
+  
+  /// Returns whether the user is a guest (not signed in).
+  var isGuest: Bool {
+    return id == "Guest"
+  }
   
   // MARK: - Public Methods
   
