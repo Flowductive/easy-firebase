@@ -389,9 +389,16 @@ public extension EasyUser {
   func delete<T>(ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
+      EasyFirestore.Listening.stop(EasyAuth.listenerKey)
       authUser.delete { error in
-        completion(error)
+        if let error = error {
+          completion(error)
+          return
+        }
         EasyFirestore.Removal.remove(id: self.id, ofType: T.self, completion: completion)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+          EasyAuth.signOut()
+        }
       }
     }
   }

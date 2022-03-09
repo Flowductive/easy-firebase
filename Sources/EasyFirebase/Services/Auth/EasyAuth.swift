@@ -63,9 +63,9 @@ public class EasyAuth: NSObject {
   
   internal static let auth = Auth.auth()
   
-  // MARK: - Private Static Properties
+  internal static let listenerKey: EasyFirestore.ListenerKey = "EASY_USER_UPDATE"
   
-  private static let listenerKey: EasyFirestore.ListenerKey = "EASY_USER_UPDATE"
+  // MARK: - Private Static Properties
   
   private static let googleSignInCredentialHandler: (AuthCredential?) -> Void = { credential in
     guard let credential = credential else { return }
