@@ -211,6 +211,8 @@ class MyUser: EasyUser {
 }
 ```
 
+⚠️ **Note:** Be sure to read the [the wiki](https://github.com/Flowductive/easy-firebase/wiki/Get-Started-with-EasyAuth) to implement this properly!
+
 ### Email Auth
 
 Authenticate with an email and password easily:
