@@ -70,7 +70,7 @@ extension EasyFirestore {
     /**
      Sets the object in Firestore, then assigns it to a parent document's field list of `DocumentID`s.
      
-     - parameter document: The document to store in Fires
+     - parameter document: The document to store in Firestore.
      - parameter child: The child document (only used to get an ID).
      - parameter path: The path of the parent document's field containing the list of `DocumentID`s.
      - parameter parent: The parent document containing the list of `DocumentID`s.
@@ -83,6 +83,27 @@ extension EasyFirestore {
           return
         }
         Linking.assign(document, to: path, in: parent, completion: completion)
+      }
+    }
+    
+    /**
+     Sets a (default) document in Firestore only if the document does not exist.
+     
+     This method is used to create new documents in Firestore without being destructive. For instance, if user objects have other document types unique to them, you may want to create these new documents under the condition that they don't already exist (to prevent user data loss).
+     
+     - parameter document: The document to set in Firestore.
+     - parameter id: The ID of the document to check in Firestore. If set to `nil`, the ID of the document being set will be used to check.
+     */
+    public static func setIfNone<T>(_ document: T, checking id: DocumentID? = nil, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+      var checkID = document.id
+      if let id = id {
+        checkID = id
+      }
+      db.collection(String(describing: T.self)).document(checkID).getDocument { result, error in
+        guard error == nil else { return }
+        guard let result = result else { return }
+        guard !result.exists else { return }
+        `set`(document, completion: completion)
       }
     }
     

@@ -28,7 +28,7 @@ extension EasyFirestore {
      - parameter document: The document with the updated field.
      - parameter completion: The completion handler.
      */
-    public static func increment<T, U>(_ path: KeyPath<T, U?>, by increase: Int, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: AdditiveArithmetic {
+    public static func increment<T, U>(_ path: KeyPath<T, U>, by increase: Int, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: AdditiveArithmetic {
       let collectionName = String(describing: T.self)
       db.collection(collectionName).document(document.id).updateData([path.string: FieldValue.increment(Int64(increase))], completion: completion)
     }

@@ -129,9 +129,8 @@ extension Document {
    - parameter increment: The amount to increment by.
    - parameter completion: The completion handler.
    */
-  public mutating func increment<T>(_ path: WritableKeyPath<Self, T?>, by increment: T, completion: @escaping (Error?) -> Void = { _ in }) where T: AdditiveArithmetic {
-    let val = self[keyPath: path]
-    guard var val = val else { return }
+  public mutating func increment<T>(_ path: WritableKeyPath<Self, T>, by increment: T, completion: @escaping (Error?) -> Void = { _ in }) where T: AdditiveArithmetic {
+    var val = self[keyPath: path]
     if let intIncrement = increment as? Int {
       EasyFirestore.Updating.increment(path, by: intIncrement, in: self, completion: completion)
       val.add(increment)

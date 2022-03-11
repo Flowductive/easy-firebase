@@ -35,7 +35,7 @@ extension EasyFirestore {
         completion(cachedDocument)
         return
       } else {
-        get(id, collection: colName(of: T.self), type: type, completion: completion)
+        `get`(id, collection: colName(of: T.self), type: type, completion: completion)
       }
     }
     
@@ -49,7 +49,7 @@ extension EasyFirestore {
      Singletons retrieved from Firestore are retrieved from the `Singleton` collection.
      */
     public static func get<T>(singleton: SingletonName, ofType type: T.Type, completion: @escaping (T?) -> Void) where T: Singleton {
-      get(singleton, collection: "Singleton", type: type, completion: completion)
+      `get`(singleton, collection: "Singleton", type: type, completion: completion)
     }
     
     /**
@@ -68,7 +68,7 @@ extension EasyFirestore {
       let chunks = ids.chunk(size: 10)
       var results: [T] = []
       for chunk in chunks {
-        get(chunk: chunk, ofType: type, useCache: useCache) { arr in
+        `get`(chunk: chunk, ofType: type, useCache: useCache) { arr in
           results <= arr
           onFetch(results)
         }
@@ -90,7 +90,7 @@ extension EasyFirestore {
           onFetch([])
           return
         }
-        get(ids: ids, ofType: U.self, onFetch: onFetch)
+        `get`(ids: ids, ofType: U.self, onFetch: onFetch)
       }
     }
     
