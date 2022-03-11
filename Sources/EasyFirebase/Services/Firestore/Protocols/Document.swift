@@ -123,6 +123,25 @@ extension Document {
   }
   
   /**
+   Increments a specific field remotely in Firestore.
+   
+   - parameter path: The path to the field to update.
+   - parameter increment: The amount to increment by.
+   - parameter completion: The completion handler.
+   */
+  public mutating func increment<T>(_ path: WritableKeyPath<Self, T?>, by increment: T, completion: @escaping (Error?) -> Void = { _ in }) where T: AdditiveArithmetic {
+    let val = self[keyPath: path]
+    guard var val = val else { return }
+    if let intIncrement = increment as? Int {
+      EasyFirestore.Updating.increment(path, by: intIncrement, in: self, completion: completion)
+      val.add(increment)
+      self[keyPath: path] = val
+    } else {
+      fatalError("[EasyFirebase] You can't increment mismatching values! Check the types of values you are providing to increment.")
+    }
+  }
+  
+  /**
    Gets the most up-to-date value from a specified path.
    
    - parameter path: The path to the field to retrieve.
@@ -177,3 +196,4 @@ extension Document {
     EasyFirestore.Linking.unassign(self, from: path, in: parent, completion: completion)
   }
 }
+
