@@ -8,6 +8,8 @@
 <p align="center">🔥 Firebase solutions in one native Swift package</p>
 <p align="center">📘 Fully documented code with examples</p>
 
+⚠️ **Note:** This package is still under development and its contents are freely subject to change.
+
 ## What is EasyFirebase?
 
 EasyFirebase is a Swift wrapper for all things Firebase. Save hours from implementing the Firebase code in your projects repeatedly. EasyFirebase makes document storage and retrieval easier by providing **intuitive protocols** for Firestore. EasyFirebase makes **authentication easier** with the EasyUser (subclassable) open class and simple one-line sign-in with Google and Apple. EasyFirebase is cross-platform and works with both iOS and macOS.
