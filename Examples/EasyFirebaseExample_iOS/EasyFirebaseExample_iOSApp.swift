@@ -22,9 +22,9 @@ struct EasyFirebaseExample_iOSApp: App {
         .environmentObject(global)
         .onAppear {
           EasyFirebase.configure()
-          EasyAuth.onUserUpdate { user in
+          EasyAuth.onUserUpdate(ofType: ExampleUser.self) { user in
             // Check to make sure the `user` object passed in the closure is the right type, and is not `nil`
-            guard let user = user as? ExampleUser else { return }
+            guard let user = user else { return }
             // Set your global `user` instance used across the app
             global.user = user
           }

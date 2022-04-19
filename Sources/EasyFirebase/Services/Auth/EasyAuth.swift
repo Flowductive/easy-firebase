@@ -142,7 +142,7 @@ public class EasyAuth: NSObject {
    
    - parameter action: The action to perform when the user is updated.
    */
-  public static func onUserUpdate<T>(perform action: @escaping (T?) -> Void) where T: EasyUser {
+  public static func onUserUpdate<T>(ofType type: T.Type, perform action: @escaping (T?) -> Void) where T: EasyUser {
     if let authHandle = authHandle {
       auth.removeStateDidChangeListener(authHandle)
     }
