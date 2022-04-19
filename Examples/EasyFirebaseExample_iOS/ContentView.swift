@@ -17,6 +17,10 @@ struct ContentView: View {
         Image(systemName: "person.fill")
         Text("Auth")
       }
+      FirestoreView().tabItem {
+        Image(systemName: "flame.fill")
+        Text("Firestore")
+      }
     }
   }
 }

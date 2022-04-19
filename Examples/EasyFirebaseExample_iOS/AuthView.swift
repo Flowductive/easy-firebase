@@ -77,26 +77,32 @@ struct AuthView: View {
       Text("Username: \(global.user.username)")
       Text("Email: \(global.user.email)")
       Text("Display Name: \(global.user.displayName)")
-      Text("Fav Food: \(global.user.favoriteFood)")
-      Text("Age: \(global.user.age)")
-      Text("Has Job: \(String(global.user.hasJob))")
     }
   }
   
   // MARK: - Methods
   
+  /**
+   Signs in the user.
+   */
   func signIn() {
     EasyAuth.signIn(email: emailField, password: passwordField) { error in
       self.error = error?.localizedDescription
     }
   }
   
+  /**
+   Creates a new account for the user.
+   */
   func createAccount() {
     EasyAuth.createAccount(email: emailField, password: passwordField) { error in
       self.error = error?.localizedDescription
     }
   }
   
+  /**
+   Signs out the user.
+   */
   func signOut() {
     EasyAuth.signOut()
   }
