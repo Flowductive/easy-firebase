@@ -49,10 +49,10 @@ extension EasyFirestore {
      - parameter document: The document with the updated field.
      - parameter completion: The completion handler.
      */
-    public static func set<T, U>(_ path: KeyPath<T, U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+    public static func set<T, U>(field: FieldName, using path: KeyPath<T, U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
       let value = document[keyPath: path]
       let collectionName = String(describing: T.self)
-      db.collection(collectionName).document(document.id).updateData([path.string: value], completion: completion)
+      db.collection(collectionName).document(document.id).updateData([field: value], completion: completion)
     }
     
     /**
@@ -63,8 +63,9 @@ extension EasyFirestore {
      - parameter document: The document with the field to update.
      - parameter completion: The completion handler.
      */
-    public static func set<T, U>(_ value: U, to path: KeyPath<T, U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
-      set(path, in: document, completion: completion)
+    public static func set<T, U>(field: FieldName, with value: U, using path: KeyPath<T, U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+      let collectionName = String(describing: T.self)
+      db.collection(collectionName).document(document.id).updateData([field: value], completion: completion)
     }
     
     /**
@@ -76,13 +77,13 @@ extension EasyFirestore {
      - parameter parent: The parent document containing the list of `DocumentID`s.
      - parameter completion: The completion handler.
      */
-    public static func setAssign<T, U>(_ document: T, to path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+    public static func setAssign<T, U>(_ document: T, toField field: FieldName, using path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
       set(document) { error in
         if let error = error {
           completion(error)
           return
         }
-        Linking.assign(document, to: path, in: parent, completion: completion)
+        Linking.assign(document, toField: field, using: path, in: parent, completion: completion)
       }
     }
     

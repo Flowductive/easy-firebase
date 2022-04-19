@@ -58,8 +58,8 @@ extension EasyFirestore {
      
      For more information on unassignment, check out `EasyFirestore.Linking`.
      */
-    public static func removeUnassign<T, U>(_ document: T, from path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
-      Linking.unassign(document, from: path, in: parent, completion: { error in
+    public static func removeUnassign<T, U>(_ document: T, fromField field: FieldName, using path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+      Linking.unassign(document, fromField: field, using: path, in: parent, completion: { error in
         if let error = error {
           completion(error)
           return

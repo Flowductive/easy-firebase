@@ -28,7 +28,7 @@ struct FirestoreView: View {
   // MARK: - Body View
   
   var body: some View {
-    VStack(spacing: 8.0) {
+    VStack(spacing: 12.0) {
       VStack {
         Text("Fav Food: \(global.user.favoriteFood)").bold()
         TextField("New value", text: $favFoodField)
@@ -50,7 +50,7 @@ struct FirestoreView: View {
           Text("Item: \(foodEaten.foodName) (\(foodEaten.calories) cal)")
           Spacer()
           Button(action: {
-            EasyFirestore.Removal.removeUnassign(foodEaten, from: \.foodsEaten, in: global.user)
+            EasyFirestore.Removal.removeUnassign(foodEaten, fromField: "foodsEaten", using: \.foodsEaten, in: global.user)
           }) {
             Text("Delete")
           }
@@ -58,7 +58,10 @@ struct FirestoreView: View {
       }
       HStack {
         TextField("Add new food", text: $newFoodField)
-        Button(action: addFood) {
+        Button(action: {
+          addFood()
+          newFoodField = ""
+        }) {
           Text("Add")
         }
       }
@@ -90,9 +93,9 @@ struct FirestoreView: View {
    Method 2 pushes the data directly to Firestore. This also automatically updates the properties of the local object.
    */
   func pushDataMethod2() {
-    global.user.set(favFoodField, to: \.favoriteFood)
-    global.user.set(ageField, to: \.age)
-    global.user.set(hasJobField, to: \.hasJob)
+    global.user.set(field: "favoriteFood", with: favFoodField, using: \.favoriteFood)
+    global.user.set(field: "age", with: ageField, using: \.age)
+    global.user.set(field: "hasJob", with: hasJobField, using: \.hasJob)
   }
   
   /**
@@ -112,7 +115,7 @@ struct FirestoreView: View {
     // Add the food locally:
     self.foodsEaten.append(food)
     // Then set it in Firestore and link to the user object:
-    EasyFirestore.Storage.setAssign(food, to: \.foodsEaten, in: global.user)
+    EasyFirestore.Storage.setAssign(food, toField: "foodsEaten", using: \.foodsEaten, in: global.user)
     // Or, equivalently...
     // food.setAssign(to: \.foodsEaten, in: global.user)
   }

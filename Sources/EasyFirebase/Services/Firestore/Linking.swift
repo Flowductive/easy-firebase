@@ -25,8 +25,8 @@ extension EasyFirestore {
      - parameter parent: The parent document containing the list of `DocumentID`s.
      - parameter completion: The completion handler.
      */
-    public static func assign<T, U>(_ child: T, to path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
-      append(child.id, to: path, in: parent, completion: completion)
+    public static func assign<T, U>(_ child: T, toField field: FieldName, using path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+      append(child.id, field: field, using: path, in: parent, completion: completion)
     }
     
     /**
@@ -37,31 +37,31 @@ extension EasyFirestore {
      - parameter parent: The parent document containing the list of `DocumentID`s.
      - parameter completion: The completion handler.
      */
-    public static func unassign<T, U>(_ child: T, from path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
-      unappend(child.id, from: path, in: parent, completion: completion)
+    public static func unassign<T, U>(_ child: T, fromField field: FieldName, using path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+      unappend(child.id, field: field, using: path, in: parent, completion: completion)
     }
     
     // MARK: - Private Static Methods
     
-    private static func append<T>(_ id: DocumentID, to path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void) where T: Document {
-      getArray(from: id, ofType: T.self, path: path) { array in
+    private static func append<T>(_ id: DocumentID, field: FieldName, using path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void) where T: Document {
+      getArray(from: parent.id, ofType: T.self, path: path) { array in
         guard var array = array else {
           completion(LinkingError.noArray)
           return
         }
         array <= id
-        Storage.set(array, to: path, in: parent, completion: completion)
+        Storage.set(field: field, with: array, using: path, in: parent, completion: completion)
       }
     }
     
-    private static func unappend<T>(_ id: DocumentID, from path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void) where T: Document {
+    private static func unappend<T>(_ id: DocumentID, field: FieldName, using path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void) where T: Document {
       getArray(from: id, ofType: T.self, path: path) { array in
         guard var array = array else {
           completion(LinkingError.noArray)
           return
         }
         array -= id
-        Storage.set(array, to: path, in: parent, completion: completion)
+        Storage.set(field: field, with: array, using: path, in: parent, completion: completion)
       }
     }
     

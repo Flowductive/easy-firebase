@@ -185,7 +185,7 @@ public extension EasyUser {
     authUser?.updateEmail(to: newEmail) { [self] error in
       if error == nil {
         email = newEmail
-        set(\.email, ofUserType: T.self, completion: completion)
+        set(field: "email", using: \.email, ofUserType: T.self, completion: completion)
       }
       completion(error)
     }
@@ -262,7 +262,7 @@ public extension EasyUser {
   func unsafelyUpdateUsername<T>(to newUsername: String, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     let oldUsername = username
     self.username = newUsername
-    set(\.username, ofUserType: T.self, completion: { error in
+    set(field: "username", using: \.username, ofUserType: T.self, completion: { error in
       if let error = error {
         completion(error)
         self.username = oldUsername
@@ -287,7 +287,7 @@ public extension EasyUser {
       changeRequest.commitChanges { [self] error in
         if error == nil {
           self.displayName = newName
-          set(\.displayName, ofUserType: T.self, completion: completion)
+          set(field: "displayName", using: \.displayName, ofUserType: T.self, completion: completion)
         } else {
           completion(error)
         }

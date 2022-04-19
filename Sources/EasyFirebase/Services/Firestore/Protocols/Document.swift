@@ -106,8 +106,8 @@ extension Document {
    - parameter path: The path to the field to update remotely.
    - parameter completion: The completion handler.
    */
-  public func set<T, U>(_ path: KeyPath<T, U>, ofUserType: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
-    EasyFirestore.Storage.set(path, in: self as! T, completion: completion)
+  public func set<T, U>(field: FieldName, using path: KeyPath<T, U>, ofUserType: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+    EasyFirestore.Storage.set(field: field, using: path, in: self as! T, completion: completion)
   }
   
   /**
@@ -117,9 +117,9 @@ extension Document {
    - parameter path: The path to the field to update.
    - parameter completion: The completion handler.
    */
-  public mutating func set<T>(_ value: T, to path: WritableKeyPath<Self, T>, completion: @escaping (Error?) -> Void = { _ in }) where T: Codable {
+  public mutating func set<T>(field: FieldName, with value: T, using path: WritableKeyPath<Self, T>, completion: @escaping (Error?) -> Void = { _ in }) where T: Codable {
     self[keyPath: path] = value
-    EasyFirestore.Storage.set(value, to: path, in: self, completion: completion)
+    EasyFirestore.Storage.set(field: field, with: value, using: path, in: self, completion: completion)
   }
   
   /**
@@ -177,22 +177,22 @@ extension Document {
    
    ⚠️ **Note:** Fields will not be updated locally using this method.
    */
-  public func assign<T>(to path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
-    EasyFirestore.Linking.assign(self, to: path, in: parent, completion: completion)
+  public func assign<T>(toField field: FieldName, using path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+    EasyFirestore.Linking.assign(self, toField: field, using: path, in: parent, completion: completion)
   }
   
   /**
    Sets the document in Firestore, then assigns it to a field list of `DocumentID`s to a parent document.
    */
-  public func setAssign<T>(to path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
-    EasyFirestore.Storage.setAssign(self, to: path, in: parent, completion: completion)
+  public func setAssign<T>(toField field: FieldName, using path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+    EasyFirestore.Storage.setAssign(self, toField: field, using: path, in: parent, completion: completion)
   }
   
   /**
    Unassigns the document's ID from a related list of IDs elsewhere remotely in Firestore.
    */
-  public func unassign<T>(from path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
-    EasyFirestore.Linking.unassign(self, from: path, in: parent, completion: completion)
+  public func unassign<T>(fromField field: FieldName, using path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+    EasyFirestore.Linking.unassign(self, fromField: field, using: path, in: parent, completion: completion)
   }
 }
 
