@@ -155,11 +155,11 @@ var car2 = Car(make: "Honda", model: "Civic", year: 2019)
 var dealership = Dealership(name: "Los Angeles Dealership")
 
 // Set and assign the Toyota Corolla to the Los Angeles Dealership
-car1.setAssign(to: \.cars, in: dealership)
+car1.setAssign(toField: "cars", using: \.cars, in: dealership)
 
 // Set and assign the Honda Civic to the Los Angeles Dealership
 car2.set()
-car2.assign(to: \.cars, in: dealership)
+car2.assign(toField: "cars", using: \.cars, in: dealership)
 ```
 
 ### Swifty Querying
