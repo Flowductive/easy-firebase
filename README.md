@@ -10,6 +10,11 @@
 
 ⚠️ **Note:** This package is still under development and its contents are freely subject to change.
 
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Flowductive/easy-firebase?label=version)
+![GitHub Release Date](https://img.shields.io/github/release-date/Flowductive/easy-firebase?label=latest%20release)
+![GitHub issues](https://img.shields.io/github/issues/Flowductive/easy-firebase)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Flowductive/easy-firebase)
+
 ## What is EasyFirebase?
 
 EasyFirebase is a Swift wrapper for all things Firebase. Save hours from implementing the Firebase code in your projects repeatedly. EasyFirebase makes document storage and retrieval easier by providing **intuitive protocols** for Firestore. EasyFirebase makes **authentication easier** with the EasyUser (subclassable) open class and simple one-line sign-in with Google and Apple. EasyFirebase is cross-platform and works with both iOS and macOS.
