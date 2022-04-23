@@ -66,6 +66,12 @@ struct AuthView: View {
           Text("Create Account")
         }
       }
+      Button(action: signInWithGoogle) {
+        Text("Sign in with Google")
+      }
+      Button(action: signInWithApple) {
+        Text("Sign in with Apple")
+      }
     }
   }
   
@@ -77,6 +83,9 @@ struct AuthView: View {
       Text("Username: \(global.user.username)")
       Text("Email: \(global.user.email)")
       Text("Display Name: \(global.user.displayName)")
+      Button(action: signOut) {
+        Text("Sign Out")
+      }
     }
   }
   
@@ -89,6 +98,20 @@ struct AuthView: View {
     EasyAuth.signIn(email: emailField, password: passwordField) { error in
       self.error = error?.localizedDescription
     }
+  }
+  
+  /**
+   Signs in the user using Sign in with Google.
+   */
+  func signInWithGoogle() {
+    EasyAuth.signInWithGoogle(clientID: "42500151564-vfh7ehpcbmjf7n6p6p8htbccpnvod5c4")
+  }
+  
+  /**
+   Signs in the user using Sign in with Apple.
+   */
+  func signInWithApple() {
+    EasyAuth.signInWithApple()
   }
   
   /**
