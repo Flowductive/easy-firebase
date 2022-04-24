@@ -174,7 +174,6 @@ public class EasyAuth: NSObject {
   
   internal static func prepare() {
     GAppAuth.shared.appendAuthorizationRealm(OIDScopeEmail)
-    GAppAuth.shared.appendAuthorizationRealm("https://www.googleapis.com/auth/calendar")
     GAppAuth.shared.retrieveExistingAuthorizationState()
   }
   
