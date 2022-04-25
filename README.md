@@ -8,7 +8,11 @@
 <p align="center">🔥 Firebase solutions in one native Swift package</p>
 <p align="center">📘 Fully documented code with examples</p>
 
+***
+
 ⚠️ **Note:** This package is still under development and its contents are freely subject to change.
+
+📚 **Ready to get started?** Check out our [complete wiki](https://github.com/Flowductive/easy-firebase/wiki) for detailed guides.
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Flowductive/easy-firebase?label=version)
 ![GitHub Release Date](https://img.shields.io/github/release-date/Flowductive/easy-firebase?label=latest%20release)
