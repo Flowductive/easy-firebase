@@ -362,9 +362,12 @@ public extension EasyUser {
   func refreshEmailVerifcationStatus() {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
-      EasyAuth.emailVerified = authUser.isEmailVerified
-      let id = authUser.providerData.first?.providerID ?? ""
-      EasyAuth.accountProvider = EasyAuth.Provider(provider: id)
+      authUser.reload(completion: { _ in
+        guard let user = Auth.auth().currentUser else { return }
+        EasyAuth.emailVerified = user.isEmailVerified
+        let id = user.providerData.first?.providerID ?? ""
+        EasyAuth.accountProvider = EasyAuth.Provider(provider: id)
+      })
     }
   }
   
