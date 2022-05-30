@@ -10,7 +10,7 @@ import Foundation
 @available(iOS 13.0, *)
 public extension EasyUser {
   
-  // MARK: - Public Methods
+  // MARK: - Objective-C Exposed Open Methods
   
   /**
    The analytics User Properties for this user.
@@ -21,9 +21,11 @@ public extension EasyUser {
    
    - returns: A dictionary with data to send to Firebase Analytics when the user opens the application.
    */
-  func analyticsProperties() -> [String: String] {
+  @objc open func analyticsProperties() -> [String: String] {
     return ["progress": "\(progress)", "app_version": appVersion]
   }
+  
+  // MARK: - Public Methods
   
   /**
    Sends the `EasyUser`'s analytics properties to Firebase Analytics.
