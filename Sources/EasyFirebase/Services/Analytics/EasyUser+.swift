@@ -21,7 +21,7 @@ public extension EasyUser {
    
    - returns: A dictionary with data to send to Firebase Analytics when the user opens the application.
    */
-  @objc open func analyticsProperties() -> [String: String] {
+  func analyticsProperties() -> [String: String] {
     return ["progress": "\(progress)", "app_version": appVersion]
   }
   

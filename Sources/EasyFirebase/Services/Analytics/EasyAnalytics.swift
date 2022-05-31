@@ -52,7 +52,7 @@ public struct EasyAnalytics {
   /// The timeout duration.
   ///
   /// To prevent logging spam, the timeout duration is checked. If another Analytics-related action is performed within the timeout duration, it will not be logged to Firebase Analytics.
-  public static var timeout: TimeInterval = TimeInterval(5.0)
+  public static var timeout: TimeInterval = TimeInterval(2.0)
   
   /// Whether to collect analytics data.
   public static var collectAnalytics: Bool = true { didSet {
