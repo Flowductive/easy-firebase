@@ -33,6 +33,17 @@ extension EasyFirestore {
     }
     
     /**
+     Sets a document in Firestore.
+     
+     - parameter document: The document to set in Firestore.
+     */
+#if swift(>=5.0)
+    public static func set<T>(_ document: T) async -> Error? where T: Document {
+      return await set(document, collection: document.typeName, id: document.id)
+    }
+#endif
+    
+    /**
      Sets a singleton in Firestore.
      
      - parameter singleton: The singleton to set in Firestore.
@@ -41,6 +52,18 @@ extension EasyFirestore {
     public static func set<T>(_ singleton: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Singleton {
       set(singleton, collection: "Singleton", id: singleton.id, completion: completion)
     }
+    
+    /**
+     Sets a singleton in Firestore.
+     
+     - parameter singleton: The singleton to set in Firestore.
+     - parameter completion: The completion handler.
+     */
+#if swift(>=5.0)
+    public static func set<T>(_ singleton: T) async -> Error? where T: Singleton {
+      return await set(singleton, collection: "Singleton", id: singleton.id, completion: completion)
+    }
+#endif
     
     /**
      Updates a value for a particular field in Firestore.
