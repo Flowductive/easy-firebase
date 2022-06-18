@@ -224,6 +224,12 @@ public class EasyAuth: NSObject {
       }
     }
   }
+  
+  // MARK: - Fileprivate Errors
+  
+  fileprivate class NoCredentialError: LocalizedError {
+    var errorDescription: String? = "No credential found."
+  }
 }
 
 #if os(iOS)
@@ -271,12 +277,6 @@ extension EasyAuth {
       EasyFirebase.log(error: error)
       completion(nil)
     }
-  }
-  
-  // MARK: - Fileprivate Errors
-  
-  fileprivate class NoCredentialError: LocalizedError {
-    var errorDescription: String? = "No credential found."
   }
 }
 
