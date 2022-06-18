@@ -171,9 +171,7 @@ public class EasyAuth: NSObject {
   private static func handleGoogleSignInCredential(_ credential: AuthCredential?, completion: @escaping (Error?) -> Void) {
     guard let credential = credential else { completion(NoCredentialError()); return }
     EasyAuth.signIn(with: credential) { error in
-      if let error = error {
-        EasyFirebase.log(error: error)
-      }
+      completion(error)
     }
   }
   
