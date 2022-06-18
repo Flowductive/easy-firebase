@@ -65,17 +65,6 @@ public class EasyAuth: NSObject {
   
   internal static let listenerKey: EasyFirestore.ListenerKey = "EASY_USER_UPDATE"
   
-  // MARK: - Private Static Properties
-  
-  private static let googleSignInCredentialHandler: (AuthCredential?) -> Void = { credential in
-    guard let credential = credential else { return }
-    EasyAuth.signIn(with: credential) { error in
-      if let error = error {
-        EasyFirebase.log(error: error)
-      }
-    }
-  }
-  
   // MARK: - Private Properties
   
   private var currentNonce: String?
@@ -179,6 +168,15 @@ public class EasyAuth: NSObject {
   
   // MARK: - Private Static Methods
   
+  private static func handleGoogleSignInCredential(_ credential: AuthCredential?, completion: @escaping (Error?) -> Void) {
+    guard let credential = credential else { completion(NoCredentialError()); return }
+    EasyAuth.signIn(with: credential) { error in
+      if let error = error {
+        EasyFirebase.log(error: error)
+      }
+    }
+  }
+  
   private static func onAuthChange<T>(perform action: @escaping (T?) -> Void) where T: EasyUser {
     if let authHandle = authHandle {
       auth.removeStateDidChangeListener(authHandle)
@@ -250,7 +248,9 @@ extension EasyAuth {
     let _clientID = "\(clientID).apps.googleusercontent.com"
     let redirectURI = "com.googleusercontent.apps.\(clientID):/oauthredirect"
     accountProvider = .google
-    getCredential(clientID: _clientID, redirectUri: redirectURI, completion: googleSignInCredentialHandler)
+    getCredential(clientID: _clientID, redirectUri: redirectURI) { credential in
+      handleGoogleSignInCredential(credential, completion: completion)
+    }
   }
   
   // MARK: - Private Static Methods
@@ -271,6 +271,12 @@ extension EasyAuth {
       EasyFirebase.log(error: error)
       completion(nil)
     }
+  }
+  
+  // MARK: - Fileprivate Errors
+  
+  fileprivate class NoCredentialError: LocalizedError {
+    var errorDescription: String? = "No credential found."
   }
 }
 
@@ -297,7 +303,9 @@ extension EasyAuth {
     let _clientID = "\(clientID).apps.googleusercontent.com"
     let redirectURI = "com.googleusercontent.apps.\(clientID):/oauthredirect"
     accountProvider = .google
-    getCredential(clientID: _clientID, redirectUri: redirectURI, secret: secret, completion: googleSignInCredentialHandler)
+    getCredential(clientID: _clientID, redirectUri: redirectURI, secret: secret) { credential in
+      handleGoogleSignInCredential(credential, completion: completion)
+    }
   }
   
   /**
