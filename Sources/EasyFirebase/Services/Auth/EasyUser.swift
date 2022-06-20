@@ -363,11 +363,14 @@ public extension EasyUser {
     guard assertAuthMatches() else { return }
     if let authUser = authUser {
       authUser.reload(completion: { _ in
-        guard let user = Auth.auth().currentUser else { return }
+        guard let user = Auth.auth().currentUser else { completion(); return }
         EasyAuth.emailVerified = user.isEmailVerified
         let id = user.providerData.first?.providerID ?? ""
         EasyAuth.accountProvider = EasyAuth.Provider(provider: id)
+        completion()
       })
+    } else {
+      completion()
     }
   }
   
