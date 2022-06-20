@@ -360,7 +360,7 @@ public extension EasyUser {
    Refreshes the `emailVerified` static property of `EasyAuth`.
    */
   func refreshEmailVerifcationStatus(completion: @escaping () -> Void = {}) {
-    guard assertAuthMatches() else { return }
+    guard assertAuthMatches() else { completion(); return }
     if let authUser = authUser {
       authUser.reload(completion: { _ in
         guard let user = Auth.auth().currentUser else { completion(); return }
