@@ -303,7 +303,7 @@ public extension EasyUser {
    - parameter completion: The completion handler.
    */
   func updatePhoto<T>(with url: URL, ofUserType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
-    guard assertAuthMatches() else { completion(); return }
+    guard assertAuthMatches() else { completion(nil); return }
     if let authUser = authUser {
       let changeRequest = authUser.createProfileChangeRequest()
       changeRequest.photoURL = url
@@ -325,9 +325,9 @@ public extension EasyUser {
    - parameter completion: The completion handler.
    */
   func updatePhoto<T>(with data: Data, ofUserType type: T.Type, progress: @escaping (Double) -> Void = { _ in }, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
-    guard assertAuthMatches() else { completion(); return }
+    guard assertAuthMatches() else { completion(nil); return }
     EasyStorage.put(data, to: StorageResource(id: id, folder: "Profile Images"), progress: progress) { [self] url in
-      guard let url = url else { completion(); return }
+      guard let url = url else { completion(nil); return }
       updatePhoto(with: url, ofUserType: type, completion: completion)
     }
   }
@@ -339,7 +339,7 @@ public extension EasyUser {
    - parameter completion: The completion handler.
    */
   func updatePassword(to newPassword: String, completion: @escaping (Error?) -> Void = { _ in }) {
-    guard assertAuthMatches() else { completion(); return }
+    guard assertAuthMatches() else { completion(nil); return }
     if let authUser = authUser {
       authUser.updatePassword(to: newPassword, completion: completion)
     }
