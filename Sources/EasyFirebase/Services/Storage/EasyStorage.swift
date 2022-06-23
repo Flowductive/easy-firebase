@@ -96,7 +96,8 @@ public struct EasyStorage {
     task = ref.putData(data, metadata: metadata) { (_, _) in
       task?.removeAllObservers()
       task = nil
-      ref.downloadURL { (url, _) in
+      ref.downloadURL { (url, error) in
+        EasyFirebase.log(error)
         resource.url = url
         completion(url)
       }
