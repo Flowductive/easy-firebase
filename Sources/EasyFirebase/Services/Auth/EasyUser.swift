@@ -148,12 +148,11 @@ public extension EasyUser {
     let newUser = Self()
     newUser.id = user.uid
     newUser.dateCreated = Date()
-    guard let email = user.email else { return nil }
     newUser.deviceToken = EasyMessaging.deviceToken
     newUser.appVersion = Bundle.versionString
     newUser.lastSignon = Date()
-    newUser.email = email
-    newUser.username = email.removeDomainFromEmail()
+    newUser.email = user.email ?? user.phoneNumber ?? ""
+    newUser.username = newUser.email.removeDomainFromEmail()
     if newUser.username.count < 6 {
       newUser.username += String.random(length: 6 - newUser.username.count)
     }
