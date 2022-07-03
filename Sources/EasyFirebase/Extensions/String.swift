@@ -66,6 +66,7 @@ extension String {
     if let range = copy.range(of: "@") {
       copy.removeSubrange(range.lowerBound ..< copy.endIndex)
     }
+    copy.removeAll(where: { $0 == "+" })
     return copy
   }
 }
