@@ -84,8 +84,8 @@ extension EasyFirestore {
      - parameter useCache: Whether the cache should be prioritized to grab documents (if they exist).
      - parameter onFetch: The fetch handler. When documents are fetched, they'll populate here.
      */
-    public static func getChildren<T, U>(from path: KeyPath<U, [DocumentID]>, in parent: U, ofType: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([U]) -> Void) where T: Document, U: Document {
-      EasyFirestore.getArray(from: parent.id, ofType: U.self, path: path) { ids in
+    public static func getChildren<T, U>(from path: KeyPath<U, [DocumentID]>, in parent: U, ofType: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([T]) -> Void) where T: Document, U: Document {
+      EasyFirestore.getArray(from: parent.id, ofType: T.self, path: path) { ids in
         guard let ids = ids else {
           onFetch([])
           return
