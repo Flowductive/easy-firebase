@@ -144,6 +144,9 @@ public class EasyAuth: NSObject {
           newUser.set()
           return
         }
+        document.lastSignon = Date()
+        EasyUser.versionUpdate = .get(before: document.appVersion, after: Bundle.versionString)
+        document.appVersion = Bundle.versionString
         action(document)
       }
     }

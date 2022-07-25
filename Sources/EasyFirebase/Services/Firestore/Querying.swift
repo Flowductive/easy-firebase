@@ -23,6 +23,26 @@ extension EasyFirestore {
     // MARK: - Public Static Methods
     
     /**
+     Queries a collection of documents, matching the given string.
+     
+     - parameter path: The path to the field to check.
+     - parameter order: The way the documents are ordered. This will always order by the field provided in the `path` parameter.
+     - parameter limit: The maximum amount of documents to query.
+     */
+    public static func `where`<T>(_ path: KeyPath<T, String>,
+                                  matches str: String,
+                                  order: Order? = nil,
+                                  limit: Int? = nil,
+                                  completion: @escaping ([T]) -> Void
+    ) where T: Document {
+      `where`([Condition(path: path, comparison: .greaterEqualTo, value: str), Condition(path: path, comparison: .lessThan, value: str.incremented())],
+              order: order,
+              limit: limit,
+              completion: completion
+      )
+    }
+    
+    /**
      Queries a collection of documents, matching the given condition.
      
      Use the `path` argument to specify the collection to query. For instance, if you have a collection of `MyUser` objects, and you want to search for users matching the `displayName` of `"Adam"`, you can query like so:

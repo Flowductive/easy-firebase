@@ -10,11 +10,35 @@ import CryptoKit
 
 extension String {
   
-  // MARK: - Public Methods
+  // MARK: - Public Properties
   
   /// The string, reformatted for username format.
   public var inUsernameFormat: String {
     return self.replacingOccurrences(of: "[^a-zA-Z0-9_.]", with: "_", options: .regularExpression, range: nil).lowercased()
+  }
+  
+  // MARK: - Public Methods
+  
+  /**
+   Increments the string to the next possible string.
+   
+   - parameter name: An optional string to increment
+   - returns: The incremented string
+   */
+  public func incremented(_ name: String? = nil) -> String {
+    var previousName: String = name ?? self
+    if let lastScalar = previousName.unicodeScalars.last {
+      let lastChar = previousName.remove(at: previousName.index(before: previousName.endIndex))
+      if lastChar == "z" {
+        let newName = incremented(previousName) + "a"
+        return newName
+      } else {
+        let incrementedChar = incrementScalarValue(lastScalar.value)
+        return previousName + incrementedChar
+      }
+    } else {
+      return "a"
+    }
   }
   
   // MARK: - Internal Static Methods
@@ -68,5 +92,11 @@ extension String {
     }
     copy.removeAll(where: { $0 == "+" })
     return copy
+  }
+  
+  // MARK: - Private Methods
+  
+  private func incrementScalarValue(_ scalarValue: UInt32) -> String {
+    return String(Character(UnicodeScalar(scalarValue + 1)!))
   }
 }

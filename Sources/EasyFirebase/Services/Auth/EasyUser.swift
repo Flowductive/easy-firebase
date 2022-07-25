@@ -43,6 +43,11 @@ import FirebaseFirestoreSwift
 @available(iOS 13.0, *)
 open class EasyUser: IndexedDocument {
   
+  // MARK: - Mixed Static Properties
+  
+  /// The change of the user's version.
+  public internal(set) static var versionUpdate: VersionChange = .none
+  
   // MARK: - Public Properties
   
   /// The user's notifications.
@@ -122,6 +127,60 @@ open class EasyUser: IndexedDocument {
     username = "guest-user"
     displayName = "Guest"
     profileImageURL = EasyAuth.defaultProfileImageURLs.randomElement()!.absoluteString
+  }
+  
+  // MARK: - Public Enumerations
+  
+  public enum VersionChange: Int {
+    /// No version change.
+    case none = 0
+    /// A patch version change.
+    case patch = 1
+    /// A minor version change.
+    case minor = 2
+    /// A major version change.
+    case major = 3
+    
+    /**
+     Gets a specific version change between two provided versions.
+     
+     - parameter before: The first version string (SemVer).
+     - parameter after: The second version string (SemVer).
+     */
+    static func `get`(before: String, after: String) -> Self {
+      let a = before.split(separator: ".")
+      let b = after.split(separator: ".")
+      guard a.count >= 3, b.count >= 3 else { return .none }
+      let majorA = Int(a[0]) ?? 0
+      let majorB = Int(b[0]) ?? 0
+      let minorA = Int(a[1]) ?? 0
+      let minorB = Int(b[1]) ?? 0
+      var patchA = 0
+      var patchB = 0
+      if let _patchA = a[2].split(separator: "-").first, let _patchB = b[2].split(separator: "-").first {
+        patchA = Int(_patchA) ?? 0
+        patchB = Int(_patchB) ?? 0
+      }
+      if majorB - majorA > 0 {
+        return .major
+      } else if minorB - minorA > 0 {
+        return .minor
+      } else if patchB - patchA > 0 {
+        return .patch
+      } else {
+        return .none
+      }
+    }
+    
+    /// Whether this version change represents any change.
+    var isAnyChange: Bool {
+      return self.rawValue > 0
+    }
+    
+    /// Whether this version change represents a minor change, or better.
+    var isAnySignificantChange: Bool {
+      return self.rawValue >= 2
+    }
   }
 }
 
