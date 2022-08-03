@@ -17,6 +17,11 @@ extension String {
     return self.replacingOccurrences(of: "[^a-zA-Z0-9_.]", with: "_", options: .regularExpression, range: nil).lowercased()
   }
   
+  /// The string, reformatted for queryable format.
+  public var inQueryableFormat: String {
+    return self.replacingOccurrences(of: "[^a-zA-Z0-9]", with: "", options: .regularExpression, range: nil).lowercased()
+  }
+  
   // MARK: - Public Methods
   
   /**
