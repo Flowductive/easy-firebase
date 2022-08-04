@@ -37,6 +37,11 @@ public class MessagingNotification: Model, Equatable {
   /// This value can be used to limit user notifications through ``EasyUser.disabledNotificationCategories``.
   public var category: MessageCategory
   
+  /// The notification's key.
+  ///
+  /// Use this type to break notification handling into action cases.
+  public var key: String?
+  
   /// The user that this notification came from.
   public var user: DocumentID?
   
@@ -55,7 +60,13 @@ public class MessagingNotification: Model, Equatable {
   
   // MARK: - Public Initalizers
   
-  public init<T>(_ message: String, from user: T, in category: MessageCategory, attach image: URL? = nil, and additionalInfo: String? = nil) where T: EasyUser {
+  public init<T>(_ message: String,
+                 from user: T,
+                 in category: MessageCategory,
+                 attach image: URL? = nil,
+                 and additionalInfo: String? = nil,
+                 with key: String? = nil
+  ) where T: EasyUser {
     let username = user.username
     self.user = user.id
     self.text = message
