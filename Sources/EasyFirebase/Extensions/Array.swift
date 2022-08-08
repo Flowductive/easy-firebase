@@ -7,8 +7,8 @@
 
 import Foundation
 
-infix operator <=
-infix operator -=
+infix operator <=: AssignmentPrecedence
+infix operator -=: AssignmentPrecedence
 
 extension Array where Element: Equatable {
   
