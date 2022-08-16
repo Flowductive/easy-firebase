@@ -67,17 +67,17 @@ public struct EasyMessaging {
    - parameter notification: The notification to send to the user.
    - parameter user: The user to send the notification to.
    */
-  public static func send<T>(_ notification: MessagingNotification, to user: T) where T: EasyUser {
+  public static func send<T>(_ notification: MessagingNotification, to user: T, completion: @escaping (Error?) -> Void = { _ in }) where T: EasyUser {
     guard !user.disabledMessageCategories.contains(notification.category) else {
       EasyFirebase.log("Message not sent because the user has the message category '`\(notification.category)' disabled.")
       return
     }
-    sendNotification(to: user, title: "", body: notification.pushBody, data: ["count": user.notifications.filter({ !$0.read }).count])
+    sendNotification(to: user, title: "", body: notification.pushBody, data: ["count": user.notifications.filter({ !$0.read }).count], completion: completion)
   }
   
   // MARK: - Private Static Methods
   
-  private static func sendNotification<T>(to user: T, title: String, body: String, data: [AnyHashable: Any] = [:]) where T: EasyUser {
+  private static func sendNotification<T>(to user: T, title: String, body: String, data: [AnyHashable: Any] = [:], completion: @escaping (Error?) -> Void) where T: EasyUser {
     guard let serverKey = serverKey else {
       fatalError("❌ Your Messaging Server Key hasn't been set yet! Ensure that EasyMessaging.serverKey is set before using EasyMessaging.")
     }
@@ -103,7 +103,9 @@ public struct EasyMessaging {
             EasyFirebase.log("Received data:\n\(jsonDataDict))")
           }
         }
+        completion(nil)
       } catch let err as NSError {
+        completion(err)
         EasyFirebase.log(error: err.localizedDescription)
         return
       }
