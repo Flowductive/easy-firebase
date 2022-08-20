@@ -12,7 +12,7 @@ let package = Package(
       targets: ["EasyFirebase"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/firebase/firebase-ios-sdk", .upToNextMajor(from: "8.0.0")),
+    .package(url: "https://github.com/firebase/firebase-ios-sdk", .upToNextMajor(from: "9.0.0")),
     .package(url: "https://github.com/google/GTMAppAuth.git", from: "1.0.0"),
     .package(url: "https://github.com/openid/AppAuth-iOS.git", from: "1.0.0"),
     .package(url: "https://github.com/benlmyers/GAppAuth", from: "1.6.4"),
@@ -23,12 +23,11 @@ let package = Package(
       dependencies: [
         .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
         .product(name: "FirebaseFirestore", package: "firebase-ios-sdk"),
-        .product(name: "FirebaseFirestoreSwift-Beta", package: "firebase-ios-sdk"),
+        .product(name: "FirebaseFirestoreSwift", package: "firebase-ios-sdk"),
         .product(name: "FirebaseMessaging", package: "firebase-ios-sdk"),
         .product(name: "FirebaseStorage", package: "firebase-ios-sdk"),
-        .product(name: "FirebaseStorageSwift-Beta", package: "firebase-ios-sdk"),
         .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
-        .product(name: "FirebaseAnalyticsSwift-Beta", package: "firebase-ios-sdk"),
+        .product(name: "FirebaseAnalyticsSwift", package: "firebase-ios-sdk"),
         .product(name: "GTMAppAuth", package: "GTMAppAuth"),
         .product(name: "AppAuth", package: "AppAuth-iOS"),
         .product(name: "GAppAuth-macOS", package: "GAppAuth"),
