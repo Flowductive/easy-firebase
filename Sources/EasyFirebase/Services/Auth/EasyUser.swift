@@ -71,6 +71,12 @@ open class EasyUser: IndexedDocument {
   /// - `1` and above are values you can customize.
   public var progress: Int = -1
   
+  /// The user's profile image.
+  ///
+  /// If the user uses a third-party authentication service like Google, this image will automatically update.
+  /// You can specify a default profile image by setting `EasyAuth.defaultProfileImageURLs`.
+  public var profileImageURL: String?
+  
   // MARK: - Mixed Properties
   
   /// The user's FCM device token.
@@ -91,11 +97,11 @@ open class EasyUser: IndexedDocument {
   /// The user's email address.
   public internal(set) var email: String
   
-  /// The user's profile image.
+  /// The user's active sessions.
   ///
-  /// If the user uses a third-party authentication service like Google, this image will automatically update.
-  /// You can specify a default profile image by setting `EasyAuth.defaultProfileImageURLs`.
-  public var profileImageURL: String?
+  /// This property is a dictionary with the session's class name as a key and the ID of the session as the value.
+  /// Users can join only one session per session type.
+  public internal(set) var sessions: [String: DocumentID] = [:]
   
   // MARK: - Objective-C Exposed Mixed Properties
   
@@ -127,6 +133,24 @@ open class EasyUser: IndexedDocument {
     username = "guest-user"
     displayName = "Guest"
     profileImageURL = EasyAuth.defaultProfileImageURLs.randomElement()!.absoluteString
+  }
+  
+  public required init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.notifications = (try? values.decode([MessagingNotification].self, forKey: .notifications)) ?? []
+    self.disabledMessageCategories = (try? values.decode([MessageCategory].self, forKey: .disabledMessageCategories)) ?? []
+    self.progress = (try? values.decode(Int.self, forKey: .progress)) ?? -1
+    self.profileImageURL = try? values.decode(String.self, forKey: .profileImageURL)
+    self.deviceToken = try? values.decode(String.self, forKey: .deviceToken)
+    self.lastSignon = (try? values.decode(Date.self, forKey: .lastSignon)) ?? Date()
+    self.email = (try? values.decode(String.self, forKey: .email)) ?? "guest@easy-firebase.com"
+    self.sessions = (try? values.decode([String: DocumentID].self, forKey: .sessions)) ?? [:]
+    self.username = (try? values.decode(String.self, forKey: .username)) ?? "guest-user"
+    self.displayName = (try? values.decode(String.self, forKey: .displayName)) ?? "Guest"
+    self.id = (try? values.decode(String.self, forKey: .id)) ?? "Guest"
+    self.dateCreated = (try? values.decode(Date.self, forKey: .dateCreated)) ?? Date()
+    self.index = try? values.decode(Int.self, forKey: .index)
+    self.appVersion = (try? values.decode(String.self, forKey: .appVersion)) ?? ""
   }
   
   // MARK: - Public Enumerations
@@ -181,6 +205,28 @@ open class EasyUser: IndexedDocument {
     var isAnySignificantChange: Bool {
       return self.rawValue >= 2
     }
+  }
+  
+  enum CodingKeys: String, CodingKey {
+    case notifications, disabledMessageCategories, progress, profileImageURL, deviceToken, appVersion, lastSignon, email, sessions, username, displayName, index, id, dateCreated
+  }
+  
+  open func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(notifications, forKey: .notifications)
+    try container.encode(disabledMessageCategories, forKey: .disabledMessageCategories)
+    try container.encode(progress, forKey: .progress)
+    try container.encode(profileImageURL, forKey: .profileImageURL)
+    try container.encode(deviceToken, forKey: .deviceToken)
+    try container.encode(appVersion, forKey: .appVersion)
+    try container.encode(lastSignon, forKey: .lastSignon)
+    try container.encode(email, forKey: .email)
+    try container.encode(sessions, forKey: .sessions)
+    try container.encode(username, forKey: .username)
+    try container.encode(displayName, forKey: .displayName)
+    try container.encode(index, forKey: .index)
+    try container.encode(id, forKey: .id)
+    try container.encode(dateCreated, forKey: .dateCreated)
   }
 }
 
