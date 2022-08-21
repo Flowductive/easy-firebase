@@ -27,14 +27,24 @@ extension EasyFirestore {
     
     // MARK: - Public Static Methods
     
+    /**
+     Listen to document updates.
+     
+     - parameter id: The document's ID.
+     - parameter type: The document's type.
+     - parameter key: The listener key to attach.
+     - parameter onUpdate: The update handler. If `nil` is passed, the document has been deleted.
+     */
     public static func listen<T>(to id: DocumentID, ofType type: T.Type, key: ListenerKey, onUpdate: @escaping (T?) -> Void) where T: Document {
       let listener = db.collection(colName(of: T.self)).document(id).addSnapshotListener { snapshot, _ in
         guard let snapshot = snapshot, snapshot.exists else {
           EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(colName(of: T.self))] collection, but no data could be found.")
-          onUpdate(nil)
           return
         }
         var document: T?
+        if snapshot.data() == nil {
+          onUpdate(nil)
+        }
         try? document = snapshot.data(as: T.self)
         guard let document = document else {
           EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(colName(of: T.self))] collection, but couldn't be decoded.")
@@ -45,10 +55,24 @@ extension EasyFirestore {
       registerListener(listener, key: key)
     }
     
+    /**
+     Stop listening to document updates.
+     
+     - parameter key: The key to stop listening to.
+     */
     public static func stop(_ key: ListenerKey) {
       guard let keyListeners: [ListenerRegistration?] = listeners[key] else { return }
       for listener in keyListeners {
         listener?.remove()
+      }
+    }
+    
+    /**
+     Stops all document listeners.
+     */
+    public static func stopAll() {
+      for listener in listeners.keys {
+        stop(listener)
       }
     }
     
