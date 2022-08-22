@@ -101,7 +101,7 @@ open class EasyUser: IndexedDocument {
   ///
   /// This property is a dictionary with the session's class name as a key and the ID of the session as the value.
   /// Users can join only one session per session type.
-  public internal(set) var sessions: [String: DocumentID] = [:]
+  @objc public internal(set) var sessions: [String: DocumentID] = [:]
   
   // MARK: - Objective-C Exposed Mixed Properties
   
@@ -537,6 +537,121 @@ public extension EasyUser {
       return false
     }
     return uid == id
+  }
+}
+
+public extension EasyUser {
+  
+  // MARK: - Public Methods
+  
+  /**
+   Creates a new session.
+   
+   - parameter type: The type of session to create.
+   - parameter completion: The completion handler.
+   */
+  func createSession<S>(ofType type: S.Type, completion: @escaping (S?, Error?) -> Void = { _, _ in }) where S: Session {
+    let newSession: S = S(host: self.id)
+    newSession.set { error in
+      guard error == nil else {
+        completion(nil, SessionError.communicationError)
+        return
+      }
+      self.sessions.updateValue(newSession.id, forKey: newSession.typeName)
+      Firestore.firestore().collection(String(describing: Self.self)).document(self.id).updateData(["sessions": self.sessions]) { error in
+        guard error == nil else {
+          completion(nil, SessionError.communicationError)
+          return
+        }
+        completion(newSession, nil)
+      }
+    }
+  }
+  
+  /**
+   Joins an existing session.
+   
+   - parameter id: The ID of the session to join.
+   - parameter type: The session's type.
+   - parameter completion: The completion handler.
+   */
+  func joinSession<S>(id: SessionID, ofType type: S.Type, completion: @escaping (S?, Error?) -> Void = { _, _ in }) where S: Session {
+    EasyFirestore.Retrieval.get(id: id, ofType: type, useCache: false) { session in
+      guard let session = session else {
+        completion(nil, SessionError.fetchFailed)
+        return
+      }
+      EasyFirestore.Updating.append(\S.users, with: self.id, in: session) { error in
+        guard error == nil else {
+          completion(nil, SessionError.communicationError)
+          return
+        }
+        completion(session, nil)
+      }
+    }
+  }
+  
+  /**
+   Leaves a session.
+   */
+  func leaveSession<S>(_ session: S, completion: @escaping (Error?) -> Void = { _ in }) where S: Session {
+    self.sessions.removeValue(forKey: session.typeName)
+    EasyFirestore.Listening.stop("_session_\(session.id)")
+    EasyFirestore.Updating.remove(\S.users, taking: self.id, in: session) { error in
+      guard error == nil else {
+        completion(SessionError.leaveError)
+        return
+      }
+      completion(nil)
+    }
+  }
+  
+  /**
+   Leaves all sessions.
+   
+   If an error occurs while trying to exit a session, it will be tallied, and the remaining sessions will continue to be exited.
+   If one or more error(s) occured during the method, the `completion(...)` handler will pass an error. The `errorDescription` of the passed error will
+   descibe how many sessions failed to exited.
+   
+   - parameter completion: The completion handler.
+   */
+  func leaveAllSessions(completion: @escaping (Error?) -> Void = { _ in }) {
+    let total: Int = self.sessions.count
+    var okCount: Int = 0
+    var errCount: Int = 0
+    for sessionClass in self.sessions.keys {
+      guard let id: String = self.sessions[sessionClass] else { continue }
+      EasyFirestore.Listening.stop("_session_\(id)")
+      Firestore.firestore().collection(sessionClass).document(id).updateData(["users": FieldValue.arrayRemove([self.id])]) { error in
+        if let _ = error {
+          errCount += 1
+        } else {
+          okCount += 1
+        }
+        if okCount + errCount >= total {
+          completion(nil)
+        } else {
+          completion(SessionError.multiLeaveError(count: errCount))
+        }
+      }
+    }
+  }
+  
+  /**
+   Listens to session updates.
+   
+   - parameter onUpdate: The update handler.
+   - parameter onEnd: The session closed handler.
+   */
+  func listen<S>(to session: S, onUpdate: @escaping (S) -> Void, onEnd: @escaping () -> Void) where S: Session {
+    EasyFirestore.Listening.listen(to: id, ofType: S.self, key: "_session_\(id)", onUpdate: { newSession in
+      if let newSession = newSession {
+        onUpdate(newSession)
+      } else {
+        self.leaveSession(session)
+        onEnd()
+      }
+    })
   }
 }
 
