@@ -40,6 +40,7 @@ public extension Session {
   
   init(host: DocumentID) {
     self.init()
+    self.host = host
     self.users = []
   }
 }
