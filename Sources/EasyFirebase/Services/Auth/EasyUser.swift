@@ -644,7 +644,7 @@ public extension EasyUser {
    - parameter onEnd: The session closed handler.
    */
   func listen<S>(to session: S, onUpdate: @escaping (S) -> Void, onEnd: @escaping () -> Void) where S: Session {
-    EasyFirestore.Listening.listen(to: id, ofType: S.self, key: "_session_\(id)", onUpdate: { newSession in
+    EasyFirestore.Listening.listen(to: session.id, ofType: S.self, key: "_session_\(id)", onUpdate: { newSession in
       if let newSession = newSession {
         onUpdate(newSession)
       } else {
