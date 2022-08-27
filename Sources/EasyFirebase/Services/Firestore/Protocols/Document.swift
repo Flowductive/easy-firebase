@@ -8,6 +8,7 @@
 import Foundation
 
 /// The ID of a document.
+@available(*, deprecated, renamed: "AnyDocumentID", message: "Use \"Document.ID\" or \"CLASS_NAME.ID\" to refrence the Document ID type (string). In a non-specialized context, use \"AnyDocumentID\"")
 public typealias DocumentID = String
 
 /**
@@ -55,7 +56,7 @@ public typealias DocumentID = String
  ```
  */
 @available(iOS 13.0, *)
-public protocol Document: Model, Equatable, Identifiable {
+public protocol Document: Model, Equatable, Identifiable where ID == String {
   
   // MARK: - Properties
   
@@ -177,21 +178,21 @@ extension Document {
    
    ⚠️ **Note:** Fields will not be updated locally using this method.
    */
-  public func assign<T>(toField field: FieldName, using path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+  public func assign<T>(toField field: FieldName, using path: KeyPath<T, [ID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
     EasyFirestore.Linking.assign(self, toField: field, using: path, in: parent, completion: completion)
   }
   
   /**
    Sets the document in Firestore, then assigns it to a field list of `DocumentID`s to a parent document.
    */
-  public func setAssign<T>(toField field: FieldName, using path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+  public func setAssign<T>(toField field: FieldName, using path: KeyPath<T, [ID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
     EasyFirestore.Storage.setAssign(self, toField: field, using: path, in: parent, completion: completion)
   }
   
   /**
    Unassigns the document's ID from a related list of IDs elsewhere remotely in Firestore.
    */
-  public func unassign<T>(fromField field: FieldName, using path: KeyPath<T, [DocumentID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+  public func unassign<T>(fromField field: FieldName, using path: KeyPath<T, [ID]>, in parent: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
     EasyFirestore.Linking.unassign(self, fromField: field, using: path, in: parent, completion: completion)
   }
 }

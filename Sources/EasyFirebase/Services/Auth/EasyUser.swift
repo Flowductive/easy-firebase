@@ -101,7 +101,7 @@ open class EasyUser: IndexedDocument {
   ///
   /// This property is a dictionary with the session's class name as a key and the ID of the session as the value.
   /// Users can join only one session per session type.
-  @objc public internal(set) var sessions: [String: DocumentID] = [:]
+  @objc public internal(set) var sessions: [String: String] = [:]
   
   // MARK: - Objective-C Exposed Mixed Properties
   
@@ -144,7 +144,7 @@ open class EasyUser: IndexedDocument {
     self.deviceToken = try? values.decode(String.self, forKey: .deviceToken)
     self.lastSignon = (try? values.decode(Date.self, forKey: .lastSignon)) ?? Date()
     self.email = (try? values.decode(String.self, forKey: .email)) ?? "guest@easy-firebase.com"
-    self.sessions = (try? values.decode([String: DocumentID].self, forKey: .sessions)) ?? [:]
+    self.sessions = (try? values.decode([String: String].self, forKey: .sessions)) ?? [:]
     self.username = (try? values.decode(String.self, forKey: .username)) ?? "guest-user"
     self.displayName = (try? values.decode(String.self, forKey: .displayName)) ?? "Guest"
     self.id = (try? values.decode(String.self, forKey: .id)) ?? "Guest"
@@ -575,7 +575,7 @@ public extension EasyUser {
    - parameter type: The session's type.
    - parameter completion: The completion handler.
    */
-  func joinSession<S>(id: SessionID, ofType type: S.Type, completion: @escaping (S?, Error?) -> Void = { _, _ in }) where S: Session {
+  func joinSession<S>(id: S.ID, ofType type: S.Type, completion: @escaping (S?, Error?) -> Void = { _, _ in }) where S: Session {
     EasyFirestore.Retrieval.get(id: id, ofType: type, useCache: false) { session in
       guard let session = session else {
         completion(nil, SessionError.fetchFailed)

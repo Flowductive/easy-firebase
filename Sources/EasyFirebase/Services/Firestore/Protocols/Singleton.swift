@@ -10,6 +10,7 @@ import Foundation
 /// The name of a singleton.
 ///
 /// This applies as the singleton's unique identifier, as only one singleton should exist for its given name.
+@available(*, deprecated, renamed: "Singleton.Name", message: "Use \"Singleton.Name\" o refrence a Singleton (string).")
 public typealias SingletonName = DocumentID
 
 /**
@@ -22,6 +23,12 @@ public typealias SingletonName = DocumentID
 @available(iOS 13.0, *)
 public protocol Singleton: Document {
   
+  // MARK: - Type Aliases
+  
+  typealias Name = String
+  
+  // MARK: - Properties
+  
   /// The name of the singleton.
-  var id: SingletonName { get set }
+  var id: Name { get set }
 }

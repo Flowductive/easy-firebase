@@ -43,7 +43,7 @@ public class MessagingNotification: Model, Equatable {
   public var key: String?
   
   /// The user that this notification came from.
-  public var user: DocumentID?
+  public var user: EasyUser.ID?
   
   /// The notification's message.
   ///

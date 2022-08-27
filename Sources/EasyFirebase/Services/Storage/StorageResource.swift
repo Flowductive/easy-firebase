@@ -7,7 +7,7 @@
 
 import Foundation
 
-public typealias ResourceID = DocumentID
+@available(*, deprecated, renamed: "StorageResource.Path", message: "Use \"StorageResource.Path\" to reference a storage resource path type.")
 public typealias ResourcePath = String
 
 /**
@@ -17,21 +17,25 @@ public typealias ResourcePath = String
  
  Resources can be uploaded to Firebase Storage. Resources are not themselves uploadable; they simply provide information about where a particular resource should go in Firebase Storage.
  */
-public class StorageResource: Model {
+public class StorageResource: Model, Identifiable {
+  
+  // MARK: - Public Type Aliases
+  
+  public typealias Path = String
   
   // MARK: - Public Properties
   
   /// The url of the resource.
   public var url: URL?
   /// The id of the resource.
-  public var id: ResourceID = UUID().uuidString
+  public var id: String = UUID().uuidString
   /// The resource's content type.
   public var kind: Kind = .png
   /// An optional folder to place the image in.
   public var folder: String?
   
   /// The reference path of the resource.
-  public var path: ResourcePath {
+  public var path: Path {
     if let folder = folder {
       return "\(kind.category())s/\(folder)/\(id).\(kind.rawValue)"
     } else {

@@ -30,7 +30,7 @@ extension EasyFirestore {
      
      Objects retrieved from Firestore are retrieved from collections based on their type.
      */
-    public static func get<T>(id: DocumentID, ofType type: T.Type, useCache: Bool = EasyFirebase.useCache, completion: @escaping (T?) -> Void) where T: Document {
+    public static func get<T>(id: T.ID, ofType type: T.Type, useCache: Bool = EasyFirebase.useCache, completion: @escaping (T?) -> Void) where T: Document {
       if useCache, let cachedDocument = Cacheing.grab(id, fromType: type) {
         completion(cachedDocument)
         return
@@ -48,7 +48,7 @@ extension EasyFirestore {
      
      Singletons retrieved from Firestore are retrieved from the `Singleton` collection.
      */
-    public static func get<T>(singleton: SingletonName, ofType type: T.Type, completion: @escaping (T?) -> Void) where T: Singleton {
+    public static func get<T>(singleton: T.Name, ofType type: T.Type, completion: @escaping (T?) -> Void) where T: Singleton {
       `get`(singleton, collection: "Singleton", type: type, completion: completion)
     }
     
@@ -60,7 +60,7 @@ extension EasyFirestore {
      - parameter useCache: Whether the cache should be prioritized to grab documents (if they exist).
      - parameter onFetch: The fetch handler. When documents are fetched, they'll populate here.
      */
-    public static func get<T>(ids: [DocumentID], ofType type: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([T]) -> Void) where T: Document {
+    public static func get<T>(ids: [T.ID], ofType type: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([T]) -> Void) where T: Document {
       guard ids.count > 0 else {
         onFetch([])
         return
@@ -84,7 +84,7 @@ extension EasyFirestore {
      - parameter useCache: Whether the cache should be prioritized to grab documents (if they exist).
      - parameter onFetch: The fetch handler. When documents are fetched, they'll populate here.
      */
-    public static func getChildren<T, U>(from path: KeyPath<U, [DocumentID]>, in parent: U, ofType: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([T]) -> Void) where T: Document, U: Document {
+    public static func getChildren<T, U>(from path: KeyPath<U, [T.ID]>, in parent: U, ofType: T.Type, useCache: Bool = EasyFirebase.useCache, onFetch: @escaping ([T]) -> Void) where T: Document, U: Document {
       EasyFirestore.getArray(from: parent.id, ofType: U.self, path: path) { ids in
         guard let ids = ids else {
           onFetch([])
@@ -113,13 +113,13 @@ extension EasyFirestore {
       }
     }
     
-    private static func get<T>(chunk: [DocumentID], ofType type: T.Type, useCache: Bool, completion: @escaping ([T]) -> Void) where T: Document {
+    private static func get<T>(chunk: [T.ID], ofType type: T.Type, useCache: Bool, completion: @escaping ([T]) -> Void) where T: Document {
       guard chunk.count > 0, chunk.count <= 10 else {
         completion([])
         return
       }
       var cachedDocuments: [T] = []
-      var newIDs: [DocumentID] = chunk
+      var newIDs: [T.ID] = chunk
       if useCache {
         for id in chunk {
           if let cachedDocument = Cacheing.grab(id, fromType: T.self) {

@@ -29,7 +29,7 @@ extension EasyFirestore {
      - parameter type: The type of document to remove.
      - parameter completion: The completion handler.
      */
-    public static func remove<T>(id: DocumentID, ofType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+    public static func remove<T>(id: T.ID, ofType type: T.Type, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
       let collectionName = String(describing: T.self)
       db.collection(collectionName).document(id).delete { error in
         completion(error)
@@ -58,7 +58,7 @@ extension EasyFirestore {
      
      For more information on unassignment, check out `EasyFirestore.Linking`.
      */
-    public static func removeUnassign<T, U>(_ document: T, fromField field: FieldName, using path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+    public static func removeUnassign<T, U>(_ document: T, fromField field: FieldName, using path: KeyPath<U, [T.ID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
       Linking.unassign(document, fromField: field, using: path, in: parent, completion: { error in
         if let error = error {
           completion(error)

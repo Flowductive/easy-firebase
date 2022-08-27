@@ -219,7 +219,7 @@ class MyUser: EasyUser {
   var dateCreated: Date
   
   // Define your own custom properties
-  var cars: [DocumentID]
+  var cars: [Car.ID]
 
   // ...
 }

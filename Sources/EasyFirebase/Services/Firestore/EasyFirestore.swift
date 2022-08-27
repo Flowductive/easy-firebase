@@ -34,7 +34,7 @@ public struct EasyFirestore {
   
   // MARK: - Internal Static Methods
   
-  internal static func getArray<T>(from id: DocumentID, ofType type: T.Type, path: KeyPath<T, [DocumentID]>, completion: @escaping ([DocumentID]?) -> Void) where T: Document {
+  internal static func getArray<T>(from id: T.ID, ofType type: T.Type, path: KeyPath<T, [String]>, completion: @escaping ([String]?) -> Void) where T: Document {
     db.collection(colName(of: T.self)).document(id).getDocument { result, _ in
       if let result = result, result.exists {
         let document = try? result.data(as: T.self)

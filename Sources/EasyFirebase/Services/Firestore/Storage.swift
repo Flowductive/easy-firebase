@@ -77,7 +77,7 @@ extension EasyFirestore {
      - parameter parent: The parent document containing the list of `DocumentID`s.
      - parameter completion: The completion handler.
      */
-    public static func setAssign<T, U>(_ document: T, toField field: FieldName, using path: KeyPath<U, [DocumentID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
+    public static func setAssign<T, U>(_ document: T, toField field: FieldName, using path: KeyPath<U, [T.ID]>, in parent: U, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Document {
       set(document) { error in
         if let error = error {
           completion(error)
@@ -95,7 +95,7 @@ extension EasyFirestore {
      - parameter document: The document to set in Firestore.
      - parameter id: The ID of the document to check in Firestore. If set to `nil`, the ID of the document being set will be used to check.
      */
-    public static func setIfNone<T>(_ document: T, checking id: DocumentID? = nil, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+    public static func setIfNone<T>(_ document: T, checking id: T.ID? = nil, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
       var checkID = document.id
       if let id = id {
         checkID = id

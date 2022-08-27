@@ -7,22 +7,20 @@
 
 import Foundation
 
-public typealias SessionID = DocumentID
-
 public protocol Session: Document {
   
   // MARK: - Public Properties
   
   /// The host of the session.
-  var host: DocumentID { get set }
+  var host: EasyUser.ID { get set }
   
   /// The session's users.
-  var users: [DocumentID] { get set }
+  var users: [EasyUser.ID] { get set }
   
   // MARK: - Public Initalizers
   
   init()
-  init(host: DocumentID)
+  init(host: EasyUser.ID)
 }
 
 public extension Session {
@@ -30,7 +28,7 @@ public extension Session {
   // MARK: - Public Properties
   
   /// The session's users, including the host.
-  var allUsers: [DocumentID] {
+  var allUsers: [EasyUser.ID] {
     var copy = Array(users)
     copy.append(host)
     return copy
@@ -38,7 +36,7 @@ public extension Session {
   
   // MARK: - Public Initalizers
   
-  init(host: DocumentID) {
+  init(host: EasyUser.ID) {
     self.init()
     self.host = host
     self.users = []
