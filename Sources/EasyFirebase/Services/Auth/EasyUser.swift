@@ -540,6 +540,7 @@ public extension EasyUser {
   }
 }
 
+@available(iOS 13.0, *)
 public extension EasyUser {
   
   // MARK: - Public Methods

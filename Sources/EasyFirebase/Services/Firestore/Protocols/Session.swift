@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(iOS 13.0, *)
 public protocol Session: Document {
   
   // MARK: - Public Properties
@@ -23,6 +24,7 @@ public protocol Session: Document {
   init(host: EasyUser.ID)
 }
 
+@available(iOS 13.0, *)
 public extension Session {
   
   // MARK: - Public Properties
