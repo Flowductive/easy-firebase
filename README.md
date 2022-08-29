@@ -33,6 +33,7 @@ EasyFirebase is a Swift wrapper for all things Firebase. Save hours from impleme
   - Document storage [→](https://github.com/Flowductive/easy-firebase#document-storage)
   - Document removal
   - Document retrieval [→](https://github.com/Flowductive/easy-firebase#document-retrieval)
+  - ✨ NEW: Document updating [→](https://github.com/Flowductive/easy-firebase#document-updating)
   - Update listeners [→](https://github.com/Flowductive/easy-firebase#update-listeners)
   - Built-in cacheing [→](https://github.com/Flowductive/easy-firebase#built-in-cacheing)
   - Easy linking [→](https://github.com/Flowductive/easy-firebase#easy-linking)
@@ -130,6 +131,21 @@ EasyFirestore.Retrieval.get(id: myCarID, ofType: Car.self) { car in
   guard let car = car else { return }
   self.myOtherCar = car
 }
+```
+
+### Document Updating
+
+Update fields remotely in Firestore without performing any reads.
+
+```swift
+// Append element to array
+EasyFirestore.Updating.append(\.ingredients, with: "Cheese", in: pizzaDocument) { error in ... }
+
+// Increment field
+EasyFirestore.Updating.increment(\.pepperoniCount, by: 5, in: pizzaDocument)
+
+// Remove elements from array
+EasyFirestore.Updating.remove(\.ingredients, taking: ["Garlic", "Anchovies", "Pineapple"], from: pizzaDocument)
 ```
 
 ### Update Listeners

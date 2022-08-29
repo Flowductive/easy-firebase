@@ -28,7 +28,7 @@ extension EasyFirestore {
      - parameter document: The document with the updated field.
      - parameter completion: The completion handler.
      */
-    public static func increment<T, U>(_ path: KeyPath<T, U>, by increase: Int, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: AdditiveArithmetic {
+    public static func increment<T, U>(_ path: KeyPath<T, U>, by increase: Int = 1, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: AdditiveArithmetic {
       let collectionName = String(describing: T.self)
       db.collection(collectionName).document(document.id).updateData([path.string: FieldValue.increment(Int64(increase))], completion: completion)
     }
@@ -83,30 +83,30 @@ extension EasyFirestore {
       db.collection(collectionName).document(document.id).updateData([path.string: FieldValue.arrayRemove(items)], completion: completion)
     }
     
-    /**
-     Adds a key-value pair to a dictionary in a field in Firestore.
-     
-     - parameter pair: The pair to add to the dictionary value.
-     - parameter path: The path to the document's dictionary field to update.
-     - parameter document: The document to modify.
-     - parameter completion: The completion handler.
-     */
-    public static func add<T, U>(pair: (String, U), to path: KeyPath<T, Dictionary<String, U>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
-      let collectionName = String(describing: T.self)
-      db.collection(collectionName).document(document.id).setData([path.string: [pair.0: pair.1]], merge: true, completion: completion)
-    }
-    
-    /**
-     Adds key-value pairs to a dictionary in a field in Firestore.
-     
-     - parameter pairs: The pairs to add to the dictionary value.
-     - parameter path: The path to the document's dictionary field to update.
-     - parameter document: The document to modify.
-     - parameter completion: The completion handler.
-     */
-    public static func add<T, U>(pairs dict: [String: U], to path: KeyPath<T, Dictionary<String, U>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
-      let collectionName = String(describing: T.self)
-      db.collection(collectionName).document(document.id).setData(dict, merge: true, completion: completion)
-    }
+//    /**
+//     Adds a key-value pair to a dictionary in a field in Firestore.
+//
+//     - parameter pair: The pair to add to the dictionary value.
+//     - parameter path: The path to the document's dictionary field to update.
+//     - parameter document: The document to modify.
+//     - parameter completion: The completion handler.
+//     */
+//    public static func add<T, U>(pair: (String, U), to path: KeyPath<T, Dictionary<String, U>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+//      let collectionName = String(describing: T.self)
+//      db.collection(collectionName).document(document.id).setData([path.string: [pair.0: pair.1]], merge: true, completion: completion)
+//    }
+//
+//    /**
+//     Adds key-value pairs to a dictionary in a field in Firestore.
+//
+//     - parameter pairs: The pairs to add to the dictionary value.
+//     - parameter path: The path to the document's dictionary field to update.
+//     - parameter document: The document to modify.
+//     - parameter completion: The completion handler.
+//     */
+//    public static func add<T, U>(pairs dict: [String: U], to path: KeyPath<T, Dictionary<String, U>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+//      let collectionName = String(describing: T.self)
+//      db.collection(collectionName).document(document.id).setData(dict, merge: true, completion: completion)
+//    }
   }
 }
