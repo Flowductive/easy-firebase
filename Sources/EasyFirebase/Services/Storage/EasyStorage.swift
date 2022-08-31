@@ -8,7 +8,6 @@
 import Foundation
 import Firebase
 import FirebaseStorage
-import FirebaseStorageSwift
 
 /**
  `EasyStorage` is a service manager for various functions related to Firebase Storage.
