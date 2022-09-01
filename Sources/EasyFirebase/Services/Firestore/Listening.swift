@@ -39,6 +39,7 @@ extension EasyFirestore {
       let listener = db.collection(colName(of: T.self)).document(id).addSnapshotListener { snapshot, _ in
         guard let snapshot = snapshot, snapshot.exists else {
           EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(colName(of: T.self))] collection, but no data could be found.")
+          completion(nil)
           return
         }
         var document: T?
