@@ -32,7 +32,7 @@ public extension Session {
   /// The session's users, including the host.
   var allUsers: [EasyUser.ID] {
     var copy = Array(users)
-    copy.append(host)
+    if !copy.contains(host) { copy.append(host) }
     return copy
   }
   

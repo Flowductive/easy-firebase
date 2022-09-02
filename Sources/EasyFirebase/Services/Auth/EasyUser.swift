@@ -136,7 +136,7 @@ open class EasyUser: IndexedDocument {
   }
   
   public required init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
+    let values: KeyedDecodingContainer<CodingKeys> = try decoder.container(keyedBy: CodingKeys.self)
     self.notifications = (try? values.decode([MessagingNotification].self, forKey: .notifications)) ?? []
     self.disabledMessageCategories = (try? values.decode([MessageCategory].self, forKey: .disabledMessageCategories)) ?? []
     self.progress = (try? values.decode(Int.self, forKey: .progress)) ?? -1
@@ -151,6 +151,13 @@ open class EasyUser: IndexedDocument {
     self.dateCreated = (try? values.decode(Date.self, forKey: .dateCreated)) ?? Date()
     self.index = try? values.decode(Int.self, forKey: .index)
     self.appVersion = (try? values.decode(String.self, forKey: .appVersion)) ?? ""
+    self.versionSupport(values)
+  }
+  
+  // MARK: - Private Methods
+  
+  private func versionSupport(_ values: KeyedDecodingContainer<CodingKeys>) {
+    
   }
   
   // MARK: - Public Enumerations
@@ -551,17 +558,20 @@ public extension EasyUser {
    - parameter type: The type of session to create.
    - parameter completion: The completion handler.
    */
-  func createSession<S>(ofType type: S.Type, completion: @escaping (S?, Error?) -> Void = { _, _ in }) where S: Session {
+  func createSession<S>(ofType type: S.Type, completion: @escaping (S?, Error?) -> Void) where S: Session {
+    guard self.sessions[String(describing: type)] == nil else {
+      completion(nil, SessionError.alreadyInSession)
+      return
+    }
     let newSession: S = S(host: self.id)
     newSession.set { error in
       guard error == nil else {
         completion(nil, SessionError.communicationError)
         return
       }
-      self.sessions.updateValue(newSession.id, forKey: newSession.typeName)
-      Firestore.firestore().collection(String(describing: Self.self)).document(self.id).updateData(["sessions": self.sessions]) { error in
+      self.registerSession(newSession) { error in
         guard error == nil else {
-          completion(nil, SessionError.communicationError)
+          completion(newSession, SessionError.communicationError)
           return
         }
         completion(newSession, nil)
@@ -576,26 +586,76 @@ public extension EasyUser {
    - parameter type: The session's type.
    - parameter completion: The completion handler.
    */
-  func joinSession<S>(id: S.ID, ofType type: S.Type, completion: @escaping (S?, Error?) -> Void = { _, _ in }) where S: Session {
+  func joinSession<S>(id: S.ID, ofType type: S.Type, completion: @escaping (S?, Error?) -> Void) where S: Session {
     EasyFirestore.Retrieval.get(id: id, ofType: type, useCache: false) { session in
       guard let session = session else {
         completion(nil, SessionError.fetchFailed)
         return
       }
-      EasyFirestore.Updating.append(\S.users, with: self.id, in: session) { error in
+      self.registerSession(session) { error in
         guard error == nil else {
-          completion(nil, SessionError.communicationError)
+          completion(session, SessionError.communicationError)
           return
         }
-        completion(session, nil)
+        guard session.host != self.id else {
+          completion(session, nil)
+          return
+        }
+        EasyFirestore.Updating.append(\S.users, with: self.id, in: session) { error in
+          guard error == nil else {
+            completion(nil, SessionError.communicationError)
+            return
+          }
+          completion(session, nil)
+        }
+      }
+    }
+  }
+  
+  /**
+   Checks all sessions and joins them if necessary.
+   
+   This method is useful if you wish to re-join a session on app open.
+   
+   - parameter completion: The completion handler.
+   */
+  func checkSession<S>(ofType type: S.Type, completion: @escaping (S?, Error?) -> Void) where S: Session {
+    let key = String(describing: type)
+    guard let id = sessions[key] else { return }
+    joinSession(id: id, ofType: type) { session, error in
+      if let error = error, let sessionError = error as? SessionError, sessionError == .fetchFailed {
+        self.unregisterSession(ofType: type) { error in
+          if let _ = error {
+            completion(nil, SessionError.communicationError)
+            return
+          }
+          completion(nil, nil)
+        }
+      } else {
+        completion(session, error)
       }
     }
   }
   
   /**
    Leaves a session.
+   
+   If the user is the host of the session, or if the session has no other active users, then the session will be ended.
+   
+   If you are the host of a session and you wish to *leave* but not *end* the session, use ``transferHost(to:in:completion:)``.
+   
+   - parameter session: The sessino to leave.
+   - parameter completion: The completion handler.
    */
   func leaveSession<S>(_ session: S, completion: @escaping (Error?) -> Void = { _ in }) where S: Session {
+    guard session.host != self.id, session.allUsers.count > 0 else {
+      endSession(session, completion: completion)
+      return
+    }
+    guard self.sessions[String(describing: type(of: session))] != nil else {
+      completion(SessionError.notInSession)
+      return
+    }
     self.sessions.removeValue(forKey: session.typeName)
     EasyFirestore.Listening.stop("_session_\(session.id)")
     EasyFirestore.Updating.remove(\S.users, taking: self.id, in: session) { error in
@@ -603,7 +663,68 @@ public extension EasyUser {
         completion(SessionError.leaveError)
         return
       }
+      self.unregisterSession(ofType: type(of: session)) { error in
+        guard error == nil else {
+          completion(SessionError.leaveError)
+          return
+        }
+        completion(nil)
+      }
+    }
+  }
+  
+  /**
+   Transfers host status to another user.
+   
+   - parameter user: The user to make host.
+   - parameter session: The session to perform this operation in.
+   - parameter completion: The completion handler.
+   */
+  func transferHost<S>(to user: EasyUser.ID, in session: inout S, completion: @escaping (Error?) -> Void = { _ in }) where S: Session {
+    guard session.host == self.id else {
+      completion(SessionError.noHostPermission)
+      return
+    }
+    guard user != self.id else {
+      completion(SessionError.alreadyHost)
+      return
+    }
+    guard session.users.contains(user) else {
+      completion(SessionError.notInSession)
+      return
+    }
+    session.users.removeAll { $0 == self.id }
+    if !session.users.contains(user) { session.users.append(user) }
+    session.set { error in
+      guard error == nil else {
+        completion(SessionError.communicationError)
+        return
+      }
       completion(nil)
+    }
+  }
+  
+  /**
+   Ends a session.
+   */
+  func endSession<S>(_ session: S, completion: @escaping (Error?) -> Void = { _ in }) where S: Session {
+    guard session.host == self.id || session.users.count <= 1 else {
+      completion(SessionError.noHostPermission)
+      return
+    }
+    EasyFirestore.Listening.stop("_session_\(session.id)")
+    EasyFirestore.Removal.remove(session) { error in
+      guard error == nil else {
+        completion(SessionError.endError)
+        return
+      }
+      self.unregisterSession(ofType: type(of: session)) { error in
+        guard error == nil else {
+          completion(SessionError.communicationError)
+          return
+        }
+        completion(nil)
+      }
     }
   }
   
@@ -653,6 +774,21 @@ public extension EasyUser {
         onEnd()
       }
     })
+  }
+  
+  // MARK: - Private Methods
+  
+  private func registerSession<S>(_ session: S, completion: @escaping (Error?) -> Void) where S: Session {
+    self.sessions.updateValue(session.id, forKey: session.typeName)
+    EasyFirestore.Updating.updateMapValue(key: session.typeName, value: session.id, to: \.sessions, in: self, completion: completion)
+  }
+  
+  private func unregisterSession<S>(ofType type: S.Type, completion: @escaping (Error?) -> Void) where S: Session {
+    guard let _ = self.sessions.removeValue(forKey: String(describing: type)) else {
+      completion(nil)
+      return
+    }
+    EasyFirestore.Updating.removeMapValue(key: String(describing: type), from: \.sessions, in: self, completion: completion)
   }
 }
 

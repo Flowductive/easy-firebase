@@ -104,7 +104,7 @@ extension EasyFirestore {
         } else if let error = error {
           EasyFirebase.log(error.localizedDescription)
         } else {
-          EasyFirebase.log(error: "The document with ID [\(id)] could not be loaded from the [\(colName(of: T.self))] collection.")
+          EasyFirebase.log(error: "The document with ID [\(id)] could not be loaded from the [\(collection)] collection.")
         }
         if let document = document {
           Cacheing.register(document)
