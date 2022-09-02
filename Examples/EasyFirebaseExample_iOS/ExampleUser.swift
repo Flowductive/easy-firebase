@@ -21,6 +21,7 @@ class ExampleUser: EasyUser {
   var hasJob: Bool = false
   
   var foodsEaten: [DocumentID] = []
+  var friends: [String: Int] = ["Albert": 32, "John": 29]
   
   // Implementation
   

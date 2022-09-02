@@ -36,6 +36,7 @@ struct FirestoreView: View {
         TextField(value: $ageField, formatter: NumberFormatter()) { Text("New value") }
         Text("Has Job: \(String(global.user.hasJob))").bold()
         Toggle("Has Job: ", isOn: $hasJobField)
+        Text("Friends: \(String(describing: global.user.friends))")
       }
       VStack {
         Button(action: pushDataMethod1) { Text("Push Data (Method 1)") }
@@ -44,33 +45,40 @@ struct FirestoreView: View {
         Button(action: fetchData) { Text("Manually Fetch Data") }
       }
       Divider()
-      Text("Total foods eaten: \(global.user.foodsEaten.count)")
-      ForEach(foodsEaten, id: \.foodName) { foodEaten in
-        HStack {
-          Text("Item: \(foodEaten.foodName) (\(foodEaten.calories) cal)")
-          Spacer()
-          Button(action: {
-            EasyFirestore.Removal.removeUnassign(foodEaten, fromField: "foodsEaten", using: \.foodsEaten, in: global.user)
-          }) {
-            Text("Delete")
+      VStack {
+        Text("Total foods eaten: \(global.user.foodsEaten.count)")
+        ForEach(foodsEaten, id: \.foodName) { foodEaten in
+          HStack {
+            Text("Item: \(foodEaten.foodName) (\(foodEaten.calories) cal)")
+            Spacer()
+            Button(action: {
+              EasyFirestore.Removal.removeUnassign(foodEaten, fromField: "foodsEaten", using: \.foodsEaten, in: global.user)
+            }) {
+              Text("Delete")
+            }
           }
         }
-      }
-      HStack {
-        TextField("Add new food", text: $newFoodField)
+        HStack {
+          TextField("Add new food", text: $newFoodField)
+          Button(action: {
+            addFood()
+            newFoodField = ""
+          }) {
+            Text("Add")
+          }
+        }
         Button(action: {
-          addFood()
-          newFoodField = ""
+          EasyFirestore.Retrieval.get(ids: global.user.foodsEaten, ofType: ExampleDocument.self, useCache: false) { docs in
+            foodsEaten = docs
+          }
         }) {
-          Text("Add")
+          Text("Fetch all foods")
         }
       }
-      Button(action: {
-        EasyFirestore.Retrieval.get(ids: global.user.foodsEaten, ofType: ExampleDocument.self, useCache: false) { docs in
-          foodsEaten = docs
+      VStack {
+        Button("Add new Friend") {
+          EasyFirestore.Updating.updateMapValue(key: "Barry", value: 25, to: \.friends, in: global.user)
         }
-      }) {
-        Text("Fetch all foods")
       }
     }.padding()
   }
