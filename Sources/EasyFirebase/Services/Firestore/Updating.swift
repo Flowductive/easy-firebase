@@ -29,7 +29,7 @@ extension EasyFirestore {
      - parameter completion: The completion handler.
      */
     public static func increment<T, U>(_ path: KeyPath<T, U>, by increase: Int = 1, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: AdditiveArithmetic {
-      let collectionName = String(describing: T.self)
+      let collectionName = String(describing: type(of: document))
       db.collection(collectionName).document(document.id).updateData([path.string: FieldValue.increment(Int64(increase))], completion: completion)
     }
     
@@ -54,7 +54,7 @@ extension EasyFirestore {
      - parameter completion: The completion handler.
      */
     public static func append<T, U>(_ path: KeyPath<T, Array<U>>, with items: Array<U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
-      let collectionName = String(describing: T.self)
+      let collectionName = String(describing: type(of: document))
       db.collection(collectionName).document(document.id).updateData([path.string: FieldValue.arrayUnion(items)], completion: completion)
     }
     
@@ -79,34 +79,57 @@ extension EasyFirestore {
      - parameter completion: The completion handler.
      */
     public static func remove<T, U>(_ path: KeyPath<T, Array<U>>, taking items: Array<U>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
-      let collectionName = String(describing: T.self)
+      let collectionName = String(describing: type(of: document))
       db.collection(collectionName).document(document.id).updateData([path.string: FieldValue.arrayRemove(items)], completion: completion)
     }
     
-//    /**
-//     Adds a key-value pair to a dictionary in a field in Firestore.
-//
-//     - parameter pair: The pair to add to the dictionary value.
-//     - parameter path: The path to the document's dictionary field to update.
-//     - parameter document: The document to modify.
-//     - parameter completion: The completion handler.
-//     */
-//    public static func add<T, U>(pair: (String, U), to path: KeyPath<T, Dictionary<String, U>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
-//      let collectionName = String(describing: T.self)
-//      db.collection(collectionName).document(document.id).setData([path.string: [pair.0: pair.1]], merge: true, completion: completion)
-//    }
-//
-//    /**
-//     Adds key-value pairs to a dictionary in a field in Firestore.
-//
-//     - parameter pairs: The pairs to add to the dictionary value.
-//     - parameter path: The path to the document's dictionary field to update.
-//     - parameter document: The document to modify.
-//     - parameter completion: The completion handler.
-//     */
-//    public static func add<T, U>(pairs dict: [String: U], to path: KeyPath<T, Dictionary<String, U>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
-//      let collectionName = String(describing: T.self)
-//      db.collection(collectionName).document(document.id).setData(dict, merge: true, completion: completion)
-//    }
+    /**
+     Updates a key-value pair to a map in a field in Firestore.
+     
+     ℹ️ **Note:** This will not override and erase other key/value pairs in the same field.
+
+     - parameter key: The key of the value to update in the map in a field in Firestore.
+     - parameter value: The value to update in the map in a field in Firestore.
+     - parameter path: The path to the document's map field to update.
+     - parameter document: The document to modify.
+     - parameter completion: The completion handler.
+     */
+    public static func updateMapValue<T, U>(key: String, value: U?, to path: KeyPath<T, Dictionary<String, U>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+      let collectionName = String(describing: type(of: document))
+      let fullPath: String = "\(path.string).\(key)"
+      db.collection(collectionName).document(document.id).updateData([fullPath: value as Any], completion: completion)
+    }
+
+    /**
+     Updates key-value pairs to a map in a field in Firestore.
+     
+     ℹ️ **Note:** This will not override and erase other key/value pairs in the same field.
+
+     - parameter pairs: The pairs to add to the map value.
+     - parameter path: The path to the document's map field to update.
+     - parameter document: The document to modify.
+     - parameter completion: The completion handler.
+     */
+    public static func updateMapValues<T>(pairs dict: [String: Any], to path: KeyPath<T, Dictionary<String, Any>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document {
+      let collectionName = String(describing: type(of: document))
+      var data: [String: Any] = [:]
+      for (mapKey, mapValue) in dict {
+        let fullPath: String = "\(path.string).\(mapKey)"
+        data[fullPath] = mapValue
+      }
+      db.collection(collectionName).document(document.id).updateData(data, completion: completion)
+    }
+    
+    /**
+     Removes a key-value pair from a map in a field in Firestore.
+
+     - parameter key: The key of the value to remove in the map in a field in Firestore.
+     - parameter path: The path to the document's map field to remove from.
+     - parameter document: The document to modify.
+     - parameter completion: The completion handler.
+     */
+    public static func removeMapValue<T, U>(key: String, from path: KeyPath<T, Dictionary<String, U>>, in document: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Document, U: Codable {
+      updateMapValue(key: key, value: nil, to: path, in: document, completion: completion)
+    }
   }
 }
