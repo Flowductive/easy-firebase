@@ -234,3 +234,37 @@ extension EasyFirestore {
     }
   }
 }
+
+#if canImport(CoreLocation)
+
+import CoreLocation
+
+@available(iOS 13.0, *)
+public extension EasyFirestore.Querying {
+  
+  // MARK: - Static Methods
+  
+  /**
+   Queries a collection of documents, grabbing documents that are near a provided location.
+   
+   - parameter path: The path to the field to check.
+   - parameter order: The way the documents are ordered. This will always order by the field provided in the `path` parameter.
+   - parameter limit: The maximum amount of documents to query.
+   */
+  static func near<T>(_ path: KeyPath<T, String>,
+                      at location: CLLocationCoordinate2D,
+                      precision: GeoPrecision = .normal,
+                      order: Order? = nil,
+                      limit: Int? = nil,
+                      completion: @escaping ([T]) -> Void
+  ) where T: GeoQueryable {
+    let str: String = location.geohash(length: precision.rawValue)
+    `where`(path, matches: str, order: order, limit: limit, completion: completion)
+  }
+}
+
+private extension String {
+  
+}
+
+#endif
