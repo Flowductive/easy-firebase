@@ -41,7 +41,7 @@ import FirebaseFirestoreSwift
  ```
  */
 @available(iOS 13.0, *)
-open class EasyUser: IndexedDocument {
+open class EasyUser: Document, IndexedDocument {
   
   // MARK: - Mixed Static Properties
   
@@ -144,7 +144,11 @@ open class EasyUser: IndexedDocument {
     self.deviceToken = try? values.decode(String.self, forKey: .deviceToken)
     self.lastSignon = (try? values.decode(Date.self, forKey: .lastSignon)) ?? Date()
     self.email = (try? values.decode(String.self, forKey: .email)) ?? "guest@easy-firebase.com"
-    self.sessions = (try? values.decode([String: String].self, forKey: .sessions)) ?? [:]
+    if let sessionsOptional = try? values.decode([String: String?].self, forKey: .sessions) {
+      for (key, value) in sessionsOptional where value != nil {
+        self.sessions.updateValue(value!, forKey: key)
+      }
+    }
     self.username = (try? values.decode(String.self, forKey: .username)) ?? "guest-user"
     self.displayName = (try? values.decode(String.self, forKey: .displayName)) ?? "Guest"
     self.id = (try? values.decode(String.self, forKey: .id)) ?? "Guest"

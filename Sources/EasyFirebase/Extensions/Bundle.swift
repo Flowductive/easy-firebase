@@ -18,4 +18,8 @@ extension Bundle {
   internal static var buildString: String {
     Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "-"
   }
+  
+  internal static var identifier: String {
+    Bundle.main.bundleIdentifier ?? "-"
+  }
 }
