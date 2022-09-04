@@ -23,6 +23,8 @@ public protocol GeoQueryable: Document {
   var longitude: Double { get set }
   /// The address of the location of the document.
   var address: String? { get set }
+  /// The geohash of the document.
+  var geohash: String { get }
 }
 
 #if canImport(CoreLocation)
