@@ -24,7 +24,7 @@ public protocol GeoQueryable: Document {
   /// The address of the location of the document.
   var address: String? { get set }
   /// The geohash of the document.
-  var geohash: String { get }
+  var geohash: String { get set }
 }
 
 #if canImport(CoreLocation)
@@ -37,10 +37,10 @@ public extension GeoQueryable {
   // MARK: - Properties
   
   /// The document's location's geohash.
-  var geohash: String {
+  mutating func updateGeohash() {
     let location: CLLocationCoordinate2D = .init(latitude: latitude, longitude: longitude)
     let hash = location.geohash(length: Self.geohashPrecision.rawValue)
-    return hash
+    self.geohash = hash
   }
 }
 
