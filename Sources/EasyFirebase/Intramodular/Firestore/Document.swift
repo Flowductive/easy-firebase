@@ -14,7 +14,7 @@ import SwiftUI
 @available(iOS 13.0, *)
 public extension Firestore {
   
-  class Document: Codable, Identifiable, Equatable {
+  class Document: Codable, Identifiable, Equatable, KeyPathListable {
     
     internal static var properties: [String: Any] = [:]
     
@@ -23,6 +23,11 @@ public extension Firestore {
     
     public init(dateCreated: Date = Date()) {
       self.dateCreated = dateCreated
+      for (label, value) in Mirror(reflecting: self).children {
+        if let label = label {
+          Self.properties.updateValue(value, forKey: label)
+        }
+      }
       _id.field.inject(name: "Test")
     }
     
@@ -104,7 +109,7 @@ public extension Firestore.Document {
   
   // MARK: - Methods
   
-  final func set(in location: Location = .default, options: TransactionOptions? = nil, completion: @escaping (Firestore.Document.Error?) -> Void) {
+  func set(in location: Location = .default, options: TransactionOptions? = nil, completion: @escaping (Firestore.Document.Error?) -> Void) {
     
   }
 }
