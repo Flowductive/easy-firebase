@@ -56,6 +56,21 @@ public class MessagingNotification: Model, Equatable {
   
   // MARK: - Public Initalizers
   
+  public init<T>(title: String,
+                 body: String,
+                 from user: T,
+                 in category: MessageCategory,
+                 attach image: URL? = nil,
+                 key: String? = nil
+  ) where T: EasyUser {
+    self.user = user.id
+    self.title = title
+    self.body = body
+    self.category = category
+    self.image = image
+    self.key = key
+  }
+  
   public init<T>(_ message: String,
                  from user: T,
                  in category: MessageCategory,
