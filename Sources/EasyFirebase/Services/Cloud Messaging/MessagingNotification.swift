@@ -45,14 +45,10 @@ public class MessagingNotification: Model, Equatable {
   /// The user that this notification came from.
   public var user: EasyUser.ID?
   
-  /// The notification's message.
-  ///
-  /// Do not include a placeholder for the user. The user's username will **always** be appended before the message.
-  ///
-  /// For instance, if you set `message` to `"followed you"`, the end user will receive the notification "*User* followed you".
-  public var text: String
+  /// The notification's title. Displayed in bold.
+  public var title: String
   /// The body of the push notification.
-  public var pushBody: String
+  public var body: String
   /// The attached image URL to the notification, if any.
   public var image: URL?
   /// Whether the notification has been read
@@ -69,19 +65,19 @@ public class MessagingNotification: Model, Equatable {
   ) where T: EasyUser {
     let username = user.username
     self.user = user.id
-    self.text = message
+    self.title = ""
     self.category = category
     self.image = image
-    self.pushBody = "\(username) \(self.text)"
+    self.body = "\(username) \(message)"
+    self.key = key
     if let add = additionalInfo {
-      self.pushBody += ": \(add)"
-      self.text += ": \(add)"
+      self.body += ": \(add)"
     }
   }
   
   // MARK: - Public Static Methods
   
   public static func == (lhs: MessagingNotification, rhs: MessagingNotification) -> Bool {
-    return lhs.text == rhs.text && (lhs.date.distance(to: rhs.date)) < TimeInterval(5 * 60)
+    return lhs.title == rhs.title && lhs.body == rhs.body && (lhs.date.distance(to: rhs.date)) < TimeInterval(5 * 60)
   }
 }

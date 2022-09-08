@@ -72,7 +72,7 @@ public struct EasyMessaging {
       EasyFirebase.log("Message not sent because the user has the message category '`\(notification.category)' disabled.")
       return
     }
-    sendNotification(to: user, title: "", body: notification.pushBody, data: ["count": user.notifications.filter({ !$0.read }).count], completion: completion)
+    sendNotification(to: user, title: notification.title, body: notification.body, data: ["count": user.notifications.filter({ !$0.read }).count], completion: completion)
   }
   
   // MARK: - Private Static Methods
