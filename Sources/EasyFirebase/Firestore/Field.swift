@@ -8,20 +8,23 @@
 import Foundation
 
 @propertyWrapper
-public struct Field<V>: Codable where V: Codable {
+public class Field<Value>: Codable where Value: Codable {
   
-  public var wrappedValue: V {
-    return _value
+  public var wrappedValue: Value { get { return _value } set { _value = newValue }}
+  
+  private var name: String
+  private var _value: Value
+  
+  public init(wrappedValue defaultValue: Value, _ name: String) {
+    self.name = name
+    self._value = defaultValue
   }
   
-  private var propertyName: String? = nil
-  private var _value: V
-  
-  public init(wrappedValue: V) {
-    self._value = wrappedValue
+  public var field: Field<Value> {
+    self
   }
   
-  internal func injectPropertyName(_ name: String) {
-    self.propertyName = name
+  public func inject(name: String) {
+    self.name = name
   }
 }

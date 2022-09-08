@@ -16,47 +16,38 @@ public extension Firestore {
   
   class Document: Codable, Identifiable, Equatable {
     
-    open static var properties: [String, Any]
+    internal static var properties: [String: Any] = [:]
     
-    @Field public var id: String
+    @Field("id") public var id: String = UUID().uuidString
     public var dateCreated: Date
     
-    public init(id: ID = UUID().uuidString, dateCreated: Date = Date()) {
-      id = @Field(wrappedValue: id)
+    public init(dateCreated: Date = Date()) {
       self.dateCreated = dateCreated
+      _id.field.inject(name: "Test")
     }
     
     public static func == (lhs: Document, rhs: Document) -> Bool {
       return lhs.id == rhs.id
     }
     
-    public struct CodingKeys: CodingKey {
-      
-      public var stringValue: String
-      
-      public init?(stringValue: String) {
-        self.stringValue = stringValue
-      }
-      
-      public var intValue: Int? {
-        var hasher = Hasher()
-        stringValue.hash(into: &hasher)
-        return hasher.finalize()
-      }
-      
-      public init?(intValue: Int) {
-        nil
-      }
-    }
-    
-    public func test() {
-      let mirror = Mirror(reflecting: self)
-      let dict: [String: Any]
-      for child in mirror.children {
-        if let wrappedValue
-        dict.updateValue(child.value, forKey: child.label)
-      }
-    }
+//    public struct CodingKeys: CodingKey {
+//
+//      public var stringValue: String
+//
+//      public init?(stringValue: String) {
+//        self.stringValue = stringValue
+//      }
+//
+//      public var intValue: Int? {
+//        var hasher = Hasher()
+//        stringValue.hash(into: &hasher)
+//        return hasher.finalize()
+//      }
+//
+//      public init?(intValue: Int) {
+//        nil
+//      }
+//    }
   }
 }
 
