@@ -35,8 +35,8 @@ let package = Package(
         .product(name: "GAppAuth-iOS", package: "GAppAuth")
       ]
     ),
-//    .testTarget(
-//      name: "EasyFirebaseTests",
-//      dependencies: ["EasyFirebase"]),
+    //    .testTarget(
+    //      name: "EasyFirebaseTests",
+    //      dependencies: ["EasyFirebase"]),
   ]
 )

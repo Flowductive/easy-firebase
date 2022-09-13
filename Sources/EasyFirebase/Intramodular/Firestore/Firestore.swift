@@ -9,4 +9,7 @@ import Foundation
 
 public struct Firestore {
   
+  public enum Error: LocalizedError {
+    
+  }
 }

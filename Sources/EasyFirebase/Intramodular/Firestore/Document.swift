@@ -14,45 +14,25 @@ import SwiftUI
 @available(iOS 13.0, *)
 public extension Firestore {
   
-  class Document: Codable, Identifiable, Equatable, KeyPathListable {
+  class Document: Codable, Identifiable, Equatable {
     
-    internal static var properties: [String: Any] = [:]
+    internal static var codingKeys: [String] = []
     
-    @Field("id") public var id: String = UUID().uuidString
-    public var dateCreated: Date
+    @Field public var id: String = UUID().uuidString
+    @Field public var dateCreated: Date
     
-    public init(dateCreated: Date = Date()) {
+    public init(id: String = UUID().uuidString, dateCreated: Date = Date()) {
       self.dateCreated = dateCreated
       for (label, value) in Mirror(reflecting: self).children {
-        if let label = label {
-          Self.properties.updateValue(value, forKey: label)
+        if let field = value as? AnyField, let label = label {
+          field.inject(document: self, key: label)
         }
       }
-      _id.field.inject(name: "Test")
     }
     
     public static func == (lhs: Document, rhs: Document) -> Bool {
       return lhs.id == rhs.id
     }
-    
-//    public struct CodingKeys: CodingKey {
-//
-//      public var stringValue: String
-//
-//      public init?(stringValue: String) {
-//        self.stringValue = stringValue
-//      }
-//
-//      public var intValue: Int? {
-//        var hasher = Hasher()
-//        stringValue.hash(into: &hasher)
-//        return hasher.finalize()
-//      }
-//
-//      public init?(intValue: Int) {
-//        nil
-//      }
-//    }
   }
 }
 
@@ -85,19 +65,13 @@ public extension Firestore.Document {
     }
     
     public static func subcollection(path descendingCollectionNames: String...) -> Self {
-      
       Self(rawValue: descendingCollectionNames.joined(separator: "."))
     }
-  }
-  
-  enum Error: LocalizedError {
   }
 }
 
 @available(iOS 13.0, *)
 public extension Firestore.Document {
-  
-  // MARK: - Static Methods
   
   static func `get`(ids: [Firestore.Document.ID], from location: Location = .default, options: TransactionOptions? = nil, onUpdate: @escaping (Result<Array<Self>, Error>) -> Void) {
     
@@ -107,9 +81,7 @@ public extension Firestore.Document {
     
   }
   
-  // MARK: - Methods
-  
-  func set(in location: Location = .default, options: TransactionOptions? = nil, completion: @escaping (Firestore.Document.Error?) -> Void) {
+  func set(in location: Location = .default, options: TransactionOptions? = nil, completion: @escaping (Firestore.Error?) -> Void) {
     
   }
 }
