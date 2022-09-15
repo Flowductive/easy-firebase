@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Document.swift
 //  
 //
 //  Created by Ben Myers on 9/6/22.
@@ -16,18 +16,30 @@ public extension Firestore {
   
   class Document: Codable, Identifiable, Equatable {
     
-    internal static var codingKeys: [String] = []
+    class func defaultLocation() -> Location { .default }
     
     @Field public var id: String = UUID().uuidString
     @Field public var dateCreated: Date
     
+    @CodableIgnored internal var batch: [Field.Key]? = .some([])
+    @CodableIgnored private var fields: [Field.Key]? = .some([])
+    @CodableIgnored private var location: Location?
+  
     public init(id: String = UUID().uuidString, dateCreated: Date = Date()) {
+      self.location = Self.defaultLocation()
       self.dateCreated = dateCreated
       for (label, value) in Mirror(reflecting: self).children {
         if let field = value as? AnyField, let label = label {
+          fields?.append(label)
           field.inject(document: self, key: label)
         }
       }
+    }
+    
+    internal func firestoreReference(_ location: Location? = nil) -> FirebaseFirestore.DocumentReference? {
+      var _location: Location = .default
+      if let location = location { _location = location }
+      return FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id)
     }
     
     public static func == (lhs: Document, rhs: Document) -> Bool {
@@ -38,15 +50,6 @@ public extension Firestore {
 
 @available(iOS 13.0, *)
 public extension Firestore.Document {
-  
-  struct TransactionOptions {
-    
-    public var cache: Bool
-    
-    public init(cache: Bool = true) {
-      self.cache = cache
-    }
-  }
   
   struct Location: RawRepresentable {
     
@@ -73,15 +76,22 @@ public extension Firestore.Document {
 @available(iOS 13.0, *)
 public extension Firestore.Document {
   
-  static func `get`(ids: [Firestore.Document.ID], from location: Location = .default, options: TransactionOptions? = nil, onUpdate: @escaping (Result<Array<Self>, Error>) -> Void) {
+  static func read(ids: [Firestore.Document.ID], from location: Location = .default, onUpdate: @escaping (Result<Array<Self>, Error>) -> Void) {
     
   }
   
-  static func `get`(id: Firestore.Document.ID, from location: Location = .default, options: TransactionOptions? = nil, completion: @escaping (Result<Self, Error>) -> Void) {
-    
+  static func read(id: Firestore.Document.ID, from location: Location = .default, completion: @escaping (Result<Self, Error>) -> Void) {
   }
   
-  func set(in location: Location = .default, options: TransactionOptions? = nil, completion: @escaping (Firestore.Error?) -> Void) {
+  func write(to location: Location? = nil, completion: @escaping (Error?) -> Void = { _ in }) {
     
+  }
+}
+
+@available(iOS 13.0, *)
+internal extension Firestore.Document {
+  
+  func write(_ , completion: @escaping (Firestore.Error?) -> Void) {
+    firestoreReference()?.getDocument(source: <#T##FirestoreSource#>, completion: <#T##(DocumentSnapshot?, Error?) -> Void#>)
   }
 }
