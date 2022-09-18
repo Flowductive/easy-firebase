@@ -605,11 +605,7 @@ public extension EasyUser {
           completion(session, nil)
           return
         }
-        EasyFirestore.Updating.append(\S.users, with: self.id, in: session) { error in
-          guard error == nil else {
-            completion(nil, SessionError.communicationError)
-            return
-          }
+        Firestore.firestore().collection(String(describing: type)).document(id).updateData(["users": FieldValue.arrayUnion([self.id])]) { error in
           completion(session, nil)
         }
       }
@@ -662,7 +658,7 @@ public extension EasyUser {
     }
     self.sessions.removeValue(forKey: session.typeName)
     EasyFirestore.Listening.stop("_session_\(session.id)")
-    EasyFirestore.Updating.remove(\S.users, taking: self.id, in: session) { error in
+    Firestore.firestore().collection(String(describing: type(of: session))).document(session.id).updateData(["users": FieldValue.arrayRemove([self.id])]) { error in
       guard error == nil else {
         completion(SessionError.leaveError)
         return

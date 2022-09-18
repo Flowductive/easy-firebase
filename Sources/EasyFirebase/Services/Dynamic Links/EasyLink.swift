@@ -5,12 +5,8 @@
 //  Created by Ben Myers on 9/2/22.
 //
 
-#if os(iOS)
-
 import Firebase
 import Foundation
-import FirebaseCore
-import FirebaseDynamicLinks
 
 @available(iOS 13.0, *)
 public struct EasyLink {
@@ -37,22 +33,33 @@ public struct EasyLink {
   public var longURL: LongURL? {
     guard let urlPrefix = Self.urlPrefix else { fatalError("Set static value EasyLink.urlPrefix before creating EasyLink instance.") }
     guard let deepLinkURL = deepLinkURL else { return nil }
-    guard let builder = DynamicLinkComponents(link: deepLinkURL, domainURIPrefix: urlPrefix) else { return nil }
-    builder.iOSParameters = DynamicLinkIOSParameters(bundleID: Bundle.identifier)
+    let urlParts = urlPrefix.split(separator: "/", maxSplits: 1)
+    var builder = URLComponents()
+    builder.scheme = "https"
+    guard let host = urlParts.first else { return nil }
+    builder.host = String(host)
+    if let path = urlParts.last {
+      builder.path = "/\(path)"
+    }
+    builder.queryItems = [
+      .init(name: "link", value: deepLinkURL.absoluteString),
+      .init(name: "ibi", value: Bundle.identifier),
+    ]
     if let appStoreID = Self.appStoreID {
-      builder.iOSParameters?.appStoreID = appStoreID
+      builder.queryItems?.append(.init(name: "isi", value: appStoreID))
     }
     if let minimumAppVersion = Self.minimumAppVersion {
-      builder.iOSParameters?.minimumAppVersion = minimumAppVersion
-      builder.iOSParameters?.fallbackURL = Self.backupURL
-    }
-    if let social = social {
-      builder.socialMetaTagParameters = social.builderParameters
+      builder.queryItems?.append(.init(name: "imv", value: minimumAppVersion))
     }
     if let backupURL = Self.backupURL {
-      let params = DynamicLinkOtherPlatformParameters()
-      params.fallbackUrl = backupURL
-      builder.otherPlatformParameters = params
+      builder.queryItems?.append(.init(name: "ofl", value: backupURL.absoluteString))
+    }
+    if let social = social {
+      builder.queryItems?.append(.init(name: "st", value: social.title))
+      builder.queryItems?.append(.init(name: "sd", value: social.desc))
+      if let imageURL = social.imageURL {
+        builder.queryItems?.append(.init(name: "si", value: imageURL.absoluteString))
+      }
     }
     return builder.url
   }
@@ -95,28 +102,60 @@ public struct EasyLink {
     if let query = query { self.query[query.0] = query.1 }
   }
   
+  public init?(url: DeepLinkURL) {
+    guard
+      let _scheme = url.scheme,
+      let scheme = Scheme(rawValue: _scheme),
+      let host = url.host
+    else {
+      return nil
+    }
+    self.scheme = scheme
+    self.host = host
+    self.path = url.path
+    self.query = url.queryDictionary ?? [:]
+  }
+  
   // MARK: - Public Static Methods
   
   public static func handle(_ url: UniversialURL?, completion: @escaping (EasyLink?) -> Void){
-    guard let url = url else {
+    guard
+      let url = url,
+      let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+      let dictionary = NSDictionary(contentsOfFile: path)
+    else {
       completion(nil)
       return
     }
-    DynamicLinks.dynamicLinks().handleUniversalLink(url) { (dynamicLink: Firebase.DynamicLink?, error: Error?) in
+    let dict = [
+      "requestedLink": url.absoluteString,
+      "bundle_id": Bundle.identifier,
+      "sdk_version": "9.0.0"
+    ]
+    guard
+      let json: Data = try? JSONSerialization.data(withJSONObject: dict),
+      let apiKey = dictionary["API_KEY"] as? String,
+      let endpoint = URL(string: "https://firebasedynamiclinks.googleapis.com/v1/reopenAttribution?key=\(apiKey)")
+    else {
+      completion(nil)
+      return
+    }
+    var request = URLRequest(url: endpoint)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.httpBody = json
+    URLSession.shared.dataTask(with: request) { data, response, error in
       guard
-        error == nil,
-        let dynamicLink = dynamicLink,
-        let url = dynamicLink.url,
-        let scheme = Scheme.get(from: url.scheme ?? ""),
-        let host = url.host,
-        let query = url.queryDictionary
+        let data = data,
+        let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let deepLink = dict["deepLink"] as? String,
+        let url = URL(string: deepLink)
       else {
         completion(nil)
         return
       }
-      let link = EasyLink(scheme: scheme, host: host, path: url.path, query: query)
-      completion(link)
-    }
+      completion(EasyLink(url: url))
+    }.resume()
   }
   
   // MARK: - Public Methods
@@ -127,19 +166,41 @@ public struct EasyLink {
    - parameter completion: The completion handler.
    */
   public func shorten(mode: ShortenMode = .short, completion: @escaping (URL?) -> Void) {
-    guard let longURL = longURL else {
+    guard
+      let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+      let dictionary = NSDictionary(contentsOfFile: path),
+      let longURL = longURL
+    else {
       completion(nil)
       return
     }
-    let opt = DynamicLinkComponentsOptions()
-    opt.pathLength = mode.convert
-    DynamicLinkComponents.shortenURL(longURL, options: opt) { url, warnings, error in
-      guard let url = url, error == nil else {
+    let dict: [String : Any] = [
+      "longDynamicLink": longURL.absoluteString,
+      "suffix": ["option": mode.string]
+    ]
+    guard
+      let apiKey = dictionary["API_KEY"] as? String,
+      let endpoint = URL(string: "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=\(apiKey)"),
+      let json = try? JSONSerialization.data(withJSONObject: dict)
+    else {
+      completion(nil)
+      return
+    }
+    var request = URLRequest(url: endpoint)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.httpBody = json
+    URLSession.shared.dataTask(with: request) { data, response, error in
+      guard
+        let data = data,
+        let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let link = json["shortLink"] as? String
+      else {
         completion(nil)
         return
       }
-      completion(url)
-    }
+      completion(URL(string: link))
+    }.resume()
   }
   
   // MARK: - Enumerations
@@ -157,10 +218,10 @@ public struct EasyLink {
   
   public enum ShortenMode {
     case secure, short
-    var convert: ShortDynamicLinkPathLength {
+    var string: String {
       switch self {
-      case .secure: return .unguessable
-      case .short: return .short
+      case .secure: return "UNGUESSABLE"
+      case .short: return "SHORT"
       }
     }
   }
@@ -168,6 +229,7 @@ public struct EasyLink {
   // MARK: - Nested Structs
   
   public struct SocialMeta {
+    
     public var title: String
     public var desc: String
     public var imageURL: URL?
@@ -176,14 +238,6 @@ public struct EasyLink {
       self.title = title
       self.desc = desc
       self.imageURL = imageURL
-    }
-    
-    internal var builderParameters: DynamicLinkSocialMetaTagParameters {
-      let p = DynamicLinkSocialMetaTagParameters()
-      p.title = title
-      p.descriptionText = desc
-      p.imageURL = imageURL
-      return p
     }
   }
 }
@@ -203,5 +257,3 @@ fileprivate extension URL {
     return queryStrings
   }
 }
-
-#endif
