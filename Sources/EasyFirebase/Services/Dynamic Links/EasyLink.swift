@@ -142,7 +142,6 @@ public struct EasyLink {
     }
     var request = URLRequest(url: endpoint)
     request.httpMethod = "POST"
-    request.setValue("Text-ContentType", forHTTPHeaderField: "")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpBody = json
     URLSession.shared.dataTask(with: request) { data, response, error in
