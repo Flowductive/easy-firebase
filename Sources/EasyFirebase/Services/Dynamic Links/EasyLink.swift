@@ -32,15 +32,11 @@ public struct EasyLink {
   /// A long dynamic link that is the long vresion of your Dynamic Link.
   public var longURL: LongURL? {
     guard let urlPrefix = Self.urlPrefix else { fatalError("Set static value EasyLink.urlPrefix before creating EasyLink instance.") }
-    guard let deepLinkURL = deepLinkURL else { return nil }
-    let urlParts = urlPrefix.split(separator: "/", maxSplits: 1)
+    guard let deepLinkURL = deepLinkURL, let urlPrefixURL = URL(string: urlPrefix) else { return nil }
     var builder = URLComponents()
     builder.scheme = "https"
-    guard let host = urlParts.first else { return nil }
-    builder.host = String(host)
-    if let path = urlParts.last {
-      builder.path = "/\(path)"
-    }
+    builder.host = urlPrefixURL.host
+    builder.path = urlPrefixURL.path
     builder.queryItems = [
       .init(name: "link", value: deepLinkURL.absoluteString),
       .init(name: "ibi", value: Bundle.identifier),
