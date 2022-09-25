@@ -47,6 +47,9 @@ public struct EasyFirebase {
       FirebaseApp.configure()
     }
     if #available(iOS 13.0, *) {
+      EasyFirestore.db.settings.isPersistenceEnabled = EasyFirestore.usePersistence
+    }
+    if #available(iOS 13.0, *) {
       EasyAuth.prepare()
     }
   }

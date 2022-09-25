@@ -1,0 +1,4 @@
+module EasyFirebase {
+    header "/Users/benmyers/Documents/Ben Myers/GitHub/easy-firebase/.build/arm64-apple-macosx/debug/EasyFirebase.build/EasyFirebase-Swift.h"
+    requires objc
+}

@@ -1,0 +1,4 @@
+module GTMAppAuth {
+    umbrella header "/Users/benmyers/Documents/Ben Myers/GitHub/easy-firebase/.build/checkouts/GTMAppAuth/GTMAppAuth/Sources/Public/GTMAppAuth/GTMAppAuth.h"
+    export *
+}

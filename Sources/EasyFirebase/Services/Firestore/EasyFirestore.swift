@@ -27,6 +27,10 @@ public typealias CollectionName = String
  */
 @available(macOS 10.15, iOS 13.0, *)
 public struct EasyFirestore {
+
+  // MARK: - Public Static Properties
+
+  public static let usePersistence: Bool = false
   
   // MARK: - Internal Static Properties
   

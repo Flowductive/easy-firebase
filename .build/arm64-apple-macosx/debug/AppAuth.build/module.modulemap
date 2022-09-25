@@ -1,0 +1,4 @@
+module AppAuth {
+    umbrella "/Users/benmyers/Documents/Ben Myers/GitHub/easy-firebase/.build/checkouts/AppAuth-iOS/Source/AppAuth"
+    export *
+}

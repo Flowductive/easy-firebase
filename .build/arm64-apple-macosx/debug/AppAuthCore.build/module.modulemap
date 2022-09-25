@@ -1,0 +1,4 @@
+module AppAuthCore {
+    umbrella "/Users/benmyers/Documents/Ben Myers/GitHub/easy-firebase/.build/checkouts/AppAuth-iOS/Source/AppAuthCore"
+    export *
+}
