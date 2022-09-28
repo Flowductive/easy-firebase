@@ -1,4 +1,0 @@
-module GAppAuth_iOS {
-    header "/Users/benmyers/Documents/Ben Myers/GitHub/easy-firebase/.build/arm64-apple-macosx/debug/GAppAuth_iOS.build/GAppAuth-iOS-Swift.h"
-    requires objc
-}
