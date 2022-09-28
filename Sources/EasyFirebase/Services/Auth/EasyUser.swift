@@ -264,7 +264,9 @@ public extension EasyUser {
     let newUser = Self()
     newUser.id = user.uid
     newUser.dateCreated = Date()
-    newUser.deviceToken = EasyMessaging.deviceToken
+    if let token = EasyMessaging.deviceToken {
+      newUser.deviceToken = EasyMessaging.deviceToken
+    }
     newUser.appVersion = Bundle.versionString
     newUser.lastSignon = Date()
     newUser.email = user.email ?? user.phoneNumber ?? ""

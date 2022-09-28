@@ -30,7 +30,11 @@ public struct EasyMessaging {
   
   /// The user's device token.
   public static var deviceToken: String? {
+    #if os(iOS)
     return Messaging.messaging().fcmToken
+    #else
+    return nil
+    #endif
   }
   
   // MARK: - Public Static Methods
