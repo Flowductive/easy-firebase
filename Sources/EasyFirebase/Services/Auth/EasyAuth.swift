@@ -65,6 +65,10 @@ public class EasyAuth: NSObject {
   
   internal static let listenerKey: EasyFirestore.ListenerKey = "EASY_USER_UPDATE"
   
+  // MARK: - Private Static Properties
+  
+  private static var appleSignInCompletion: (Error?) -> Void = { _ in }
+  
   // MARK: - Private Properties
   
   private var currentNonce: String?
@@ -293,7 +297,7 @@ extension EasyAuth {
   /**
    Signs in with Google on macOS.
    
-   To get your Client ID, go to the [Google Cloud Deveeloper Console](https://console.cloud.google.com/apis/dashboard) > Credentials > Create Credentials > OAuth Client ID and create an OAuth Client ID for the Web application type. You can leave the other fields blank.
+   To get your Client ID, go to the [Google Cloud Developer Console](https://console.cloud.google.com/apis/dashboard) > Credentials > Create Credentials > OAuth Client ID and create an OAuth Client ID for the Web application type. You can leave the other fields blank.
    
    ⚠️ **Note:** When passing the `clientID`, ensure it is in the form xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx where `apps.googleusercontent.com` is *not* included. The `clientID` is alphanumeric and should *not* include any punctuation.
    
@@ -395,10 +399,11 @@ extension EasyAuth: ASAuthorizationControllerDelegate, ASAuthorizationController
    }, onCompletion: { _ in })
    ```
    */
-  public static func signInWithApple() {
+  public static func signInWithApple(completion: @escaping (Error?) -> Void = { _ in }) {
     let nonce = String.nonce()
     shared.currentNonce = nonce
     accountProvider = .apple
+    appleSignInCompletion = completion
     let appleIDProvider = ASAuthorizationAppleIDProvider()
     let request = appleIDProvider.createRequest()
     request.requestedScopes = [.fullName, .email]
@@ -407,6 +412,7 @@ extension EasyAuth: ASAuthorizationControllerDelegate, ASAuthorizationController
     authorizationController.delegate = shared
     authorizationController.presentationContextProvider = shared
     authorizationController.performRequests()
+    
   }
   
   // MARK: - Implementation
@@ -448,7 +454,7 @@ extension EasyAuth: ASAuthorizationControllerDelegate, ASAuthorizationController
       let credential = OAuthProvider.credential(withProviderID: "apple.com",
                                                 idToken: idTokenString,
                                                 rawNonce: nonce)
-      EasyAuth.signIn(with: credential, completion: { _ in })
+      EasyAuth.signIn(with: credential, completion: Self.appleSignInCompletion)
     }
   }
   
