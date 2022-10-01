@@ -38,7 +38,7 @@ extension EasyFirestore {
      - parameter singleton: The singleton to set in Firestore.
      - parameter completion: The completion handler.
      */
-    public static func set<T>(_ singleton: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Singleton {
+    public static func set<T>(singleton: T, completion: @escaping (Error?) -> Void = { _ in }) where T: Singleton {
       set(singleton, collection: "Singleton", id: singleton.id, completion: completion)
     }
     
