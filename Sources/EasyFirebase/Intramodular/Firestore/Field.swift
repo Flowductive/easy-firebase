@@ -15,15 +15,19 @@ public class Field<DocumentType, Value>: AnyField, Codable where Value: Codable,
   public typealias Key = String
   
   public internal(set) var wrappedValue: Value
-  public var document: DocumentType?
+  
+  public unowned var document: DocumentType?
   
   public override var valueAsAny: Any { wrappedValue as Any }
-  public override var documentAsAny: Any? { get {
-    document as Any
-  } set {
-    guard let newValue = newValue, let newDoc = newValue as? DocumentType else { return }
-    document = newDoc
-  }}
+  
+  public override var documentAsAny: Any? {
+    get {
+      document as Any
+    } set {
+      guard let newValue = newValue, let newDoc = newValue as? DocumentType else { return }
+      document = newDoc
+    }
+  }
   
   private var oldWrappedValue: Value?
   
@@ -45,33 +49,19 @@ public class Field<DocumentType, Value>: AnyField, Codable where Value: Codable,
     self
   }
   
-  public enum SetOption: Equatable {
+  public enum WriteOption: Equatable {
     
-    /// Perform this write immediately, updating only the relevant key-value pair in Firestore.
-    ///
-    /// By default, writes are passed to the batch, where `document.write(...)` will set all the updated fields in Firestore.
-    case writeNow
+    /// Adds this write to the batch.
+    case batch
     
-    /// Perform this write locally, updating `wrappedValue` with the passed value.
-    ///
-    /// By default, writes are written locally immediately.
-    ///
-    /// - parameter wait: Whether to wait for the set to fully complete before updating locally.
-    case locally(wait: Bool)
-    
-    /// Revert the old local `wrappedValue` if an error occurs during the batch write.
-    case revertIfFailed
+    /// Reverts the local write on fail.
+    case revertOnFail
   }
 }
 
 internal extension Field {
   
-  func forceLocalUpdate(_ newValue: Value) {
-    oldWrappedValue = nil
-    wrappedValue = newValue
-  }
-  
-  func attemptLocalUpdate(_ newValue: Value) {
+  func locallyUpdate(_ newValue: Value) {
     oldWrappedValue = wrappedValue
     wrappedValue = newValue
   }
@@ -89,27 +79,54 @@ internal extension Field {
 
 public extension Field {
   
-  func `set`(_ value: Value, options: [SetOption] = [.locally(wait: false)], completion: @escaping (Firestore.Error?) -> Void) {
+  func `set`(_ value: Value, option: WriteOption = .revertOnFail, completion: @escaping (Firestore.Error?) -> Void) {
     guard let key = key else { completion(.noKey); return }
-    if options.contains(.locally(wait: false)) { attemptLocalUpdate(value) }
-    if options.contains(.writeNow) {
-      document?.write([key: value]) { [weak self] error in
-        if let error = error {
-          if options.contains(.revertIfFailed) { self?.revertLocalUpdate() }
-          completion(error)
-          return
-        } else {
-          if options.contains(.locally(wait: true)) {
-            self?.forceLocalUpdate(value)
-          } else {
-            self?.acceptLocalUpdate()
-          }
-          completion(nil)
-          return
-        }
+    guard let document = document else { completion(.unknown); return }
+    locallyUpdate(value)
+    document.firestoreDocumentReference.updateData([key: value]) { error in
+      if error != nil {
+        completion(.connection)
+        self.revertLocalUpdate()
+      } else {
+        completion(nil)
+        self.acceptLocalUpdate()
       }
-    } else {
-      document?.writeBatch(to: <#T##Firestore.Document.Location#>, completion: <#T##(Firestore.Error?) -> Void#>)
+    }
+  }
+}
+
+public extension Field where Value == Double {
+  
+  func increment(by value: Value, option: WriteOption = .revertOnFail, completion: @escaping (Firestore.Error?) -> Void) {
+    guard let key = key else { completion(.noKey); return }
+    guard let document = document else { completion(.unknown); return }
+    locallyUpdate(value)
+    document.firestoreDocumentReference.updateData([key: FieldValue.increment(value)]) { error in
+      if error != nil {
+        completion(.connection)
+        self.revertLocalUpdate()
+      } else {
+        completion(nil)
+        self.acceptLocalUpdate()
+      }
+    }
+  }
+}
+
+public extension Field where Value == Int {
+  
+  func increment(by value: Value, option: WriteOption = .revertOnFail, completion: @escaping (Firestore.Error?) -> Void) {
+    guard let key = key else { completion(.noKey); return }
+    guard let document = document else { completion(.unknown); return }
+    locallyUpdate(value)
+    document.firestoreDocumentReference.updateData([key: FieldValue.increment(Double(value))]) { error in
+      if error != nil {
+        completion(.connection)
+        self.revertLocalUpdate()
+      } else {
+        completion(nil)
+        self.acceptLocalUpdate()
+      }
     }
   }
 }

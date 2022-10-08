@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "EasyFirebase",
-  platforms: [.iOS(.v11), .macOS(.v10_15), .tvOS(.v12), .watchOS(.v7)],
+  platforms: [.iOS(.v13), .macOS(.v10_15), .tvOS(.v12), .watchOS(.v7)],
   products: [
     .library(
       name: "EasyFirebase",
