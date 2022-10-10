@@ -5,12 +5,19 @@
 //  Created by Ben Myers on 9/6/22.
 //
 
-import Foundation
+import Combine
 import Firebase
+import Foundation
 import FirebaseFirestore
+
+// MARK: - Field Implementation
 
 @propertyWrapper
 public class Field<DocumentType, Value>: AnyField, Codable where Value: Codable, DocumentType: Firestore.Document {
+  
+  public typealias Output = Value
+  
+  public typealias Failure = Never
   
   public typealias Key = String
   
@@ -51,7 +58,10 @@ public class Field<DocumentType, Value>: AnyField, Codable where Value: Codable,
   
   public enum WriteOption: Equatable {
     
-    /// Adds this write to the batch.
+    /// Update locally, and in Firestore.
+    case `default`
+    
+    /// Add this update to a batch.
     case batch
     
     /// Reverts the local write on fail.
@@ -59,67 +69,71 @@ public class Field<DocumentType, Value>: AnyField, Codable where Value: Codable,
   }
 }
 
-internal extension Field {
+extension Field {
   
-  func locallyUpdate(_ newValue: Value) {
+  private func locallyUpdate(_ newValue: Value) {
     oldWrappedValue = wrappedValue
     wrappedValue = newValue
   }
   
-  func revertLocalUpdate() {
+  private func revertLocalUpdate() {
     guard let oldWrappedValue = oldWrappedValue else { return }
     wrappedValue = oldWrappedValue
     self.oldWrappedValue = nil
   }
   
-  func acceptLocalUpdate() {
+  private func acceptLocalUpdate() {
     oldWrappedValue = nil
   }
 }
 
-public extension Field {
+// MARK: - Field Value Updating
+
+extension Field {
   
-  func `set`(_ value: Value, option: WriteOption = .revertOnFail, completion: @escaping (Firestore.Error?) -> Void) {
-    guard let key = key else { completion(.noKey); return }
-    guard let document = document else { completion(.unknown); return }
-    locallyUpdate(value)
-    document.firestoreDocumentReference.updateData([key: value]) { error in
-      if error != nil {
-        completion(.connection)
-        self.revertLocalUpdate()
-      } else {
-        completion(nil)
-        self.acceptLocalUpdate()
-      }
-    }
+  public func `set`(_ value: Value, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    update(value, value, option: option, completion: completion)
   }
 }
 
-public extension Field where Value == Double {
+extension Field where Value: ExpressibleByNilLiteral {
   
-  func increment(by value: Value, option: WriteOption = .revertOnFail, completion: @escaping (Firestore.Error?) -> Void) {
-    guard let key = key else { completion(.noKey); return }
-    guard let document = document else { completion(.unknown); return }
-    locallyUpdate(value)
-    document.firestoreDocumentReference.updateData([key: FieldValue.increment(value)]) { error in
-      if error != nil {
-        completion(.connection)
-        self.revertLocalUpdate()
-      } else {
-        completion(nil)
-        self.acceptLocalUpdate()
-      }
-    }
+  public func remove(option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    update(nil, FieldValue.delete(), option: option, completion: completion)
   }
 }
 
-public extension Field where Value == Int {
+extension Field where Value: Sequence, Value.Element: Codable {
   
-  func increment(by value: Value, option: WriteOption = .revertOnFail, completion: @escaping (Firestore.Error?) -> Void) {
+  public func append(_ newValue: Value.Element, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    append([newValue], option: option, completion: completion)
+  }
+  
+  public func append(_ newValues: Array<Value.Element>, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    var arr: Array<Value.Element> = Array(wrappedValue)
+    arr.append(contentsOf: newValues)
+    guard let arr = arr as? Value else {
+      completion(.unknown)
+      return
+    }
+    update(arr, FieldValue.arrayUnion(newValues), option: option, completion: completion)
+  }
+}
+
+extension Field where Value: BinaryInteger {
+  
+  public func increment(by difference: Value, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    update(wrappedValue + difference, FieldValue.increment(Double(difference)), option: option, completion: completion)
+  }
+}
+
+extension Field {
+  
+  private func update(_ value: Value, _ fieldValue: Any, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
     guard let key = key else { completion(.noKey); return }
     guard let document = document else { completion(.unknown); return }
-    locallyUpdate(value)
-    document.firestoreDocumentReference.updateData([key: FieldValue.increment(Double(value))]) { error in
+    if option == .revertOnFail { locallyUpdate(value) }
+    document.firestoreDocumentReference.updateData([key: fieldValue]) { error in
       if error != nil {
         completion(.connection)
         self.revertLocalUpdate()

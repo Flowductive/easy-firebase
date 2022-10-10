@@ -3,213 +3,212 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EE8F7F9D28C7CC4100D1E59D /* EasyFirebaseExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8F7F8D28C7CC4000D1E59D /* EasyFirebaseExampleApp.swift */; };
-		EE8F7F9E28C7CC4100D1E59D /* EasyFirebaseExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8F7F8D28C7CC4000D1E59D /* EasyFirebaseExampleApp.swift */; };
-		EE8F7F9F28C7CC4100D1E59D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8F7F8E28C7CC4000D1E59D /* ContentView.swift */; };
-		EE8F7FA028C7CC4100D1E59D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8F7F8E28C7CC4000D1E59D /* ContentView.swift */; };
-		EE8F7FA128C7CC4100D1E59D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE8F7F8F28C7CC4100D1E59D /* Assets.xcassets */; };
-		EE8F7FA228C7CC4100D1E59D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE8F7F8F28C7CC4100D1E59D /* Assets.xcassets */; };
+		EEAF92BA28F2134C00E98360 /* EasyFirebaseExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92B928F2134C00E98360 /* EasyFirebaseExampleApp.swift */; };
+		EEAF92BC28F2134C00E98360 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92BB28F2134C00E98360 /* ContentView.swift */; };
+		EEAF92BE28F2134C00E98360 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEAF92BD28F2134C00E98360 /* Assets.xcassets */; };
+		EEAF92C228F2134C00E98360 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEAF92C128F2134C00E98360 /* Preview Assets.xcassets */; };
+		EEAF92CF28F214D200E98360 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92CE28F214D200E98360 /* Global.swift */; };
+		EEAF92D428F2162400E98360 /* EasyFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = EEAF92D328F2162400E98360 /* EasyFirebase */; };
+		EEAF92D628F218A500E98360 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EEAF92D528F218A500E98360 /* GoogleService-Info.plist */; };
+		EEAF92D828F21C1A00E98360 /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92D728F21C1A00E98360 /* FoodItem.swift */; };
+		EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		EE8F7F8D28C7CC4000D1E59D /* EasyFirebaseExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyFirebaseExampleApp.swift; sourceTree = "<group>"; };
-		EE8F7F8E28C7CC4000D1E59D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		EE8F7F8F28C7CC4100D1E59D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		EE8F7F9428C7CC4100D1E59D /* EasyFirebaseExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyFirebaseExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		EE8F7F9A28C7CC4100D1E59D /* EasyFirebaseExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyFirebaseExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		EE8F7F9C28C7CC4100D1E59D /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
-		EE8F7FAC28C7CCD200D1E59D /* easy-firebase */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "easy-firebase"; path = ../..; sourceTree = "<group>"; };
+		EEAF92B628F2134C00E98360 /* EasyFirebaseExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyFirebaseExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EEAF92B928F2134C00E98360 /* EasyFirebaseExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyFirebaseExampleApp.swift; sourceTree = "<group>"; };
+		EEAF92BB28F2134C00E98360 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EEAF92BD28F2134C00E98360 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EEAF92BF28F2134C00E98360 /* EasyFirebaseExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EasyFirebaseExample.entitlements; sourceTree = "<group>"; };
+		EEAF92C128F2134C00E98360 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EEAF92CE28F214D200E98360 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		EEAF92D128F2152800E98360 /* easy-firebase */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "easy-firebase"; path = ../..; sourceTree = "<group>"; };
+		EEAF92D528F218A500E98360 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EEAF92D728F21C1A00E98360 /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
+		EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDocumentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		EE8F7F9128C7CC4100D1E59D /* Frameworks */ = {
+		EEAF92B328F2134C00E98360 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EE8F7F9728C7CC4100D1E59D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				EEAF92D428F2162400E98360 /* EasyFirebase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		EE8F7F8728C7CC4000D1E59D = {
+		EEAF92AD28F2134C00E98360 = {
 			isa = PBXGroup;
 			children = (
-				EE8F7FAB28C7CCD200D1E59D /* Packages */,
-				EE8F7F8C28C7CC4000D1E59D /* Shared */,
-				EE8F7F9B28C7CC4100D1E59D /* macOS */,
-				EE8F7F9528C7CC4100D1E59D /* Products */,
+				EEAF92D028F2152800E98360 /* Packages */,
+				EEAF92B828F2134C00E98360 /* EasyFirebaseExample */,
+				EEAF92B728F2134C00E98360 /* Products */,
+				EEAF92D228F2162400E98360 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		EE8F7F8C28C7CC4000D1E59D /* Shared */ = {
+		EEAF92B728F2134C00E98360 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EE8F7F8D28C7CC4000D1E59D /* EasyFirebaseExampleApp.swift */,
-				EE8F7F8E28C7CC4000D1E59D /* ContentView.swift */,
-				EE8F7F8F28C7CC4100D1E59D /* Assets.xcassets */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
-		EE8F7F9528C7CC4100D1E59D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EE8F7F9428C7CC4100D1E59D /* EasyFirebaseExample.app */,
-				EE8F7F9A28C7CC4100D1E59D /* EasyFirebaseExample.app */,
+				EEAF92B628F2134C00E98360 /* EasyFirebaseExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EE8F7F9B28C7CC4100D1E59D /* macOS */ = {
+		EEAF92B828F2134C00E98360 /* EasyFirebaseExample */ = {
 			isa = PBXGroup;
 			children = (
-				EE8F7F9C28C7CC4100D1E59D /* macOS.entitlements */,
+				EEAF92BF28F2134C00E98360 /* EasyFirebaseExample.entitlements */,
+				EEAF92BD28F2134C00E98360 /* Assets.xcassets */,
+				EEAF92D528F218A500E98360 /* GoogleService-Info.plist */,
+				EEAF92D928F2738600E98360 /* Views */,
+				EEAF92CD28F214C700E98360 /* Models */,
+				EEAF92C028F2134C00E98360 /* Preview Content */,
+				EEAF92CE28F214D200E98360 /* Global.swift */,
+				EEAF92B928F2134C00E98360 /* EasyFirebaseExampleApp.swift */,
 			);
-			path = macOS;
+			path = EasyFirebaseExample;
 			sourceTree = "<group>";
 		};
-		EE8F7FAB28C7CCD200D1E59D /* Packages */ = {
+		EEAF92C028F2134C00E98360 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				EE8F7FAC28C7CCD200D1E59D /* easy-firebase */,
+				EEAF92C128F2134C00E98360 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EEAF92CD28F214C700E98360 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EEAF92D728F21C1A00E98360 /* FoodItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EEAF92D028F2152800E98360 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				EEAF92D128F2152800E98360 /* easy-firebase */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		EEAF92D228F2162400E98360 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EEAF92D928F2738600E98360 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EEAF92BB28F2134C00E98360 /* ContentView.swift */,
+				EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EE8F7F9328C7CC4100D1E59D /* EasyFirebaseExample (iOS) */ = {
+		EEAF92B528F2134C00E98360 /* EasyFirebaseExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EE8F7FA528C7CC4100D1E59D /* Build configuration list for PBXNativeTarget "EasyFirebaseExample (iOS)" */;
+			buildConfigurationList = EEAF92C528F2134C00E98360 /* Build configuration list for PBXNativeTarget "EasyFirebaseExample" */;
 			buildPhases = (
-				EE8F7F9028C7CC4100D1E59D /* Sources */,
-				EE8F7F9128C7CC4100D1E59D /* Frameworks */,
-				EE8F7F9228C7CC4100D1E59D /* Resources */,
+				EEAF92B228F2134C00E98360 /* Sources */,
+				EEAF92B328F2134C00E98360 /* Frameworks */,
+				EEAF92B428F2134C00E98360 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "EasyFirebaseExample (iOS)";
-			productName = "EasyFirebaseExample (iOS)";
-			productReference = EE8F7F9428C7CC4100D1E59D /* EasyFirebaseExample.app */;
-			productType = "com.apple.product-type.application";
-		};
-		EE8F7F9928C7CC4100D1E59D /* EasyFirebaseExample (macOS) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = EE8F7FA828C7CC4100D1E59D /* Build configuration list for PBXNativeTarget "EasyFirebaseExample (macOS)" */;
-			buildPhases = (
-				EE8F7F9628C7CC4100D1E59D /* Sources */,
-				EE8F7F9728C7CC4100D1E59D /* Frameworks */,
-				EE8F7F9828C7CC4100D1E59D /* Resources */,
+			name = EasyFirebaseExample;
+			packageProductDependencies = (
+				EEAF92D328F2162400E98360 /* EasyFirebase */,
 			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "EasyFirebaseExample (macOS)";
-			productName = "EasyFirebaseExample (macOS)";
-			productReference = EE8F7F9A28C7CC4100D1E59D /* EasyFirebaseExample.app */;
+			productName = EasyFirebaseExample;
+			productReference = EEAF92B628F2134C00E98360 /* EasyFirebaseExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		EE8F7F8828C7CC4000D1E59D /* Project object */ = {
+		EEAF92AE28F2134C00E98360 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1340;
-				LastUpgradeCheck = 1340;
+				LastSwiftUpdateCheck = 1400;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
-					EE8F7F9328C7CC4100D1E59D = {
-						CreatedOnToolsVersion = 13.4.1;
-					};
-					EE8F7F9928C7CC4100D1E59D = {
-						CreatedOnToolsVersion = 13.4.1;
+					EEAF92B528F2134C00E98360 = {
+						CreatedOnToolsVersion = 14.0.1;
 					};
 				};
 			};
-			buildConfigurationList = EE8F7F8B28C7CC4000D1E59D /* Build configuration list for PBXProject "EasyFirebaseExample" */;
-			compatibilityVersion = "Xcode 13.0";
+			buildConfigurationList = EEAF92B128F2134C00E98360 /* Build configuration list for PBXProject "EasyFirebaseExample" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = EE8F7F8728C7CC4000D1E59D;
-			productRefGroup = EE8F7F9528C7CC4100D1E59D /* Products */;
+			mainGroup = EEAF92AD28F2134C00E98360;
+			productRefGroup = EEAF92B728F2134C00E98360 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EE8F7F9328C7CC4100D1E59D /* EasyFirebaseExample (iOS) */,
-				EE8F7F9928C7CC4100D1E59D /* EasyFirebaseExample (macOS) */,
+				EEAF92B528F2134C00E98360 /* EasyFirebaseExample */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		EE8F7F9228C7CC4100D1E59D /* Resources */ = {
+		EEAF92B428F2134C00E98360 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE8F7FA128C7CC4100D1E59D /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EE8F7F9828C7CC4100D1E59D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EE8F7FA228C7CC4100D1E59D /* Assets.xcassets in Resources */,
+				EEAF92C228F2134C00E98360 /* Preview Assets.xcassets in Resources */,
+				EEAF92BE28F2134C00E98360 /* Assets.xcassets in Resources */,
+				EEAF92D628F218A500E98360 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		EE8F7F9028C7CC4100D1E59D /* Sources */ = {
+		EEAF92B228F2134C00E98360 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE8F7F9F28C7CC4100D1E59D /* ContentView.swift in Sources */,
-				EE8F7F9D28C7CC4100D1E59D /* EasyFirebaseExampleApp.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EE8F7F9628C7CC4100D1E59D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EE8F7FA028C7CC4100D1E59D /* ContentView.swift in Sources */,
-				EE8F7F9E28C7CC4100D1E59D /* EasyFirebaseExampleApp.swift in Sources */,
+				EEAF92CF28F214D200E98360 /* Global.swift in Sources */,
+				EEAF92BC28F2134C00E98360 /* ContentView.swift in Sources */,
+				EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */,
+				EEAF92BA28F2134C00E98360 /* EasyFirebaseExampleApp.swift in Sources */,
+				EEAF92D828F21C1A00E98360 /* FoodItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		EE8F7FA328C7CC4100D1E59D /* Debug */ = {
+		EEAF92C328F2134C00E98360 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -261,13 +260,13 @@
 			};
 			name = Debug;
 		};
-		EE8F7FA428C7CC4100D1E59D /* Release */ = {
+		EEAF92C428F2134C00E98360 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -312,154 +311,113 @@
 			};
 			name = Release;
 		};
-		EE8F7FA628C7CC4100D1E59D /* Debug */ = {
+		EEAF92C628F2134C00E98360 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EasyFirebaseExample/EasyFirebaseExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EasyFirebaseExample/Preview Content\"";
 				DEVELOPMENT_TEAM = 8Z8NF54F45;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = EasyFirebase;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.flowductive.EasyFirebaseExample;
-				PRODUCT_NAME = EasyFirebaseExample;
-				SDKROOT = iphoneos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		EE8F7FA728C7CC4100D1E59D /* Release */ = {
+		EEAF92C728F2134C00E98360 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EasyFirebaseExample/EasyFirebaseExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EasyFirebaseExample/Preview Content\"";
 				DEVELOPMENT_TEAM = 8Z8NF54F45;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = EasyFirebase;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.flowductive.EasyFirebaseExample;
-				PRODUCT_NAME = EasyFirebaseExample;
-				SDKROOT = iphoneos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		EE8F7FA928C7CC4100D1E59D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8Z8NF54F45;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.flowductive.EasyFirebaseExample;
-				PRODUCT_NAME = EasyFirebaseExample;
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		EE8F7FAA28C7CC4100D1E59D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8Z8NF54F45;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.flowductive.EasyFirebaseExample;
-				PRODUCT_NAME = EasyFirebaseExample;
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EE8F7F8B28C7CC4000D1E59D /* Build configuration list for PBXProject "EasyFirebaseExample" */ = {
+		EEAF92B128F2134C00E98360 /* Build configuration list for PBXProject "EasyFirebaseExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EE8F7FA328C7CC4100D1E59D /* Debug */,
-				EE8F7FA428C7CC4100D1E59D /* Release */,
+				EEAF92C328F2134C00E98360 /* Debug */,
+				EEAF92C428F2134C00E98360 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EE8F7FA528C7CC4100D1E59D /* Build configuration list for PBXNativeTarget "EasyFirebaseExample (iOS)" */ = {
+		EEAF92C528F2134C00E98360 /* Build configuration list for PBXNativeTarget "EasyFirebaseExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EE8F7FA628C7CC4100D1E59D /* Debug */,
-				EE8F7FA728C7CC4100D1E59D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		EE8F7FA828C7CC4100D1E59D /* Build configuration list for PBXNativeTarget "EasyFirebaseExample (macOS)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				EE8F7FA928C7CC4100D1E59D /* Debug */,
-				EE8F7FAA28C7CC4100D1E59D /* Release */,
+				EEAF92C628F2134C00E98360 /* Debug */,
+				EEAF92C728F2134C00E98360 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EEAF92D328F2162400E98360 /* EasyFirebase */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EasyFirebase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = EE8F7F8828C7CC4000D1E59D /* Project object */;
+	rootObject = EEAF92AE28F2134C00E98360 /* Project object */;
 }

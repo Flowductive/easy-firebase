@@ -5,19 +5,19 @@
 //  Created by Ben Myers on 9/6/22.
 //
 
+import SwiftUI
 import Firebase
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import SwiftUI
 
-public extension Firestore {
+extension Firestore {
   
   typealias Collection = String
   
-  class Document: Codable, Identifiable, Equatable {
+  open class Document: Codable, Identifiable, Equatable, ObservableObject {
     
-    @Field public var id: String = UUID().uuidString
+    @Field public var id: String = ""
     @Field public var dateCreated: Date
     
     @CodableIgnored internal var batch: [Field.Key]? = .some([])
@@ -34,6 +34,7 @@ public extension Firestore {
     }
   
     public init(id: String = UUID().uuidString, dateCreated: Date = Date()) {
+      self.id = id
       self.location = Location.default(for: Self.self)
       self.dateCreated = dateCreated
       for (label, value) in Mirror(reflecting: self).children {
@@ -50,9 +51,9 @@ public extension Firestore {
   }
 }
 
-public extension Firestore.Document {
+extension Firestore.Document {
   
-  struct Location: RawRepresentable {
+  public struct Location: RawRepresentable {
     
     public let rawValue: String
     
@@ -74,9 +75,9 @@ public extension Firestore.Document {
   }
 }
 
-public extension Firestore.Document {
+extension Firestore.Document {
   
-  static func read(id: Firestore.Document.ID, from location: Location? = nil, completion: @escaping (Result<Self, Firestore.Error>) -> Void) {
+  public static func read(id: Firestore.Document.ID, from location: Location? = nil, completion: @escaping (Result<Self, Firestore.Error>) -> Void) {
     let _location: Location = getLocation(from: location)
     FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).getDocument { snapshot, error in
       if error != nil {
@@ -94,7 +95,7 @@ public extension Firestore.Document {
     }
   }
 
-  static func read(ids: [Firestore.Document.ID], from location: Location? = nil, onUpdate: @escaping (Result<Array<Self>, Firestore.Error>) -> Void) {
+  public static func read(ids: [Firestore.Document.ID], from location: Location? = nil, onUpdate: @escaping (Result<Array<Self>, Firestore.Error>) -> Void) {
     let location: Location = getLocation(from: location)
     let chunks: [[Firestore.Document.ID]] = ids.chunked(into: 10)
     for chunk in chunks {
@@ -138,7 +139,7 @@ public extension Firestore.Document {
   }
 }
 
-internal extension Firestore.Document {
+extension Firestore.Document {
   
   func setBatch(completion: @escaping (Firestore.Error?) -> Void) {
     guard let batch = batch, !batch.isEmpty else {
@@ -173,10 +174,3 @@ internal extension Firestore.Document {
   }
 }
 
-fileprivate extension Array {
-  func chunked(into size: Int) -> [[Element]] {
-    return stride(from: 0, to: count, by: size).map {
-      Array(self[$0 ..< Swift.min($0 + size, count)])
-    }
-  }
-}
