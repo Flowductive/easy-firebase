@@ -13,9 +13,10 @@
 		EEAF92C228F2134C00E98360 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEAF92C128F2134C00E98360 /* Preview Assets.xcassets */; };
 		EEAF92CF28F214D200E98360 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92CE28F214D200E98360 /* Global.swift */; };
 		EEAF92D428F2162400E98360 /* EasyFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = EEAF92D328F2162400E98360 /* EasyFirebase */; };
-		EEAF92D628F218A500E98360 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EEAF92D528F218A500E98360 /* GoogleService-Info.plist */; };
 		EEAF92D828F21C1A00E98360 /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92D728F21C1A00E98360 /* FoodItem.swift */; };
 		EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */; };
+		EEFDCB9B28F42F8E00572A4E /* FoodItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */; };
+		EEFDCB9D28F4357100572A4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,9 +28,10 @@
 		EEAF92C128F2134C00E98360 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EEAF92CE28F214D200E98360 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		EEAF92D128F2152800E98360 /* easy-firebase */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "easy-firebase"; path = ../..; sourceTree = "<group>"; };
-		EEAF92D528F218A500E98360 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EEAF92D728F21C1A00E98360 /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
 		EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDocumentView.swift; sourceTree = "<group>"; };
+		EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemView.swift; sourceTree = "<group>"; };
+		EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,9 +67,9 @@
 		EEAF92B828F2134C00E98360 /* EasyFirebaseExample */ = {
 			isa = PBXGroup;
 			children = (
+				EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */,
 				EEAF92BF28F2134C00E98360 /* EasyFirebaseExample.entitlements */,
 				EEAF92BD28F2134C00E98360 /* Assets.xcassets */,
-				EEAF92D528F218A500E98360 /* GoogleService-Info.plist */,
 				EEAF92D928F2738600E98360 /* Views */,
 				EEAF92CD28F214C700E98360 /* Models */,
 				EEAF92C028F2134C00E98360 /* Preview Content */,
@@ -113,6 +115,7 @@
 			children = (
 				EEAF92BB28F2134C00E98360 /* ContentView.swift */,
 				EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */,
+				EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -180,7 +183,7 @@
 			files = (
 				EEAF92C228F2134C00E98360 /* Preview Assets.xcassets in Resources */,
 				EEAF92BE28F2134C00E98360 /* Assets.xcassets in Resources */,
-				EEAF92D628F218A500E98360 /* GoogleService-Info.plist in Resources */,
+				EEFDCB9D28F4357100572A4E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +197,7 @@
 				EEAF92CF28F214D200E98360 /* Global.swift in Sources */,
 				EEAF92BC28F2134C00E98360 /* ContentView.swift in Sources */,
 				EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */,
+				EEFDCB9B28F42F8E00572A4E /* FoodItemView.swift in Sources */,
 				EEAF92BA28F2134C00E98360 /* EasyFirebaseExampleApp.swift in Sources */,
 				EEAF92D828F21C1A00E98360 /* FoodItem.swift in Sources */,
 			);

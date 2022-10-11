@@ -10,5 +10,7 @@ import EasyFirebase
 
 class FoodItem: Firestore.Document {
   
-  @Field var name: String = ""
+  @Field var name: String = "None"
+  @Field var emoji: String = ""
+  @Field var category: String = "None"
 }

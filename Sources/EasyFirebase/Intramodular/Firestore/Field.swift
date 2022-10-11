@@ -13,7 +13,7 @@ import FirebaseFirestore
 // MARK: - Field Implementation
 
 @propertyWrapper
-public class Field<DocumentType, Value>: AnyField, Codable where Value: Codable, DocumentType: Firestore.Document {
+public class Field<DocumentType, Value>: AnyField where Value: Codable, DocumentType: Firestore.Document {
   
   public typealias Output = Value
   
@@ -21,7 +21,11 @@ public class Field<DocumentType, Value>: AnyField, Codable where Value: Codable,
   
   public typealias Key = String
   
-  public internal(set) var wrappedValue: Value
+  public var wrappedValue: Value {
+    willSet {
+      document?.objectWillChange.send()
+    }
+  }
   
   public unowned var document: DocumentType?
   
@@ -43,8 +47,15 @@ public class Field<DocumentType, Value>: AnyField, Codable where Value: Codable,
     super.init(key: key)
   }
   
-  public func encode(to encoder: Encoder) throws {
+  public override func encode(to encoder: Encoder) throws {
     try wrappedValue.encode(to: encoder)
+  }
+  
+  internal override func decodeValue(from container: KeyedDecodingContainer<Firestore.Document.CodingKeys>, key propertyName: String) {
+    guard let codingKey = Firestore.Document.CodingKeys(stringValue: key ?? propertyName) else { return }
+    if let value = try? container.decodeIfPresent(Value.self, forKey: codingKey) {
+      wrappedValue = value
+    }
   }
   
   public required init(from decoder: Decoder) throws {

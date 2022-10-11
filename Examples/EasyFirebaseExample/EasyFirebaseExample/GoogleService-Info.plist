@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>308133207168-7cflbmiq01nifcppg7u7kvue89lbi1a4.apps.googleusercontent.com</string>
+	<string>108436600968-hsp2lcm04vin923m4nmg2kckauu3f8b5.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.308133207168-7cflbmiq01nifcppg7u7kvue89lbi1a4</string>
+	<string>com.googleusercontent.apps.108436600968-hsp2lcm04vin923m4nmg2kckauu3f8b5</string>
 	<key>API_KEY</key>
-	<string>AIzaSyACn2tBLSoPMGhOQqYONFsUjNbXUxOwqbI</string>
+	<string>AIzaSyD408BQACyRYlU5KG3A36l6st0UZ1xETyM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>308133207168</string>
+	<string>108436600968</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.flowductive.EasyFirebaseExample</string>
 	<key>PROJECT_ID</key>
-	<string>easy-firebase</string>
+	<string>easy-firebase-example</string>
 	<key>STORAGE_BUCKET</key>
-	<string>easy-firebase.appspot.com</string>
+	<string>easy-firebase-example.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:308133207168:ios:24cc9ea90cd03f75545a65</string>
+	<string>1:108436600968:ios:a24675311bb9e7132b073d</string>
 </dict>
 </plist>

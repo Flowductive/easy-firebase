@@ -17,8 +17,10 @@ extension Firestore {
   
   open class Document: Codable, Identifiable, Equatable, ObservableObject {
     
-    @Field public var id: String = ""
+    @Field public var id: String
     @Field public var dateCreated: Date
+    
+    var testField: String = "Test"
     
     @CodableIgnored internal var batch: [Field.Key]? = .some([])
     @CodableIgnored private var fields: [Field.Key]? = .some([])
@@ -32,7 +34,7 @@ extension Firestore {
     internal var firestoreDocumentReference: FirebaseFirestore.DocumentReference {
       return firestoreCollectionReference.document(id)
     }
-  
+
     public init(id: String = UUID().uuidString, dateCreated: Date = Date()) {
       self.id = id
       self.location = Location.default(for: Self.self)
@@ -45,8 +47,72 @@ extension Firestore {
       }
     }
     
+    required public init(from decoder: Decoder) throws {
+      id = UUID().uuidString
+      location = Location.default(for: Self.self)
+      dateCreated = Date()
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      var mirror: Mirror? = Mirror(reflecting: self)
+      repeat {
+        guard let children = mirror?.children else { break }
+        for child in children {
+          if let field = child.value as? AnyField, let label = child.label {
+            fields?.append(label)
+            field.inject(document: self, key: label)
+          }
+          guard let decodable = child.value as? AnyField else { continue }
+          let propertyName = String((child.label ?? "").dropFirst())
+          decodable.decodeValue(from: container, key: propertyName)
+        }
+        mirror = mirror?.superclassMirror
+      } while mirror != nil
+    }
+    
     public static func == (lhs: Document, rhs: Document) -> Bool {
       return lhs.id == rhs.id
+    }
+    
+    public struct CodingKeys: CodingKey {
+      
+      private static var allKeys: [Int: String] = [:]
+      
+      public var stringValue: String
+      
+      public init?(stringValue: String) {
+        self.stringValue = stringValue
+        if let key: Int = Self.allKeys.first(where: { pair in pair.value == stringValue })?.key {
+          self.intValue = key
+        } else {
+          let index = Self.allKeys.count
+          Self.allKeys.updateValue(stringValue, forKey: index)
+        }
+      }
+      
+      public var intValue: Int?
+      
+      public init?(intValue: Int) {
+        guard let str = Self.allKeys[intValue] else { return nil }
+        self.stringValue = str
+      }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+      var container: KeyedEncodingContainer = encoder.container(keyedBy: CodingKeys.self)
+      var mirror: Mirror? = Mirror(reflecting: self)
+      repeat {
+        guard let children = mirror?.children else { break }
+        for child in children {
+          guard let value = child.value as? Encodable else { continue }
+          var propertyName = child.label ?? ""
+          if propertyName.first == "-" {
+            propertyName = String(propertyName.dropFirst())
+          }
+          if let key = CodingKeys(stringValue: propertyName) {
+            try? container.encode(value, forKey: key)
+          }
+        }
+        mirror = mirror?.superclassMirror
+      } while mirror != nil
     }
   }
 }
@@ -141,7 +207,7 @@ extension Firestore.Document {
 
 extension Firestore.Document {
   
-  func setBatch(completion: @escaping (Firestore.Error?) -> Void) {
+  public func setBatch(completion: @escaping (Firestore.Error?) -> Void) {
     guard let batch = batch, !batch.isEmpty else {
       completion(.batchEmpty)
       return
@@ -160,11 +226,14 @@ extension Firestore.Document {
     }
   }
   
-  func write(merge: Bool = false, completion: @escaping (Firestore.Error?) -> Void) {
+  public func write(merge: Bool = false, completion: @escaping (Firestore.Error?) -> Void) {
     do {
       try firestoreDocumentReference.setData(from: self, merge: merge) { error in
         if error != nil {
           completion(.connection)
+          return
+        } else {
+          completion(nil)
           return
         }
       }
