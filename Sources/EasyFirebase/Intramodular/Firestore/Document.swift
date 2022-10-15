@@ -22,9 +22,9 @@ extension Firestore {
     
     var testField: String = "Test"
     
-    @CodableIgnored internal var batch: [Field.Key]? = .some([])
-    @CodableIgnored private var fields: [Field.Key]? = .some([])
-    @CodableIgnored private var location: Location?
+    internal var batch: [Field.Key]? = .some([])
+    private var fields: [Field.Key]? = .some([])
+    private var location: Location?
     
     internal var firestoreCollectionReference: FirebaseFirestore.CollectionReference {
       let location: Location = Self.getLocation(from: location)
@@ -103,8 +103,9 @@ extension Firestore {
         guard let children = mirror?.children else { break }
         for child in children {
           guard let value = child.value as? Encodable else { continue }
+          guard value is AnyField else { continue }
           var propertyName = child.label ?? ""
-          if propertyName.first == "-" {
+          if propertyName.first == "_" {
             propertyName = String(propertyName.dropFirst())
           }
           if let key = CodingKeys(stringValue: propertyName) {
