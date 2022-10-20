@@ -11,10 +11,12 @@ struct SetDocumentView: View {
   
   @StateObject var food: FoodItem = FoodItem()
   
-  @State var nameField: String = "" { didSet { food.name = nameField }}
-  @State var emojiField: String = "" { didSet { food.emoji = emojiField }}
-  @State var categoryField: String = "" { didSet { food.category = categoryField }}
-  
+  @State var nameField: String = ""
+  @State var emojiField: String = ""
+  @State var categoryField: String = ""
+  @State var priceField: Int = 10
+  @State var currencyField: Price.Currency = .usd
+
   @State var loading: Bool = false
   @State var error: String = ""
   @State var success: Bool = false
@@ -35,7 +37,7 @@ struct SetDocumentView: View {
           }
         })
         Button("Test", action: {
-          
+          print(nameField)
         })
         if loading {
           Text("")
@@ -54,9 +56,19 @@ struct SetDocumentView: View {
       Text("Food Details").font(.title2)
       VStack {
         Text("New document")
-        TextField("Food name", text: $nameField)
-        TextField("Food emoji", text: $emojiField)
-        TextField("Food category", text: $categoryField)
+        TextField("Food name", text: $nameField, onCommit: { food.name = nameField })
+        TextField("Food emoji", text: $emojiField, onCommit: { food.emoji = emojiField })
+        TextField("Food category", text: $categoryField, onCommit: { food.category = categoryField })
+        HStack {
+          Stepper("Price: \(priceField)", value: $priceField, step: 5) { _ in food.price = Price(priceField, currency: currencyField) }
+          Spacer()
+          Picker("Currency", selection: $currencyField) {
+            ForEach(Price.Currency.allCases, id: \.self) { currency in
+              Text(currency.rawValue)
+            }
+          }
+          .onChange(of: currencyField) { _ in food.price = Price(priceField, currency: currencyField) }
+        }
       }
       .padding()
       .border(Color.gray)

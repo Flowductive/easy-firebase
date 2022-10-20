@@ -13,7 +13,7 @@ import FirebaseFirestore
 // MARK: - Field Implementation
 
 @propertyWrapper
-public class Field<DocumentType, Value>: AnyField where Value: Codable, DocumentType: Firestore.Document {
+public class Field<Parent, Value>: AnyField where Value: Codable, Parent: FieldObject {
   
   public typealias Output = Value
   
@@ -23,20 +23,20 @@ public class Field<DocumentType, Value>: AnyField where Value: Codable, Document
   
   public var wrappedValue: Value {
     willSet {
-      document?.objectWillChange.send()
+      parent?.objectWillChange.send()
     }
   }
   
-  public unowned var document: DocumentType?
+  public unowned var parent: Parent?
   
   public override var valueAsAny: Any { wrappedValue as Any }
   
-  public override var documentAsAny: Any? {
+  public override var parentAsAny: Any? {
     get {
-      document as Any
+      parent as Any
     } set {
-      guard let newValue = newValue, let newDoc = newValue as? DocumentType else { return }
-      document = newDoc
+      guard let newValue = newValue, let newParent = newValue as? Parent else { return }
+      parent = newParent
     }
   }
   
@@ -51,8 +51,8 @@ public class Field<DocumentType, Value>: AnyField where Value: Codable, Document
     try wrappedValue.encode(to: encoder)
   }
   
-  internal override func decodeValue(from container: KeyedDecodingContainer<Firestore.Document.CodingKeys>, key propertyName: String) {
-    guard let codingKey = Firestore.Document.CodingKeys(stringValue: key ?? propertyName) else { return }
+  internal override func decodeValue(from container: KeyedDecodingContainer<Document.CodingKeys>, key propertyName: String) {
+    guard let codingKey = Document.CodingKeys(stringValue: key ?? propertyName) else { return }
     if let value = try? container.decodeIfPresent(Value.self, forKey: codingKey) {
       wrappedValue = value
     }
@@ -63,7 +63,7 @@ public class Field<DocumentType, Value>: AnyField where Value: Codable, Document
     super.init(key: decoder.codingPath.map { $0.stringValue }.joined(separator: "."))
   }
   
-  public var projectedValue: Field<DocumentType, Value> {
+  public var projectedValue: Field<Parent, Value> {
     self
   }
   
@@ -141,10 +141,10 @@ extension Field where Value: BinaryInteger {
 extension Field {
   
   private func update(_ value: Value, _ fieldValue: Any, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
-    guard let key = key else { completion(.noKey); return }
-    guard let document = document else { completion(.unknown); return }
+    guard let keyPath = keyPath else { completion(.noKey); return }
+    guard let document = parent?.enclosingDocument else { completion(.unknown); return }
     if option == .revertOnFail { locallyUpdate(value) }
-    document.firestoreDocumentReference.updateData([key: fieldValue]) { error in
+    document.firestoreDocumentReference.updateData([keyPath: fieldValue]) { error in
       if error != nil {
         completion(.connection)
         self.revertLocalUpdate()

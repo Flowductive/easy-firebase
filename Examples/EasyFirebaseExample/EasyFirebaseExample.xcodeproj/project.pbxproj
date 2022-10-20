@@ -15,6 +15,7 @@
 		EEAF92D428F2162400E98360 /* EasyFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = EEAF92D328F2162400E98360 /* EasyFirebase */; };
 		EEAF92D828F21C1A00E98360 /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92D728F21C1A00E98360 /* FoodItem.swift */; };
 		EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */; };
+		EEC544142901480A0075653E /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC544132901480A0075653E /* Price.swift */; };
 		EEFDCB9B28F42F8E00572A4E /* FoodItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */; };
 		EEFDCB9D28F4357100572A4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,7 @@
 		EEAF92D128F2152800E98360 /* easy-firebase */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "easy-firebase"; path = ../..; sourceTree = "<group>"; };
 		EEAF92D728F21C1A00E98360 /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
 		EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDocumentView.swift; sourceTree = "<group>"; };
+		EEC544132901480A0075653E /* Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
 		EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemView.swift; sourceTree = "<group>"; };
 		EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				EEAF92D728F21C1A00E98360 /* FoodItem.swift */,
+				EEC544132901480A0075653E /* Price.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEAF92CF28F214D200E98360 /* Global.swift in Sources */,
+				EEC544142901480A0075653E /* Price.swift in Sources */,
 				EEAF92BC28F2134C00E98360 /* ContentView.swift in Sources */,
 				EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */,
 				EEFDCB9B28F42F8E00572A4E /* FoodItemView.swift in Sources */,

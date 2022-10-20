@@ -18,6 +18,7 @@ struct FoodItemView: View {
         Text(food.name).bold()
       }
       Text(food.category)
+      Text("Costs \(Int(food.price.amount)) \(food.price.currency.rawValue)").foregroundColor(.green)
     }
     .padding()
     .background(Color.primary.opacity(0.1))

@@ -5,12 +5,12 @@
 //  Created by Ben Myers on 10/8/22.
 //
 
-import Foundation
 import EasyFirebase
 
-class FoodItem: Firestore.Document {
+class FoodItem: Document {
   
   @Field var name: String = "None"
   @Field var emoji: String = ""
   @Field var category: String = "None"
+  @Field var price: Price = Price(0.0)
 }

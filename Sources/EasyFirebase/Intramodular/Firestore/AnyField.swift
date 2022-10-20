@@ -11,16 +11,28 @@ import Foundation
 public class AnyField: Codable {
   
   var valueAsAny: Any { fatalError() }
-  var documentAsAny: Any? { get { fatalError() } set { fatalError() }}
+  var parentAsAny: Any? { get { fatalError() } set { fatalError() }}
   
   internal final var key: String?
+  
+  internal final var keyPath: String? {
+    guard let key = key else { return nil }
+    var arr: [String] = [key]
+    unowned var field: AnyField? = self
+    repeat {
+      guard let key = field?.key else { break }
+      arr.insert(key, at: 0)
+      field = field?.parentAsAny as? AnyField
+    } while field != nil
+    return arr.joined(separator: ".")
+  }
   
   public init(key: String?) {
     self.key = key
   }
   
-  public func inject(document: Firestore.Document?, key: String) {
-    self.documentAsAny = document
+  public func inject(parent: FieldObject?, key: String) {
+    self.parentAsAny = parent
     self.key = key
   }
   
@@ -28,7 +40,7 @@ public class AnyField: Codable {
     fatalError()
   }
   
-  internal func decodeValue(from container: KeyedDecodingContainer<Firestore.Document.CodingKeys>, key propertyName: String) {
+  internal func decodeValue(from container: KeyedDecodingContainer<Document.CodingKeys>, key propertyName: String) {
     fatalError()
   }
   
