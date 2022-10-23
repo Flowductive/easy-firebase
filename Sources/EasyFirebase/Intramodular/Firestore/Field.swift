@@ -114,20 +114,34 @@ extension Field where Value: ExpressibleByNilLiteral {
   }
 }
 
-extension Field where Value: Sequence, Value.Element: Codable {
+extension Field where Value: Sequence, Value.Element: Codable, Value.Element: Equatable {
   
-  public func append(_ newValue: Value.Element, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
-    append([newValue], option: option, completion: completion)
+  public func union(_ newValue: Value.Element, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    union([newValue], option: option, completion: completion)
   }
   
-  public func append(_ newValues: Array<Value.Element>, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+  public func union(_ newValues: Array<Value.Element>, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
     var arr: Array<Value.Element> = Array(wrappedValue)
-    arr.append(contentsOf: newValues)
+    arr.appendUniquely(contentsOf: newValues)
     guard let arr = arr as? Value else {
       completion(.unknown)
       return
     }
     update(arr, FieldValue.arrayUnion(newValues), option: option, completion: completion)
+  }
+  
+  public func remove(_ value: Value.Element, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    remove([value], option: option, completion: completion)
+  }
+  
+  public func remove(_ values: Array<Value.Element>, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    var arr: Array<Value.Element> = Array(wrappedValue)
+    arr.removeAll(of: values)
+    guard let arr = arr as? Value else {
+      completion(.unknown)
+      return
+    }
+    update(arr, FieldValue.arrayRemove(values), option: option, completion: completion)
   }
 }
 
