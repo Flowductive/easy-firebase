@@ -6,3 +6,5 @@ Examples/EasyFirebaseExample/EasyFirebaseExample.xcodeproj/project.xcworkspace/x
 Examples/EasyFirebaseExample/.DS_Store
 Examples/.DS_Store
 *.xcuserstate
+*.xcscheme
+*.xcbkptlist

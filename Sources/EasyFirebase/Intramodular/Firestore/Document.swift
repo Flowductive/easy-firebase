@@ -78,6 +78,8 @@ open class Document: FieldObject, Identifiable, Equatable {
   }
 }
 
+// MARK: - Document Location
+
 extension Document {
   
   public struct Location: RawRepresentable {
@@ -102,23 +104,14 @@ extension Document {
   }
 }
 
+// MARK: - Read
+
 extension Document {
   
   public static func read<T>(_ type: T.Type, id: Document.ID, from location: Location? = nil, completion: @escaping (Result<T, Firestore.Error>) -> Void) where T: Document {
     let _location: Location = getLocation(T.self, from: location)
     FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).getDocument { snapshot, error in
-      if error != nil {
-        completion(.failure(.connection))
-      } else if let snapshot, snapshot.exists {
-        if let document = try? snapshot.data(as: T.self) {
-          document.location = location
-          completion(.success(document))
-        } else {
-          completion(.failure(.decodingFailed))
-        }
-      } else {
-        completion(.failure(.noDocument))
-      }
+      handleDocumentSnapshot(snapshot, error, from: _location, handler: completion)
     }
   }
 
@@ -129,8 +122,70 @@ extension Document {
       readChunk(type, chunk, from: location, onUpdate: onUpdate)
     }
   }
+}
 
-  private static func readChunk<T>(
+// MARK: - Listen
+
+extension Document {
+  
+  public static func listen<T>(_ type: T.Type, id: Document.ID, from location: Location? = nil, onUpdate: @escaping (Result<T, Firestore.Error>) -> Void) where T: Document {
+    let _location: Location = getLocation(T.self, from: location)
+    FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).addSnapshotListener { snapshot, error in
+      handleDocumentSnapshot(snapshot, error, from: _location, handler: onUpdate)
+    }
+  }
+}
+
+// MARK: - Write
+
+extension Document {
+  
+  public func setBatch(completion: @escaping (Firestore.Error?) -> Void) {
+    guard let batch = batch, !batch.isEmpty else {
+      completion(.batchEmpty)
+      return
+    }
+    self.batch = []
+    do {
+      try firestoreDocumentReference.setData(from: self, mergeFields: batch) { error in
+        self.handleWriteCompleted(error, handler: completion)
+      }
+    } catch {
+      completion(.encodingFailed)
+    }
+  }
+  
+  public func write(merge: Bool = false, completion: @escaping (Firestore.Error?) -> Void) {
+    do {
+      try firestoreDocumentReference.setData(from: self, merge: merge) { error in
+        self.handleWriteCompleted(error, handler: completion)
+      }
+    } catch {
+      completion(.encodingFailed)
+    }
+  }
+}
+
+// MARK: - Private Helper Methods
+
+private extension Document {
+  
+  static func handleDocumentSnapshot<T>(_ snapshot: DocumentSnapshot?, _ error: Error?, from location: Location, handler: @escaping (Result<T, Firestore.Error>) -> Void) where T: Document {
+    if error != nil {
+      handler(.failure(.connection))
+    } else if let snapshot, snapshot.exists {
+      if let document = try? snapshot.data(as: T.self) {
+        document.location = location
+        handler(.success(document))
+      } else {
+        handler(.failure(.decodingFailed))
+      }
+    } else {
+      handler(.failure(.noDocument))
+    }
+  }
+  
+  static func readChunk<T>(
     _ type: T.Type,
     _ chunk: [Document.ID],
     from location: Location,
@@ -157,7 +212,7 @@ extension Document {
     }
   }
 
-  private static func getLocation<T>(_ type: T.Type, from location: Location?) -> Location {
+  static func getLocation<T>(_ type: T.Type, from location: Location?) -> Location {
     var _location: Location
     if let location {
       _location = location
@@ -166,43 +221,13 @@ extension Document {
     }
     return _location
   }
-}
-
-extension Document {
   
-  public func setBatch(completion: @escaping (Firestore.Error?) -> Void) {
-    guard let batch = batch, !batch.isEmpty else {
-      completion(.batchEmpty)
+  func handleWriteCompleted(_ error: Error?, handler: @escaping (Firestore.Error?) -> Void) {
+    if error != nil {
+      handler(.connection)
       return
-    }
-    self.batch = []
-    do {
-      try firestoreDocumentReference.setData(from: self, mergeFields: batch) { error in
-        if error != nil {
-          completion(.connection)
-          return
-        } else {
-          completion(nil)
-        }
-      }
-    } catch {
-      completion(.encodingFailed)
-    }
-  }
-  
-  public func write(merge: Bool = false, completion: @escaping (Firestore.Error?) -> Void) {
-    do {
-      try firestoreDocumentReference.setData(from: self, merge: merge) { error in
-        if error != nil {
-          completion(.connection)
-          return
-        } else {
-          completion(nil)
-          return
-        }
-      }
-    } catch {
-      completion(.encodingFailed)
+    } else {
+      handler(nil)
     }
   }
 }

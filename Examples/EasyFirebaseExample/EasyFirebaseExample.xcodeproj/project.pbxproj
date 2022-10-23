@@ -17,6 +17,7 @@
 		EEAF92D828F21C1A00E98360 /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92D728F21C1A00E98360 /* FoodItem.swift */; };
 		EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */; };
 		EEC544142901480A0075653E /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC544132901480A0075653E /* Price.swift */; };
+		EEE800312905CFFC0077D930 /* UpdateDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE800302905CFFC0077D930 /* UpdateDocumentView.swift */; };
 		EEFDCB9B28F42F8E00572A4E /* FoodItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */; };
 		EEFDCB9D28F4357100572A4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		EEAF92D728F21C1A00E98360 /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
 		EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDocumentView.swift; sourceTree = "<group>"; };
 		EEC544132901480A0075653E /* Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
+		EEE800302905CFFC0077D930 /* UpdateDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDocumentView.swift; sourceTree = "<group>"; };
 		EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemView.swift; sourceTree = "<group>"; };
 		EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,6 +57,7 @@
 			children = (
 				EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */,
 				EE0C501D290527CF00AA3FF5 /* GetDocumentView.swift */,
+				EEE800302905CFFC0077D930 /* UpdateDocumentView.swift */,
 			);
 			path = Firestore;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEE800312905CFFC0077D930 /* UpdateDocumentView.swift in Sources */,
 				EEAF92CF28F214D200E98360 /* Global.swift in Sources */,
 				EEC544142901480A0075653E /* Price.swift in Sources */,
 				EE0C501E290527CF00AA3FF5 /* GetDocumentView.swift in Sources */,
