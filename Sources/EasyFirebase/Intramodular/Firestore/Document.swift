@@ -68,7 +68,7 @@ open class Document: FieldObject, Identifiable, Equatable {
       for child in children {
         guard let value = child.value as? Encodable else { continue }
         guard value is AnyField else { continue }
-        var propertyName = child.label?.underscorePrefixRemoved() ?? ""
+        let propertyName = child.label?.underscorePrefixRemoved() ?? ""
         if let key = CodingKeys(stringValue: propertyName) {
           try? container.encode(value, forKey: key)
         }

@@ -50,7 +50,6 @@ open class FieldObject: Codable, ObservableObject {
         field.inject(parent: self, key: label)
         field.decodeValue(from: container)
       }
-      guard let decodable = child.value as? AnyField else { continue }
     }
   }
   
@@ -86,7 +85,7 @@ open class FieldObject: Codable, ObservableObject {
       for child in children {
         guard let value = child.value as? Encodable else { continue }
         guard value is AnyField else { continue }
-        var propertyName = child.label?.underscorePrefixRemoved() ?? ""
+        let propertyName = child.label?.underscorePrefixRemoved() ?? ""
         if let key = CodingKeys(stringValue: propertyName) {
           try? container.encode(value, forKey: key)
         }
