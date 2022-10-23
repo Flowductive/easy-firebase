@@ -38,13 +38,11 @@ struct SetDocumentView: View {
           food.write { error in
             self.loading = false
             self.error = error?.localizedDescription ?? ""
+            if error == nil { self.success = true }
           }
         })
-        Button("Test", action: {
-          print(nameField)
-        })
         if loading {
-          Text("")
+          Text("Loading...")
         } else if !error.isEmpty {
           Text("Error: \(error)").foregroundColor(.red)
         } else if success {

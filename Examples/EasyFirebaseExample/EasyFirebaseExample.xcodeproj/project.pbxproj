@@ -18,6 +18,7 @@
 		EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */; };
 		EEC544142901480A0075653E /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC544132901480A0075653E /* Price.swift */; };
 		EEE800312905CFFC0077D930 /* UpdateDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE800302905CFFC0077D930 /* UpdateDocumentView.swift */; };
+		EEE800332905E6240077D930 /* ListenDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE800322905E6240077D930 /* ListenDocumentView.swift */; };
 		EEFDCB9B28F42F8E00572A4E /* FoodItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */; };
 		EEFDCB9D28F4357100572A4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -36,6 +37,7 @@
 		EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDocumentView.swift; sourceTree = "<group>"; };
 		EEC544132901480A0075653E /* Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
 		EEE800302905CFFC0077D930 /* UpdateDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDocumentView.swift; sourceTree = "<group>"; };
+		EEE800322905E6240077D930 /* ListenDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenDocumentView.swift; sourceTree = "<group>"; };
 		EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemView.swift; sourceTree = "<group>"; };
 		EEFDCB9C28F4357100572A4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +60,7 @@
 				EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */,
 				EE0C501D290527CF00AA3FF5 /* GetDocumentView.swift */,
 				EEE800302905CFFC0077D930 /* UpdateDocumentView.swift */,
+				EEE800322905E6240077D930 /* ListenDocumentView.swift */,
 			);
 			path = Firestore;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 			files = (
 				EEE800312905CFFC0077D930 /* UpdateDocumentView.swift in Sources */,
 				EEAF92CF28F214D200E98360 /* Global.swift in Sources */,
+				EEE800332905E6240077D930 /* ListenDocumentView.swift in Sources */,
 				EEC544142901480A0075653E /* Price.swift in Sources */,
 				EE0C501E290527CF00AA3FF5 /* GetDocumentView.swift in Sources */,
 				EEAF92BC28F2134C00E98360 /* ContentView.swift in Sources */,

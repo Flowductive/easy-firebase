@@ -19,6 +19,8 @@ open class Document: FieldObject, Identifiable, Equatable {
   internal var batch: [Field.Key]? = .some([])
   private var location: Location?
   
+  public private(set) var listener: ListenerRegistration? = nil
+  
   internal var firestoreCollectionReference: FirebaseFirestore.CollectionReference {
     let location: Location = Self.getLocation(Self.self, from: location)
     return FirebaseFirestore.Firestore.firestore().collection(location.rawValue)
@@ -111,7 +113,7 @@ extension Document {
   public static func read<T>(_ type: T.Type, id: Document.ID, from location: Location? = nil, completion: @escaping (Result<T, Firestore.Error>) -> Void) where T: Document {
     let _location: Location = getLocation(T.self, from: location)
     FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).getDocument { snapshot, error in
-      handleDocumentSnapshot(snapshot, error, from: _location, handler: completion)
+      handleDocumentSnapshot(T.self, snapshot, error, from: _location, handler: completion)
     }
   }
 
@@ -128,10 +130,38 @@ extension Document {
 
 extension Document {
   
-  public static func listen<T>(_ type: T.Type, id: Document.ID, from location: Location? = nil, onUpdate: @escaping (Result<T, Firestore.Error>) -> Void) where T: Document {
+  public static func listen<T>(
+    _ type: T.Type,
+    id: Document.ID,
+    from location: Location? = nil,
+    onUpdate: @escaping (Result<T, Firestore.Error>) -> Void
+  ) where T: Document {
     let _location: Location = getLocation(T.self, from: location)
-    FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).addSnapshotListener { snapshot, error in
-      handleDocumentSnapshot(snapshot, error, from: _location, handler: onUpdate)
+    var listener: ListenerRegistration? = nil
+    listener = FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).addSnapshotListener { snapshot, error in
+      handleDocumentSnapshot(T.self, snapshot, error, &listener, from: _location, handler: onUpdate)
+    }
+  }
+  
+  public static func listen<T>(
+    _ type: T.Type,
+    id: Document.ID,
+    from location: Location? = nil,
+    bindTo bindable: Binding<T?>,
+    completion: @escaping (Firestore.Error?) -> Void = { _ in }
+  ) where T: Document {
+    let _location: Location = getLocation(T.self, from: location)
+    var listener: ListenerRegistration? = nil
+    listener = FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).addSnapshotListener { snapshot, error in
+      handleDocumentSnapshot(T.self, snapshot, error, &listener, from: _location) { result in
+        guard let result = try? result.get() else {
+          completion(.noDocument)
+          return
+        }
+        completion(nil)
+        bindable.wrappedValue = nil
+        DispatchQueue.main.async { bindable.wrappedValue = result }
+      }
     }
   }
 }
@@ -170,12 +200,20 @@ extension Document {
 
 private extension Document {
   
-  static func handleDocumentSnapshot<T>(_ snapshot: DocumentSnapshot?, _ error: Error?, from location: Location, handler: @escaping (Result<T, Firestore.Error>) -> Void) where T: Document {
+  static func handleDocumentSnapshot<T>(
+    _ type: T.Type,
+    _ snapshot: DocumentSnapshot?,
+    _ error: Error?,
+    _ listener: UnsafeMutablePointer<ListenerRegistration?>? = nil,
+    from location: Location,
+    handler: @escaping (Result<T, Firestore.Error>) -> Void
+  ) where T: Document {
     if error != nil {
       handler(.failure(.connection))
     } else if let snapshot, snapshot.exists {
       if let document = try? snapshot.data(as: T.self) {
         document.location = location
+        document.listener = listener?.pointee
         handler(.success(document))
       } else {
         handler(.failure(.decodingFailed))
