@@ -27,6 +27,10 @@ struct SetDocumentView: View {
         entryView
         Divider()
         Text("Preview").font(.title2)
+        HStack {
+          Text("ID: \(food.id)").foregroundColor(.gray)
+          Button("Copy", action: { food.id.copyToClipboard() })
+        }
         FoodItemView(food: food)
         Divider()
         Button("Set in Firestore", action: {

@@ -14,6 +14,7 @@ struct ContentView: View {
       List {
         Section(header: Text("Firestore")) {
           NavigationLink("Set document", destination: { SetDocumentView() })
+          NavigationLink("Get document", destination: { GetDocumentView() })
         }
       }
     }

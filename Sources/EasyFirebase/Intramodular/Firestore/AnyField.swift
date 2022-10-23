@@ -40,7 +40,7 @@ public class AnyField: Codable {
     fatalError()
   }
   
-  internal func decodeValue(from container: KeyedDecodingContainer<Document.CodingKeys>, key propertyName: String) {
+  internal func decodeValue(from container: KeyedDecodingContainer<Document.CodingKeys>) {
     fatalError()
   }
   

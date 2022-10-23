@@ -51,8 +51,8 @@ public class Field<Parent, Value>: AnyField where Value: Codable, Parent: FieldO
     try wrappedValue.encode(to: encoder)
   }
   
-  internal override func decodeValue(from container: KeyedDecodingContainer<Document.CodingKeys>, key propertyName: String) {
-    guard let codingKey = Document.CodingKeys(stringValue: key ?? propertyName) else { return }
+  internal override func decodeValue(from container: KeyedDecodingContainer<Document.CodingKeys>) {
+    guard let key, let codingKey = Document.CodingKeys(stringValue: key) else { return }
     if let value = try? container.decodeIfPresent(Value.self, forKey: codingKey) {
       wrappedValue = value
     }

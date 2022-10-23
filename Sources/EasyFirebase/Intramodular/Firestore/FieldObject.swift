@@ -32,7 +32,7 @@ open class FieldObject: Codable, ObservableObject {
   
   public init() {
     for (label, value) in Mirror(reflecting: self).children {
-      if let field = value as? AnyField, let label = label {
+      if let field = value as? AnyField, let label = label?.underscorePrefixRemoved() {
         fields?.append(label)
         field.inject(parent: self, key: label)
       }
@@ -45,13 +45,12 @@ open class FieldObject: Codable, ObservableObject {
     guard let children = mirror?.children else { throw Firestore.Error.unknown }
     // TODO: Deep Search with AnyObject
     for child in children {
-      if let field = child.value as? AnyField, let label = child.label {
+      if let field = child.value as? AnyField, let label = child.label?.underscorePrefixRemoved() {
         fields?.append(label)
         field.inject(parent: self, key: label)
+        field.decodeValue(from: container)
       }
       guard let decodable = child.value as? AnyField else { continue }
-      let propertyName = String((child.label ?? "").dropFirst())
-      decodable.decodeValue(from: container, key: propertyName)
     }
   }
   
@@ -87,10 +86,7 @@ open class FieldObject: Codable, ObservableObject {
       for child in children {
         guard let value = child.value as? Encodable else { continue }
         guard value is AnyField else { continue }
-        var propertyName = child.label ?? ""
-        if propertyName.first == "_" {
-          propertyName = String(propertyName.dropFirst())
-        }
+        var propertyName = child.label?.underscorePrefixRemoved() ?? ""
         if let key = CodingKeys(stringValue: propertyName) {
           try? container.encode(value, forKey: key)
         }

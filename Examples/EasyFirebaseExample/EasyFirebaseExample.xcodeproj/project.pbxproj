@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE0C501E290527CF00AA3FF5 /* GetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0C501D290527CF00AA3FF5 /* GetDocumentView.swift */; };
 		EEAF92BA28F2134C00E98360 /* EasyFirebaseExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92B928F2134C00E98360 /* EasyFirebaseExampleApp.swift */; };
 		EEAF92BC28F2134C00E98360 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92BB28F2134C00E98360 /* ContentView.swift */; };
 		EEAF92BE28F2134C00E98360 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEAF92BD28F2134C00E98360 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EE0C501D290527CF00AA3FF5 /* GetDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDocumentView.swift; sourceTree = "<group>"; };
 		EEAF92B628F2134C00E98360 /* EasyFirebaseExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyFirebaseExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEAF92B928F2134C00E98360 /* EasyFirebaseExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyFirebaseExampleApp.swift; sourceTree = "<group>"; };
 		EEAF92BB28F2134C00E98360 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +50,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE0C501F290527D500AA3FF5 /* Firestore */ = {
+			isa = PBXGroup;
+			children = (
+				EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */,
+				EE0C501D290527CF00AA3FF5 /* GetDocumentView.swift */,
+			);
+			path = Firestore;
+			sourceTree = "<group>";
+		};
 		EEAF92AD28F2134C00E98360 = {
 			isa = PBXGroup;
 			children = (
@@ -116,8 +127,8 @@
 		EEAF92D928F2738600E98360 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EE0C501F290527D500AA3FF5 /* Firestore */,
 				EEAF92BB28F2134C00E98360 /* ContentView.swift */,
-				EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */,
 				EEFDCB9A28F42F8E00572A4E /* FoodItemView.swift */,
 			);
 			path = Views;
@@ -199,6 +210,7 @@
 			files = (
 				EEAF92CF28F214D200E98360 /* Global.swift in Sources */,
 				EEC544142901480A0075653E /* Price.swift in Sources */,
+				EE0C501E290527CF00AA3FF5 /* GetDocumentView.swift in Sources */,
 				EEAF92BC28F2134C00E98360 /* ContentView.swift in Sources */,
 				EEAF92DB28F27B3200E98360 /* SetDocumentView.swift in Sources */,
 				EEFDCB9B28F42F8E00572A4E /* FoodItemView.swift in Sources */,

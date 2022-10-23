@@ -12,5 +12,5 @@ class FoodItem: Document {
   @Field var name: String = "None"
   @Field var emoji: String = ""
   @Field var category: String = "None"
-  @Field var price: Price = Price(0.0)
+  @Field var price: Price = Price()
 }
