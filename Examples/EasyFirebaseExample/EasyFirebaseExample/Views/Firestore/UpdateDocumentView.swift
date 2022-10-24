@@ -19,6 +19,15 @@ struct UpdateDocumentView: View {
   
   @State var error: String = ""
   
+  @State var batch: Bool = false { didSet { if batch { revertOnFail = false }}}
+  @State var revertOnFail: Bool = false { didSet { if revertOnFail { batch = false }}}
+  
+  var writeOption: AnyField<FieldObject>.WriteOption {
+    if batch { return .batch }
+    else if revertOnFail { return .revertOnFail }
+    else { return .default }
+  }
+  
   var body: some View {
     ScrollView {
       VStack {
@@ -35,7 +44,7 @@ struct UpdateDocumentView: View {
             HStack {
               TextField("New food name", text: $nameField)
               Button("Update name") {
-                food?.$name.set(nameField, completion: { error in
+                food?.$name.set(nameField, option: writeOption, completion: { error in
                   self.error = error?.localizedDescription ?? ""
                 })
               }
@@ -43,12 +52,12 @@ struct UpdateDocumentView: View {
             HStack {
               TextField("New food emoji", text: $emojiField)
               Button("Update emoji") {
-                food?.$emoji.set(emojiField, completion: { error in
+                food?.$emoji.set(emojiField, option: writeOption, completion: { error in
                   self.error = error?.localizedDescription ?? ""
                 })
               }
               Button("Remove emoji") {
-                food?.$emoji.remove(completion: { error in
+                food?.$emoji.remove(option: writeOption, completion: { error in
                   self.error = error?.localizedDescription ?? ""
                 })
               }
@@ -78,6 +87,15 @@ struct UpdateDocumentView: View {
         }
         .padding()
         .border(.gray)
+        Toggle("Revert updates on failure", isOn: $revertOnFail)
+        HStack {
+          Toggle("Add updates to batch", isOn: $batch)
+          Button("Execute Batch") {
+            food?.setBatch(completion: { error in
+              self.error = error?.localizedDescription ?? ""
+            })
+          }
+        }
         Text(error).foregroundColor(.red)
         if let food {
           FoodItemView(food: food)

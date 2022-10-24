@@ -48,4 +48,16 @@ public class AnyField<Parent>: Codable where Parent: FieldObject {
   public required init(from decoder: Decoder) throws {
     fatalError()
   }
+  
+  public enum WriteOption: Equatable {
+    
+    /// Update locally, and in Firestore.
+    case `default`
+    
+    /// Add this update to a batch.
+    case batch
+    
+    /// Reverts the local write on fail.
+    case revertOnFail
+  }
 }

@@ -55,18 +55,6 @@ public class Field<Parent, Value>: AnyField<Parent> where Value: Codable, Parent
   public var projectedValue: Field<Parent, Value> {
     self
   }
-  
-  public enum WriteOption: Equatable {
-    
-    /// Update locally, and in Firestore.
-    case `default`
-    
-    /// Add this update to a batch.
-    case batch
-    
-    /// Reverts the local write on fail.
-    case revertOnFail
-  }
 }
 
 extension Field {
@@ -160,11 +148,19 @@ extension Field {
   private func update(_ value: Value, _ fieldValue: Any, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
     guard let keyPath = keyPath else { completion(.noKey); return }
     guard let document = parent?.rootDocument as? Document else { completion(.unknown); return }
-    if option == .revertOnFail { locallyUpdate(value) }
+    locallyUpdate(value)
+    if option == .batch {
+      if document.batch == nil { document.batch = [] }
+      document.batch?.append(Document.BatchItem(keyPath: keyPath, newValue: value, fieldValue: fieldValue))
+      self.acceptLocalUpdate()
+      return
+    }
     document.firestoreDocumentReference.updateData([keyPath: fieldValue]) { error in
       if error != nil {
         completion(.connection)
-        self.revertLocalUpdate()
+        if option == .revertOnFail {
+          self.revertLocalUpdate()
+        }
       } else {
         completion(nil)
         self.acceptLocalUpdate()

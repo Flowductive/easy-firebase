@@ -16,7 +16,7 @@ open class Document: FieldObject, Identifiable, Equatable {
   @Field public var id: String
   @Field public var dateCreated: Date
   
-  internal var batch: [Field.Key]? = .some([])
+  internal var batch: [BatchItem]? = .some([])
   private var location: Location?
   
   public private(set) var listener: ListenerRegistration? = nil
@@ -92,6 +92,27 @@ extension Document {
   }
 }
 
+// MARK: - Batching
+
+extension Document {
+  
+  public func setBatch(completion: @escaping (Firestore.Error?) -> Void) {
+    guard let batch = batch, !batch.isEmpty else {
+      completion(.batchEmpty)
+      return
+    }
+    firestoreDocumentReference.setData(batch.batchDict, merge: true) { error in
+      self.handleWriteCompleted(error, handler: completion)
+    }
+  }
+  
+  internal struct BatchItem {
+    var keyPath: String
+    var newValue: Any
+    var fieldValue: Any
+  }
+}
+
 // MARK: - Read
 
 extension Document {
@@ -155,21 +176,6 @@ extension Document {
 // MARK: - Write
 
 extension Document {
-  
-  public func setBatch(completion: @escaping (Firestore.Error?) -> Void) {
-    guard let batch = batch, !batch.isEmpty else {
-      completion(.batchEmpty)
-      return
-    }
-    self.batch = []
-    do {
-      try firestoreDocumentReference.setData(from: self, mergeFields: batch) { error in
-        self.handleWriteCompleted(error, handler: completion)
-      }
-    } catch {
-      completion(.encodingFailed)
-    }
-  }
   
   public func write(merge: Bool = false, completion: @escaping (Firestore.Error?) -> Void) {
     do {

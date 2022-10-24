@@ -89,3 +89,14 @@ extension Array where Element: Equatable {
     }
   }
 }
+
+extension Array where Element == Document.BatchItem {
+  
+  var batchDict: [String: Any] {
+    var dict: [String: Any] = [:]
+    for item in self {
+      dict.updateValue(item.fieldValue, forKey: item.keyPath)
+    }
+    return dict
+  }
+}
