@@ -21,7 +21,7 @@ public class AnyField<Parent>: Codable where Parent: FieldObject {
     var arr: [String] = [key]
     unowned var object: FieldObject? = self.parent
     repeat {
-      guard let key = object?._fieldKey else { break }
+      guard let key = object?.enclosingKey else { break }
       arr.insert(key, at: 0)
       object = object?.parent
     } while object != nil

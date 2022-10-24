@@ -8,3 +8,4 @@ Examples/.DS_Store
 *.xcuserstate
 *.xcscheme
 *.xcbkptlist
+*.xcexplist

@@ -159,7 +159,7 @@ extension Field {
   
   private func update(_ value: Value, _ fieldValue: Any, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
     guard let keyPath = keyPath else { completion(.noKey); return }
-    guard let document = parent?.parent as? Document else { completion(.unknown); return }
+    guard let document = parent?.rootDocument as? Document else { completion(.unknown); return }
     if option == .revertOnFail { locallyUpdate(value) }
     document.firestoreDocumentReference.updateData([keyPath: fieldValue]) { error in
       if error != nil {
