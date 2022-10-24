@@ -13,7 +13,7 @@ import FirebaseFirestore
 // MARK: - Field Implementation
 
 @propertyWrapper
-public class Field<Parent, Value>: AnyField where Value: Codable, Parent: FieldObject {
+public class Field<Parent, Value>: AnyField<Parent> where Value: Codable, Parent: FieldObject {
   
   public typealias Output = Value
   
@@ -27,18 +27,7 @@ public class Field<Parent, Value>: AnyField where Value: Codable, Parent: FieldO
     }
   }
   
-  public unowned var parent: Parent?
-  
   public override var valueAsAny: Any { wrappedValue as Any }
-  
-  public override var parentAsAny: Any? {
-    get {
-      parent as Any
-    } set {
-      guard let newValue = newValue, let newParent = newValue as? Parent else { return }
-      parent = newParent
-    }
-  }
   
   private var oldWrappedValue: Value?
   
@@ -145,7 +134,21 @@ extension Field where Value: Sequence, Value.Element: Codable, Value.Element: Eq
   }
 }
 
-extension Field where Value: BinaryInteger {
+extension Field where Value == Double {
+  
+  public func increment(by difference: Value, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    update(wrappedValue + difference, FieldValue.increment(difference), option: option, completion: completion)
+  }
+}
+
+extension Field where Value == Int {
+  
+  public func increment(by difference: Value, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
+    update(wrappedValue + difference, FieldValue.increment(Double(difference)), option: option, completion: completion)
+  }
+}
+
+extension Field where Value == Float {
   
   public func increment(by difference: Value, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
     update(wrappedValue + difference, FieldValue.increment(Double(difference)), option: option, completion: completion)

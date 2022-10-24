@@ -42,20 +42,6 @@ open class Document: FieldObject, Identifiable, Equatable {
     id = try container.decode(String.self, forKey: .init(stringValue: "id")!)
     dateCreated = (try? container.decode(Date.self, forKey: .init(stringValue: "dateCreated")!)) ?? Date()
     try super.init(from: decoder)
-    var mirror: Mirror? = Mirror(reflecting: self)
-    repeat {
-      guard let children = mirror?.children else { break }
-      for child in children {
-        if let field = child.value as? AnyField,
-           let label = child.label?.underscorePrefixRemoved()
-        {
-          fields?.append(label)
-          field.inject(parent: self, key: label)
-          field.decodeValue(from: container)
-        }
-      }
-      mirror = mirror?.superclassMirror
-    } while mirror != nil
   }
   
   public static func == (lhs: Document, rhs: Document) -> Bool {

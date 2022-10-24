@@ -10,7 +10,7 @@ import EasyFirebase
 class FoodItem: Document {
   
   @Field var name: String = "None"
-  @Field var emoji: String = ""
+  @Field var emoji: String? = nil
   @Field var category: String = "None"
   @Field var price: Price = Price()
 }

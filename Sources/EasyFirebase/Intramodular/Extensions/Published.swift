@@ -8,7 +8,6 @@
 import SwiftUI
 import Foundation
 
-
 extension Published: Encodable where Value: Decodable {
   
   public func encode(to encoder: Encoder) throws {
@@ -33,6 +32,7 @@ extension Published: Encodable where Value: Decodable {
     }
   }
 }
+
 extension Published: Decodable where Value: Decodable {
   public init(from decoder: Decoder) throws {
     self = Published(initialValue:try Value(from:decoder))

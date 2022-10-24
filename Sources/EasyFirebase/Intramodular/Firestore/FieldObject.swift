@@ -11,23 +11,23 @@ open class FieldObject: Codable, ObservableObject {
   
   internal var fields: [Field.Key]? = .some([])
   
-  public private(set) var parent: FieldObject?
+  public internal(set) unowned var parent: FieldObject?
+  internal var _fieldKey: Field.Key?
   
   internal var enclosingDocument: Document? {
-    unowned var object: FieldObject? = self
-    repeat {
-      if let parent = object?.parent {
-        if let document = parent as? Document {
-          return document
-        } else if let nextParent = object?.parent {
-          object = nextParent
-          continue
-        } else {
+    unowned var object: FieldObject = self
+    while true {
+      if let parent = object.parent {
+        if !(parent is Document) {
           break
         }
+        object = parent
+        continue
+      } else {
+        break
       }
-    } while true
-    return nil
+    }
+    return object as? Document
   }
   
   public init() {
@@ -41,16 +41,24 @@ open class FieldObject: Codable, ObservableObject {
   
   public required init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    let mirror: Mirror? = Mirror(reflecting: self)
-    guard let children = mirror?.children else { throw Firestore.Error.unknown }
-    // TODO: Deep Search with AnyObject
-    for child in children {
-      if let field = child.value as? AnyField, let label = child.label?.underscorePrefixRemoved() {
-        fields?.append(label)
-        field.inject(parent: self, key: label)
-        field.decodeValue(from: container)
+    var mirror: Mirror? = Mirror(reflecting: self)
+    var isFieldObject: Bool = true
+    repeat {
+      isFieldObject = false
+      guard let children = mirror?.children else { break }
+      for child in children {
+        if let field = child.value as? AnyField,
+           let label = child.label?.underscorePrefixRemoved()
+        {
+          fields?.append(label)
+          field.inject(parent: self, key: label)
+          field.decodeValue(from: container)
+          // TODO: Improve code support
+          if label == "_fieldKey" { isFieldObject = true }
+        }
       }
-    }
+      mirror = mirror?.superclassMirror
+    } while mirror != nil && isFieldObject
   }
   
   public struct CodingKeys: CodingKey {

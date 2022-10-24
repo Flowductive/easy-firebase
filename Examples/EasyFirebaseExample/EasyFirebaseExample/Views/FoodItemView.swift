@@ -14,7 +14,7 @@ struct FoodItemView: View {
   var body: some View {
     VStack {
       HStack {
-        Text(food.emoji)
+        Text(food.emoji ?? "")
         Text(food.name).bold()
       }
       Text(food.category)
