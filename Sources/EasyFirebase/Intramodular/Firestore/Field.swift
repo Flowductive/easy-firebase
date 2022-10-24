@@ -40,8 +40,8 @@ public class Field<Parent, Value>: AnyField<Parent> where Value: Codable, Parent
     try wrappedValue.encode(to: encoder)
   }
   
-  internal override func decodeValue(from container: KeyedDecodingContainer<Document.CodingKeys>) {
-    guard let key, let codingKey = Document.CodingKeys(stringValue: key) else { return }
+  internal override func decodeValue(from container: KeyedDecodingContainer<FieldObject.CodingKeys>) {
+    guard let key, let codingKey = FieldObject.CodingKeys(stringValue: key) else { return }
     if let value = try? container.decodeIfPresent(Value.self, forKey: codingKey) {
       wrappedValue = value
     }
@@ -159,7 +159,7 @@ extension Field {
   
   private func update(_ value: Value, _ fieldValue: Any, option: WriteOption = .default, completion: @escaping (Firestore.Error?) -> Void) {
     guard let keyPath = keyPath else { completion(.noKey); return }
-    guard let document = parent?.enclosingDocument else { completion(.unknown); return }
+    guard let document = parent?.parent as? Document else { completion(.unknown); return }
     if option == .revertOnFail { locallyUpdate(value) }
     document.firestoreDocumentReference.updateData([keyPath: fieldValue]) { error in
       if error != nil {

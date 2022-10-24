@@ -11,24 +11,9 @@ open class FieldObject: Codable, ObservableObject {
   
   internal var fields: [Field.Key]? = .some([])
   
-  public internal(set) unowned var parent: FieldObject?
   internal var _fieldKey: Field.Key?
   
-  internal var enclosingDocument: Document? {
-    unowned var object: FieldObject = self
-    while true {
-      if let parent = object.parent {
-        if !(parent is Document) {
-          break
-        }
-        object = parent
-        continue
-      } else {
-        break
-      }
-    }
-    return object as? Document
-  }
+  internal var parent: FieldObject?
   
   public init() {
     for (label, value) in Mirror(reflecting: self).children {
@@ -55,6 +40,10 @@ open class FieldObject: Codable, ObservableObject {
           field.decodeValue(from: container)
           // TODO: Improve code support
           if label == "_fieldKey" { isFieldObject = true }
+          if let object = field.valueAsAny as? FieldObject {
+            object.parent = self
+            object._fieldKey = label
+          }
         }
       }
       mirror = mirror?.superclassMirror

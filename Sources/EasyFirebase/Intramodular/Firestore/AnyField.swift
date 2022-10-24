@@ -11,20 +11,20 @@ import Foundation
 public class AnyField<Parent>: Codable where Parent: FieldObject {
   
   var valueAsAny: Any { fatalError() }
+  
   public internal(set) unowned var parent: Parent?
   
   internal final var key: String?
   
   internal final var keyPath: String? {
     guard let key = key else { return nil }
-    var arr: [String] = []
+    var arr: [String] = [key]
     unowned var object: FieldObject? = self.parent
     repeat {
       guard let key = object?._fieldKey else { break }
       arr.insert(key, at: 0)
       object = object?.parent
     } while object != nil
-    if arr.isEmpty { return key }
     return arr.joined(separator: ".")
   }
   
@@ -35,10 +35,6 @@ public class AnyField<Parent>: Codable where Parent: FieldObject {
   public func inject(parent: Parent?, key: String) {
     self.parent = parent
     self.key = key
-    if let object = valueAsAny as? FieldObject {
-      object.parent = parent
-      object._fieldKey = key
-    }
   }
   
   public func encode(to encoder: Encoder) throws {
