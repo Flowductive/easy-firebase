@@ -9,3 +9,4 @@ Examples/.DS_Store
 *.xcscheme
 *.xcbkptlist
 *.xcexplist
+.build/*
