@@ -173,6 +173,28 @@ extension Document {
   }
 }
 
+// MARK: - Query
+
+extension Document {
+  
+  struct Query {
+    var condition: Condition
+    
+    struct Condition {
+      
+    }
+  }
+  
+  public static func query<T>(
+    _ type: T.Type,
+    id: Document.ID,
+    from location: Location? = nil,
+    completion: @escaping (Result<Array<T>, Firestore.Error>) -> Void
+  ) where T: Document {
+    
+  }
+}
+
 // MARK: - Write
 
 extension Document {
