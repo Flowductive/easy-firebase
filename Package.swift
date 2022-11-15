@@ -32,7 +32,9 @@ let package = Package(
         .product(name: "GTMAppAuth", package: "GTMAppAuth"),
         .product(name: "AppAuth", package: "AppAuth-iOS"),
         .product(name: "GAppAuth-macOS", package: "GAppAuth"),
-        .product(name: "GAppAuth-iOS", package: "GAppAuth")
+        .product(name: "GAppAuth-iOS", package: "GAppAuth"),
+        .product(name: "FirebaseRemoteConfig", package: "firebase-ios-sdk"),
+        .product(name: "FirebaseRemoteConfigSwift", package: "firebase-ios-sdk")
       ]
     ),
 //    .testTarget(
