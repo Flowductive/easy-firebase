@@ -39,12 +39,12 @@ public struct Query<T> where T: Document {
   }
   
   private struct Block {
-    var path: KeyPath<T, AnyField<T>>
+    var path: PartialKeyPath<T>
     var comparison: Comparison
     var value: Any
     
     internal func apply(to reference: FirebaseFirestore.CollectionReference) -> FirebaseFirestore.Query? {
-      guard let key: String = T()[keyPath: path].key else { return nil }
+      guard let key: String = (T()[keyPath: path] as! AnyField<FieldObject>).key else { return nil }
       switch comparison {
       case .equals: return reference.whereField(key, isEqualTo: value)
       case .lessThan: return reference.whereField(key, isLessThan: value)
@@ -72,7 +72,7 @@ public struct Query<T> where T: Document {
     }
     
     internal func apply(to query: FirebaseFirestore.Query) -> FirebaseFirestore.Query? {
-      guard let key: String = T()[keyPath: path].key else { return nil }
+      guard let key: String = (T()[keyPath: path] as? AnyField<T>)?.key else { return nil }
       switch comparison {
       case .equals: return query.whereField(key, isEqualTo: value)
       case .lessThan: return query.whereField(key, isLessThan: value)
@@ -101,7 +101,7 @@ public struct Query<T> where T: Document {
   }
   
   private struct Order {
-    var path: KeyPath<T, AnyField<T>>
+    var path: PartialKeyPath<T>
     var descending: Bool = false
   }
   
@@ -118,7 +118,7 @@ public struct Query<T> where T: Document {
         query = q
       }
     }
-    if let order, let key: String = T()[keyPath: order.path].key {
+    if let order, let key: String = (T()[keyPath: order.path] as? AnyField<T>)?.key {
       query.order(by: key, descending: order.descending)
     }
     if let limit {
@@ -132,11 +132,11 @@ public struct Query<T> where T: Document {
 
 extension Query {
   
-  public func `where`(_ path: KeyPath<T, AnyField<T>>, _ comparison: Comparison, _ value: Any) -> Query<T> {
+  public func `where`(_ path: PartialKeyPath<T>, _ comparison: Comparison, _ value: Any) -> Query<T> {
     return Query(self, and: Block(path: path, comparison: comparison, value: value))
   }
   
-  public func order(by path: KeyPath<T, AnyField<T>>, descending: Bool = false) -> Query<T> {
+  public func order(by path: PartialKeyPath<T>, descending: Bool = false) -> Query<T> {
     return Query(self, order: Order(path: path, descending: descending))
   }
   

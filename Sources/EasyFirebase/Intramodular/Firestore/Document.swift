@@ -187,14 +187,6 @@ extension Document {
   ) -> Query<T> where T: Document {
     return Query(location ?? .default(for: T.self))
   }
-  
-  func x() {
-    Document.query(TestDoc.self)
-  }
-}
-
-class TestDoc: Document {
-  @Field var testField: Int = 0
 }
 
 // MARK: - Write

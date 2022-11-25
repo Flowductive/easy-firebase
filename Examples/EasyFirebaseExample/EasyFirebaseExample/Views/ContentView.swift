@@ -17,6 +17,7 @@ struct ContentView: View {
           NavigationLink("Get document", destination: { GetDocumentView() })
           NavigationLink("Update document", destination: { UpdateDocumentView() })
           NavigationLink("Listen to document", destination: { ListenDocumentView() })
+          NavigationLink("Query documents", destination: { QueryDocumentsView() })
         }
       }
     }

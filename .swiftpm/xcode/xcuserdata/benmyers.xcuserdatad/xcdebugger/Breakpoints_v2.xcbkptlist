@@ -14,8 +14,8 @@
             filePath = "Sources/EasyFirebase/Intramodular/Firestore/Document.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
             landmarkName = "handleDocumentSnapshot(_:_:_:_:from:handler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "Sources/EasyFirebase/Intramodular/Firestore/Document.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "handleDocumentSnapshot(_:_:_:_:from:handler:)"
             landmarkType = "7">
          </BreakpointContent>

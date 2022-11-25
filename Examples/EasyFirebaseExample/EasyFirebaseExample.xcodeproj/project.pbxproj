@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EE0C501E290527CF00AA3FF5 /* GetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0C501D290527CF00AA3FF5 /* GetDocumentView.swift */; };
+		EE40FAD02930F14600305D48 /* QueryDocumentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE40FACF2930F14600305D48 /* QueryDocumentsView.swift */; };
 		EEAF92BA28F2134C00E98360 /* EasyFirebaseExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92B928F2134C00E98360 /* EasyFirebaseExampleApp.swift */; };
 		EEAF92BC28F2134C00E98360 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF92BB28F2134C00E98360 /* ContentView.swift */; };
 		EEAF92BE28F2134C00E98360 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEAF92BD28F2134C00E98360 /* Assets.xcassets */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		EE0C501D290527CF00AA3FF5 /* GetDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDocumentView.swift; sourceTree = "<group>"; };
+		EE40FACF2930F14600305D48 /* QueryDocumentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryDocumentsView.swift; sourceTree = "<group>"; };
 		EEAF92B628F2134C00E98360 /* EasyFirebaseExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyFirebaseExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEAF92B928F2134C00E98360 /* EasyFirebaseExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyFirebaseExampleApp.swift; sourceTree = "<group>"; };
 		EEAF92BB28F2134C00E98360 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 			children = (
 				EEAF92DA28F27B3200E98360 /* SetDocumentView.swift */,
 				EE0C501D290527CF00AA3FF5 /* GetDocumentView.swift */,
+				EE40FACF2930F14600305D48 /* QueryDocumentsView.swift */,
 				EEE800302905CFFC0077D930 /* UpdateDocumentView.swift */,
 				EEE800322905E6240077D930 /* ListenDocumentView.swift */,
 			);
@@ -214,6 +217,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE40FAD02930F14600305D48 /* QueryDocumentsView.swift in Sources */,
 				EEE800312905CFFC0077D930 /* UpdateDocumentView.swift in Sources */,
 				EEAF92CF28F214D200E98360 /* Global.swift in Sources */,
 				EEE800332905E6240077D930 /* ListenDocumentView.swift in Sources */,
