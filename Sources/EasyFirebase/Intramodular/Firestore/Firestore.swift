@@ -27,6 +27,8 @@ public struct Firestore {
     case encodingFailed
     /// The query was empty.
     case emptyQuery
+    /// The query was invalid.
+    case invalidQuery
     
     public var errorDescription: String? {
       switch self {
@@ -38,6 +40,7 @@ public struct Firestore {
       case .decodingFailed: return "The matching document failed to be decoded."
       case .encodingFailed: return "The document failed to be encoded."
       case .emptyQuery: return "No documents matching the query could be found."
+      case .invalidQuery: return "Your query was invalid."
       }
     }
     

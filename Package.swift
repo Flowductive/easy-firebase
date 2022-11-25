@@ -12,7 +12,7 @@ let package = Package(
       targets: ["EasyFirebase"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/firebase/firebase-ios-sdk", .upToNextMajor(from: "9.0.0")),
+    .package(url: "https://github.com/firebase/firebase-ios-sdk", .upToNextMajor(from: "9.6.0")),
     .package(url: "https://github.com/google/GTMAppAuth.git", from: "1.0.0"),
     .package(url: "https://github.com/openid/AppAuth-iOS.git", from: "1.0.0"),
     .package(url: "https://github.com/benlmyers/GAppAuth", from: "1.6.4"),

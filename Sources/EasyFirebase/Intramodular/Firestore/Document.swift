@@ -23,14 +23,14 @@ open class Document: FieldObject, Identifiable, Equatable {
   
   internal var firestoreCollectionReference: FirebaseFirestore.CollectionReference {
     let location: Location = Self.getLocation(Self.self, from: location)
-    return FirebaseFirestore.Firestore.firestore().collection(location.rawValue)
+    return location.reference
   }
   
   internal var firestoreDocumentReference: Firebase.DocumentReference {
     return firestoreCollectionReference.document(id)
   }
 
-  public init(id: String = UUID().uuidString, dateCreated: Date = Date()) {
+  public required init(id: String = UUID().uuidString, dateCreated: Date = Date()) {
     self.id = id
     self.location = Location.default(for: Self.self)
     self.dateCreated = dateCreated
@@ -89,6 +89,10 @@ extension Document {
     internal static func `default`<T>(for documentType: T.Type) -> Self {
       Self(rawValue: String(describing: T.self))
     }
+    
+    internal var reference: FirebaseFirestore.CollectionReference {
+      return Firebase.Firestore.firestore().collection(rawValue)
+    }
   }
 }
 
@@ -119,7 +123,7 @@ extension Document {
   
   public static func read<T>(_ type: T.Type, id: Document.ID, from location: Location? = nil, completion: @escaping (Result<T, Firestore.Error>) -> Void) where T: Document {
     let _location: Location = getLocation(T.self, from: location)
-    FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).getDocument { snapshot, error in
+    _location.reference.document(id).getDocument { snapshot, error in
       handleDocumentSnapshot(T.self, snapshot, error, from: _location, handler: completion)
     }
   }
@@ -145,7 +149,7 @@ extension Document {
   ) where T: Document {
     let _location: Location = getLocation(T.self, from: location)
     var listener: ListenerRegistration? = nil
-    listener = FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).addSnapshotListener { snapshot, error in
+    _location.reference.document(id).addSnapshotListener { snapshot, error in
       handleDocumentSnapshot(T.self, snapshot, error, &listener, from: _location, handler: onUpdate)
     }
   }
@@ -159,7 +163,7 @@ extension Document {
   ) where T: Document {
     let _location: Location = getLocation(T.self, from: location)
     var listener: ListenerRegistration? = nil
-    listener = FirebaseFirestore.Firestore.firestore().collection(_location.rawValue).document(id).addSnapshotListener { snapshot, error in
+    _location.reference.document(id).addSnapshotListener { snapshot, error in
       handleDocumentSnapshot(T.self, snapshot, error, &listener, from: _location) { result in
         guard let result = try? result.get() else {
           completion(.noDocument)
@@ -177,22 +181,20 @@ extension Document {
 
 extension Document {
   
-  struct Query {
-    var condition: Condition
-    
-    struct Condition {
-      
-    }
-  }
-  
   public static func query<T>(
     _ type: T.Type,
-    id: Document.ID,
-    from location: Location? = nil,
-    completion: @escaping (Result<Array<T>, Firestore.Error>) -> Void
-  ) where T: Document {
-    
+    from location: Location? = nil
+  ) -> Query<T> where T: Document {
+    return Query(location ?? .default(for: T.self))
   }
+  
+  func x() {
+    Document.query(TestDoc.self)
+  }
+}
+
+class TestDoc: Document {
+  @Field var testField: Int = 0
 }
 
 // MARK: - Write
@@ -200,19 +202,19 @@ extension Document {
 extension Document {
   
   public func write(merge: Bool = false, completion: @escaping (Firestore.Error?) -> Void) {
-    do {
-      try firestoreDocumentReference.setData(from: self, merge: merge) { error in
-        self.handleWriteCompleted(error, handler: completion)
-      }
-    } catch {
+    guard let dictionary else {
       completion(.encodingFailed)
+      return
+    }
+    firestoreDocumentReference.setData(dictionary, merge: merge) { error in
+      self.handleWriteCompleted(error, handler: completion)
     }
   }
 }
 
-// MARK: - Private Helper Methods
+// MARK: - Internal Helper Methods
 
-private extension Document {
+internal extension Document {
   
   static func handleDocumentSnapshot<T>(
     _ type: T.Type,
@@ -225,7 +227,7 @@ private extension Document {
     if error != nil {
       handler(.failure(.connection))
     } else if let snapshot, snapshot.exists {
-      if let document = try? snapshot.data(as: T.self) {
+      if let data = snapshot.data(), var document = try? T(dictionary: data) {
         document.location = location
         document.listener = listener?.pointee
         handler(.success(document))
@@ -237,30 +239,44 @@ private extension Document {
     }
   }
   
+  static func handleQuerySnapshot<T>(
+    _ type: T.Type,
+    _ snapshot: QuerySnapshot?,
+    _ error: Error?,
+    from location: Location,
+    handler: @escaping (Result<Array<T>, Firestore.Error>) -> Void
+  ) where T: Document {
+    if error != nil {
+      handler(.failure(.connection))
+      return
+    } else if let snapshot, !snapshot.isEmpty {
+      var arr: [T] = []
+      for document in snapshot.documents {
+        let data = document.data()
+        if let object = try? T(dictionary: data) {
+          object.location = location
+          arr.append(object)
+        }
+      }
+      handler(.success(arr))
+    } else {
+      handler(.failure(.noDocument))
+    }
+  }
+}
+
+// MARK: - Private Helper Methods
+
+private extension Document {
+  
   static func readChunk<T>(
     _ type: T.Type,
     _ chunk: [Document.ID],
     from location: Location,
     onUpdate: @escaping (Result<Array<T>, Firestore.Error>) -> Void
   ) where T: Document {
-    FirebaseFirestore.Firestore.firestore().collection(location.rawValue).whereField("id", in: chunk).getDocuments { snapshot, error in
-      if error != nil {
-        onUpdate(.failure(.connection))
-        return
-      } else if let snapshot, !snapshot.isEmpty {
-        
-        var arr: [T] = []
-        for document in snapshot.documents {
-          let object = try? document.data(as: T.self)
-          if let object {
-            object.location = location
-            arr.append(object)
-          }
-        }
-        onUpdate(.success(arr))
-      } else {
-        onUpdate(.failure(.noDocument))
-      }
+    location.reference.whereField("id", in: chunk).getDocuments { snapshot, error in
+      handleQuerySnapshot(T.self, snapshot, error, from: location, handler: onUpdate)
     }
   }
 
