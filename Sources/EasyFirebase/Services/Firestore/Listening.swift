@@ -36,24 +36,20 @@ extension EasyFirestore {
      - parameter onUpdate: The update handler. If `nil` is passed, the document has been deleted.
      */
     public static func listen<T>(to id: T.ID, ofType type: T.Type, key: ListenerKey, onUpdate: @escaping (T?) -> Void) where T: Document {
-      let listener = db.collection(colName(of: T.self)).document(id).addSnapshotListener { snapshot, _ in
-        guard let snapshot = snapshot, snapshot.exists else {
-          EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(colName(of: T.self))] collection, but no data could be found.")
-          onUpdate(nil)
-          return
-        }
-        var document: T?
-        if snapshot.data() == nil {
-          onUpdate(nil)
-        }
-        try? document = snapshot.data(as: T.self)
-        guard let document = document else {
-          EasyFirebase.log(error: "A document with ID [\(id)] loaded from the [\(colName(of: T.self))] collection, but couldn't be decoded.")
-          return
-        }
-        onUpdate(document)
-      }
-      registerListener(listener, key: key)
+      let docRef = db.collection(colName(of: T.self)).document(id)
+      listen(using: docRef, ofType: T.self, key: key, onUpdate: onUpdate)
+    }
+    
+    /**
+     Listen to singleton document updates.
+     
+     - parameter singleton: The singleton's type.
+     - parameter key: The listener key to attach.
+     - parameter onUpdate: The update handler. If `nil` is passed, the document has been deleted.
+     */
+    public static func listen<T>(singleton: T.Type, key: ListenerKey, onUpdate: @escaping (T?) -> Void) where T: Singleton {
+      let docRef = db.collection("Singleton").document(colName(of: T.self))
+      listen(using: docRef, ofType: T.self, key: key, onUpdate: onUpdate)
     }
     
     /**
@@ -78,6 +74,27 @@ extension EasyFirestore {
     }
     
     // MARK: - Private Static Methods
+    
+    private static func listen<T>(using ref: DocumentReference, ofType type: T.Type, key: ListenerKey, onUpdate: @escaping (T?) -> Void) where T: Document {
+      let listener = ref.addSnapshotListener { snapshot, _ in
+        guard let snapshot = snapshot, snapshot.exists else {
+          EasyFirebase.log(error: "A document loaded from the [\(colName(of: T.self))] collection, but no data could be found.")
+          onUpdate(nil)
+          return
+        }
+        var document: T?
+        if snapshot.data() == nil {
+          onUpdate(nil)
+        }
+        try? document = snapshot.data(as: T.self)
+        guard let document = document else {
+          EasyFirebase.log(error: "A document loaded from the [\(colName(of: T.self))] collection, but couldn't be decoded.")
+          return
+        }
+        onUpdate(document)
+      }
+      registerListener(listener, key: key)
+    }
     
     private static func registerListener(_ listener: ListenerRegistration, key: ListenerKey) {
       if listeners[key] != nil {
