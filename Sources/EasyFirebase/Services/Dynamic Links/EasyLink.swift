@@ -24,6 +24,7 @@ public struct EasyLink {
   public static var appStoreID: String?
   public static var minimumAppVersion: String?
   public static var backupURL: URL?
+  public static var redirectToAppStore: Bool = true
   
   // MARK: - Public Properties
   
@@ -43,6 +44,9 @@ public struct EasyLink {
     ]
     if let appStoreID = Self.appStoreID {
       builder.queryItems?.append(.init(name: "isi", value: appStoreID))
+    }
+    if !Self.redirectToAppStore, let backupURL = Self.backupURL {
+      builder.queryItems?.append(.init(name: "ifl", value: backupURL.absoluteString))
     }
     if let minimumAppVersion = Self.minimumAppVersion {
       builder.queryItems?.append(.init(name: "imv", value: minimumAppVersion))
