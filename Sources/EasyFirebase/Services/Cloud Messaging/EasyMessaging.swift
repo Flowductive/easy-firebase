@@ -93,7 +93,8 @@ public struct EasyMessaging {
     let url = NSURL(string: urlString)!
     let paramString: [String: Any] = ["to": token,
                                       "notification": ["title": title, "body": body],
-                                      "data": data
+                                      "data": data,
+                                      "content_available": true
     ]
     let request = NSMutableURLRequest(url: url as URL)
     request.httpMethod = "POST"
