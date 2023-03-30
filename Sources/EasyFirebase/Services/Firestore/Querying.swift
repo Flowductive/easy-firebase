@@ -18,7 +18,7 @@ extension EasyFirestore {
    */
   public struct Querying {
     
-    public typealias ConditionBlock<T, V> = (KeyPath<T, V>, Condition<T, V>.Comparison, V)
+    public typealias ConditionBlock<T, V> = (KeyPath<T, V>, Condition<T, V>.Comparison, Any)
     
     // MARK: - Public Static Methods
     
@@ -61,7 +61,7 @@ extension EasyFirestore {
      */
     public static func `where`<T, V>(_ path: KeyPath<T, V>,
                                   _ comparison: Condition<T, V>.Comparison,
-                                  _ value: V,
+                                  _ value: Any,
                                   order: Order? = nil,
                                   limit: Int? = nil,
                                   completion: @escaping ([T]) -> Void
@@ -168,7 +168,7 @@ extension EasyFirestore {
       /// The comparison used to filter a query.
       public var comparison: Comparison
       /// The value to check.
-      public var value: V
+      public var value: Any
       
       // MARK: - Internal Methods
       
