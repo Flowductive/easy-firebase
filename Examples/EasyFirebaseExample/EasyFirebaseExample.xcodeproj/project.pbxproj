@@ -1,0 +1,435 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EE7968A629D69AE100FF8054 /* Views in Resources */ = {isa = PBXBuildFile; fileRef = EE79689E29D69AE100FF8054 /* Views */; };
+		EE7968A729D69AE100FF8054 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE79689F29D69AE100FF8054 /* Global.swift */; };
+		EE7968A829D69AE100FF8054 /* Models in Resources */ = {isa = PBXBuildFile; fileRef = EE7968A029D69AE100FF8054 /* Models */; };
+		EE7968A929D69AE100FF8054 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE7968A229D69AE100FF8054 /* GoogleService-Info.plist */; };
+		EE7968AA29D69AE100FF8054 /* EasyFirebaseExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968A329D69AE100FF8054 /* EasyFirebaseExampleApp.swift */; };
+		EE7968AB29D69AE100FF8054 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE7968A429D69AE100FF8054 /* Assets.xcassets */; };
+		EE7968AC29D69AE100FF8054 /* Preview Content in Resources */ = {isa = PBXBuildFile; fileRef = EE7968A529D69AE100FF8054 /* Preview Content */; };
+		EE7968B129D69B6400FF8054 /* EasyFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = EE7968B029D69B6400FF8054 /* EasyFirebase */; };
+		EE7968BC29D69D8C00FF8054 /* ListenDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968B329D69D8C00FF8054 /* ListenDocumentView.swift */; };
+		EE7968BD29D69D8C00FF8054 /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968B429D69D8C00FF8054 /* FoodItem.swift */; };
+		EE7968BE29D69D8C00FF8054 /* UpdateDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968B529D69D8C00FF8054 /* UpdateDocumentView.swift */; };
+		EE7968BF29D69D8C00FF8054 /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968B629D69D8C00FF8054 /* Price.swift */; };
+		EE7968C029D69D8C00FF8054 /* GetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968B729D69D8C00FF8054 /* GetDocumentView.swift */; };
+		EE7968C129D69D8C00FF8054 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968B829D69D8C00FF8054 /* ContentView.swift */; };
+		EE7968C229D69D8C00FF8054 /* FoodItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968B929D69D8C00FF8054 /* FoodItemView.swift */; };
+		EE7968C329D69D8C00FF8054 /* QueryDocumentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968BA29D69D8C00FF8054 /* QueryDocumentsView.swift */; };
+		EE7968C429D69D8C00FF8054 /* SetDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7968BB29D69D8C00FF8054 /* SetDocumentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		EE64684A29D699E200BF2F84 /* EasyFirebaseExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyFirebaseExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE79689E29D69AE100FF8054 /* Views */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Views; sourceTree = "<group>"; };
+		EE79689F29D69AE100FF8054 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		EE7968A029D69AE100FF8054 /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Models; sourceTree = "<group>"; };
+		EE7968A129D69AE100FF8054 /* EasyFirebaseExample.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = EasyFirebaseExample.entitlements; sourceTree = "<group>"; };
+		EE7968A229D69AE100FF8054 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EE7968A329D69AE100FF8054 /* EasyFirebaseExampleApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EasyFirebaseExampleApp.swift; sourceTree = "<group>"; };
+		EE7968A429D69AE100FF8054 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EE7968A529D69AE100FF8054 /* Preview Content */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Preview Content"; sourceTree = "<group>"; };
+		EE7968AE29D69AFE00FF8054 /* easy-firebase */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "easy-firebase"; path = ../..; sourceTree = "<group>"; };
+		EE7968B229D69B7600FF8054 /* easy-firebase */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "easy-firebase"; path = ../..; sourceTree = "<group>"; };
+		EE7968B329D69D8C00FF8054 /* ListenDocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenDocumentView.swift; sourceTree = "<group>"; };
+		EE7968B429D69D8C00FF8054 /* FoodItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
+		EE7968B529D69D8C00FF8054 /* UpdateDocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDocumentView.swift; sourceTree = "<group>"; };
+		EE7968B629D69D8C00FF8054 /* Price.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
+		EE7968B729D69D8C00FF8054 /* GetDocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDocumentView.swift; sourceTree = "<group>"; };
+		EE7968B829D69D8C00FF8054 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EE7968B929D69D8C00FF8054 /* FoodItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodItemView.swift; sourceTree = "<group>"; };
+		EE7968BA29D69D8C00FF8054 /* QueryDocumentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryDocumentsView.swift; sourceTree = "<group>"; };
+		EE7968BB29D69D8C00FF8054 /* SetDocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetDocumentView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EE64684729D699E200BF2F84 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE7968B129D69B6400FF8054 /* EasyFirebase in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EE64684129D699E200BF2F84 = {
+			isa = PBXGroup;
+			children = (
+				EE7968AD29D69AFE00FF8054 /* Packages */,
+				EE64684C29D699E200BF2F84 /* EasyFirebaseExample */,
+				EE64684B29D699E200BF2F84 /* Products */,
+				EE7968AF29D69B6400FF8054 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		EE64684B29D699E200BF2F84 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE64684A29D699E200BF2F84 /* EasyFirebaseExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE64684C29D699E200BF2F84 /* EasyFirebaseExample */ = {
+			isa = PBXGroup;
+			children = (
+				EE7968B829D69D8C00FF8054 /* ContentView.swift */,
+				EE7968B429D69D8C00FF8054 /* FoodItem.swift */,
+				EE7968B929D69D8C00FF8054 /* FoodItemView.swift */,
+				EE7968B729D69D8C00FF8054 /* GetDocumentView.swift */,
+				EE7968B329D69D8C00FF8054 /* ListenDocumentView.swift */,
+				EE7968B629D69D8C00FF8054 /* Price.swift */,
+				EE7968BA29D69D8C00FF8054 /* QueryDocumentsView.swift */,
+				EE7968BB29D69D8C00FF8054 /* SetDocumentView.swift */,
+				EE7968B529D69D8C00FF8054 /* UpdateDocumentView.swift */,
+				EE7968A429D69AE100FF8054 /* Assets.xcassets */,
+				EE7968A129D69AE100FF8054 /* EasyFirebaseExample.entitlements */,
+				EE7968A329D69AE100FF8054 /* EasyFirebaseExampleApp.swift */,
+				EE79689F29D69AE100FF8054 /* Global.swift */,
+				EE7968A229D69AE100FF8054 /* GoogleService-Info.plist */,
+				EE7968A029D69AE100FF8054 /* Models */,
+				EE7968A529D69AE100FF8054 /* Preview Content */,
+				EE79689E29D69AE100FF8054 /* Views */,
+			);
+			path = EasyFirebaseExample;
+			sourceTree = "<group>";
+		};
+		EE7968AD29D69AFE00FF8054 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				EE7968AE29D69AFE00FF8054 /* easy-firebase */,
+				EE7968B229D69B7600FF8054 /* easy-firebase */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		EE7968AF29D69B6400FF8054 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EE64684929D699E200BF2F84 /* EasyFirebaseExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE64685929D699E300BF2F84 /* Build configuration list for PBXNativeTarget "EasyFirebaseExample" */;
+			buildPhases = (
+				EE64684629D699E200BF2F84 /* Sources */,
+				EE64684729D699E200BF2F84 /* Frameworks */,
+				EE64684829D699E200BF2F84 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EasyFirebaseExample;
+			packageProductDependencies = (
+				EE7968B029D69B6400FF8054 /* EasyFirebase */,
+			);
+			productName = EasyFirebaseExample;
+			productReference = EE64684A29D699E200BF2F84 /* EasyFirebaseExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EE64684229D699E200BF2F84 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					EE64684929D699E200BF2F84 = {
+						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1420;
+					};
+				};
+			};
+			buildConfigurationList = EE64684529D699E200BF2F84 /* Build configuration list for PBXProject "EasyFirebaseExample" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EE64684129D699E200BF2F84;
+			productRefGroup = EE64684B29D699E200BF2F84 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EE64684929D699E200BF2F84 /* EasyFirebaseExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EE64684829D699E200BF2F84 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE7968A829D69AE100FF8054 /* Models in Resources */,
+				EE7968AC29D69AE100FF8054 /* Preview Content in Resources */,
+				EE7968A629D69AE100FF8054 /* Views in Resources */,
+				EE7968AB29D69AE100FF8054 /* Assets.xcassets in Resources */,
+				EE7968A929D69AE100FF8054 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EE64684629D699E200BF2F84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE7968C329D69D8C00FF8054 /* QueryDocumentsView.swift in Sources */,
+				EE7968C229D69D8C00FF8054 /* FoodItemView.swift in Sources */,
+				EE7968BD29D69D8C00FF8054 /* FoodItem.swift in Sources */,
+				EE7968BC29D69D8C00FF8054 /* ListenDocumentView.swift in Sources */,
+				EE7968C129D69D8C00FF8054 /* ContentView.swift in Sources */,
+				EE7968C029D69D8C00FF8054 /* GetDocumentView.swift in Sources */,
+				EE7968A729D69AE100FF8054 /* Global.swift in Sources */,
+				EE7968AA29D69AE100FF8054 /* EasyFirebaseExampleApp.swift in Sources */,
+				EE7968BE29D69D8C00FF8054 /* UpdateDocumentView.swift in Sources */,
+				EE7968C429D69D8C00FF8054 /* SetDocumentView.swift in Sources */,
+				EE7968BF29D69D8C00FF8054 /* Price.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		EE64685729D699E300BF2F84 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EE64685829D699E300BF2F84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		EE64685A29D699E300BF2F84 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = EasyFirebaseExample/EasyFirebaseExample.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EasyFirebaseExample/Preview Content\"";
+				DEVELOPMENT_TEAM = 32P4CZ483U;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.benmyers.EasyFirebaseExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EE64685B29D699E300BF2F84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = EasyFirebaseExample/EasyFirebaseExample.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EasyFirebaseExample/Preview Content\"";
+				DEVELOPMENT_TEAM = 32P4CZ483U;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.benmyers.EasyFirebaseExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EE64684529D699E200BF2F84 /* Build configuration list for PBXProject "EasyFirebaseExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE64685729D699E300BF2F84 /* Debug */,
+				EE64685829D699E300BF2F84 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE64685929D699E300BF2F84 /* Build configuration list for PBXNativeTarget "EasyFirebaseExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE64685A29D699E300BF2F84 /* Debug */,
+				EE64685B29D699E300BF2F84 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EE7968B029D69B6400FF8054 /* EasyFirebase */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EasyFirebase;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = EE64684229D699E200BF2F84 /* Project object */;
+}
