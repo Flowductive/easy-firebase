@@ -219,7 +219,7 @@ internal extension Document {
     if error != nil {
       handler(.failure(.connection))
     } else if let snapshot, snapshot.exists {
-      if let data = snapshot.data(), var document = try? T(dictionary: data) {
+      if let data = snapshot.data(), let document = try? T(dictionary: data) {
         document.location = location
         document.listener = listener?.pointee
         handler(.success(document))
