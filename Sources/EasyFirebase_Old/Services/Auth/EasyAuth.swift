@@ -136,7 +136,7 @@ public class EasyAuth: NSObject {
       auth.removeStateDidChangeListener(authHandle)
     }
     authHandle = auth.addStateDidChangeListener { _, user in
-      guard let user = user, let newUser = T.get(from: user) else { return }
+      guard let user = user, let newUser = T.get(from: user), signedIn else { return }
       EasyFirestore.Listening.stop(listenerKey)
       EasyFirestore.Listening.listen(to: newUser.id, ofType: T.self, key: listenerKey) { document in
         guard let document = document else {
