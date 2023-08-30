@@ -100,7 +100,11 @@ extension EasyFirestore {
       db.collection(collection).document(id).getDocument { result, error in
         var document: T?
         if let result = result, result.exists {
-          try? document = result.data(as: type)
+          do {
+            try document = result.data(as: type)
+          } catch {
+            print(error)
+          }
         } else if let error = error {
           EasyFirebase.log(error.localizedDescription)
         } else {
@@ -142,11 +146,14 @@ extension EasyFirestore {
         }
         let documents = snapshot?.documents ?? []
         let objects: [T] = documents.compactMap { doc in
-          let item = try? doc.data(as: T.self)
-          if let item = item {
+          do {
+            let item = try doc.data(as: T.self)
             Cacheing.register(item)
+            return item
+          } catch {
+            print(error.localizedDescription)
+            return nil
           }
-          return item
         }
         toReturn <= objects
         completion(toReturn)

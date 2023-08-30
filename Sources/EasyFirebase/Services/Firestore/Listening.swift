@@ -86,7 +86,12 @@ extension EasyFirestore {
         if snapshot.data() == nil {
           onUpdate(nil)
         }
-        try? document = snapshot.data(as: T.self)
+        do {
+          try document = snapshot.data(as: T.self)
+        } catch {
+          print(error.localizedDescription)
+          return
+        }
         guard let document = document else {
           EasyFirebase.log(error: "A document loaded from the [\(colName(of: T.self))] collection, but couldn't be decoded.")
           return
